@@ -27,7 +27,7 @@ export default function Layout({ logo, children }: LayoutProps) {
               src={logoPic}
               alt="logo"
               placeholder="blur"
-              className="w-12 h-12 shadow-xl rounded-full border-2 border-black hover:ring-2 hover:ring-purple-300 hover:ring-offset-2 focus:outline-none"
+              className="w-12 h-12 shadow-xl rounded-full border border-gray-400 my-hover"
             />
           </button>
         ) : null}
