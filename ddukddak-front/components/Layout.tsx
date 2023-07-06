@@ -1,12 +1,14 @@
 import { useRouter } from 'next/router';
 import { cls } from '../libs/utils';
+import Image from 'next/image';
+import logoPic from '../public/Ddukddak_logo.png';
 
 interface LayoutProps {
-  canGoBack?: boolean;
+  logo?: boolean;
   children: React.ReactNode;
 }
 
-export default function Layout({ canGoBack, children }: LayoutProps) {
+export default function Layout({ logo, children }: LayoutProps) {
   const router = useRouter();
   const onClick = () => {
     router.back();
@@ -15,21 +17,18 @@ export default function Layout({ canGoBack, children }: LayoutProps) {
     <div>
       <div
         className={cls(
-          !canGoBack ? 'justify-center' : '',
-          'bg-white w-full max-w-xl text-lg px-10 font-medium py-3 fixed text-gray-800 border-b top-0  flex items-center',
+          !logo ? 'justify-center' : '',
+          'bg-white text-lg  font-medium fixed text-gray-800 top-8 left-8  flex items-center rounded-full',
         )}
       >
-        {canGoBack ? (
+        {logo ? (
           <button onClick={onClick}>
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
+            <Image
+              src={logoPic}
+              alt="logo"
+              placeholder="blur"
+              className="w-12 h-12 shadow-xl rounded-full border-2 border-black hover:ring-2 hover:ring-purple-300 hover:ring-offset-2 focus:outline-none"
+            />
           </button>
         ) : null}
       </div>

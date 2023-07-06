@@ -1,11 +1,10 @@
-import Layout from '@/components/Layout'
-import { AppProps } from 'next/app'
-import '../styles/globals.css'
+import { AppProps } from 'next/app';
+import '../styles/globals.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
+    <div className="w-full max-w-xl mx-auto">
       <Component {...pageProps} />
-    </Layout>
-  )
+    </div>
+  );
 }
