@@ -4,8 +4,9 @@ import Button from '@/components/button';
 export default function Home() {
   return (
     <Layout logo>
-      <div className="grid gap-10 py-24 px-10 lg:grid-cols-2 min-h-screen bg-gray-200">
-        <div className="my-flex-center my-auto mx-auto">
+      <div className="grid gap-10 py-24 px-10 xl:grid-cols-3 min-h-screen xl:place-content-center">
+        {/* 뚝딱 만들기  */}
+        <div className="my-flex-center xl:col-span-2">
           <form className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">
             <h2 className="font-semibold text-3xl text-center text-white mt-10">어떤 뚝딱을 만들고 싶나요?</h2>
             <input
@@ -29,36 +30,322 @@ export default function Home() {
           </form>
           <span className="text-gray-500 text-sm">뚝딱은 모임, 예약, 파티, 약속, 집합 등을 통칭합니다.</span>
         </div>
-
-        <div>
-          <div>
-            <h2>전체 채팅</h2>
-            <div className="w-10 h-10 bg-slate-400" />
-            <div className="w-10 h-10 bg-slate-400" />
-            <div className="w-10 h-10 bg-slate-400" />
-            <div className="w-10 h-10 bg-slate-400" />
-          </div>
-
-          <div>
-            <div>
-              <p>Hi how much are you selling them for?</p>
-            </div>
-            <div>
-              <p>i want ₩20,000</p>
+        {/* 전체 채팅  */}
+        <div className="flex flex-col justify-between border-2 rounded-xl py-4 px-5 shadow-2xl xl:h-[80vh]">
+          <div className="flex justify-between">
+            <h2 className="text-xl font-semibold text-violet-950">전체 채팅</h2>
+            <div className="grid grid-cols-2 gap-1">
+              <div className="w-10 h-10 bg-slate-400"></div>
+              <div className="w-10 h-10 bg-slate-400"></div>
+              <div className="w-10 h-10 bg-slate-400"></div>
+              <div className="w-10 h-10 bg-slate-400"></div>
             </div>
           </div>
-          <div className="fixed py-2 bg-white  bottom-0 inset-x-0">
-            <div className="flex relative max-w-md items-center  w-full mx-auto">
-              <input
-                type="text"
-                className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none pr-12 focus:border-orange-500"
-              />
-              <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
-                <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 text-sm text-white">
-                  &rarr;
-                </button>
+          {/* 채팅내용  */}
+          <div className="space-y-4 py-4 overflow-auto max-h-[60vh]">
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
               </div>
             </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+            <div className="flex items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+              <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+                <p>
+                  Hi how much are you selling them for?how much are you selling them for?how much are you selling them
+                  for?how much are you selling them for?
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+
+              <div className=" px-2 py-2  border border-gray-300 rounded-md">
+                <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
+              </div>
+            </div>
+          </div>
+          {/* 인풋 박스  */}
+          <div className="">
+            <form className=" flex relative">
+              <input
+                type="text"
+                placeholder="안녕하세요^^ 인사해볼까요?"
+                required
+                className="peer border rounded-xl w-full placeholder:pl-4 py-2 mt-2"
+              />
+              <div className="absolute right-2 -bottom-[0.5px]">
+                <Button
+                  svg={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6 peer-invalid:bg-gray-800 my-1"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                      />
+                    </svg>
+                  }
+                />
+              </div>
+            </form>
           </div>
         </div>
       </div>
