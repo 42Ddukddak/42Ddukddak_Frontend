@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
   return (
     <Layout logo>
-      <div className="grid gap-10 py-24 px-10 xl:grid-cols-3 min-h-screen xl:place-content-center">
+      <div className="grid gap-10 py-24 px-8 xl:grid-cols-3 xl:place-content-center">
         {/* 뚝딱 만들기 or 채팅 방 */}
         {/* <MakeDdukddak /> */}
         <Chatting />

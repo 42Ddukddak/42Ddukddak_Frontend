@@ -2,7 +2,7 @@ import Button from './button';
 
 const MakeDdukddak = () => {
   return (
-    <div className="flex justify-center col-span-2">
+    <div className="flex justify-center xl:col-span-2">
       <div className="flex flex-col justify-center items-center">
         {/* 뚝딱 만들기  */}
         <form className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">
