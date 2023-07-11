@@ -1,8 +1,15 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import tempPic from '../public/Ddukddak_logo.png';
+import { useRouter } from 'next/router';
 
 const Enter: NextPage = () => {
+  const router = useRouter();
+  const onClick = () => {
+    router.push(
+      'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-3b57ef43b210f8fbf7a0029fa629f976bd0a1506976d74b843eab9f4bafa2727&redirect_uri=https%3A%2F%2Flocalhost%3A3000&response_type=code',
+    );
+  };
   return (
     <div className="mt-16 px-16 flex flex-col justify-center items-center space-y-5">
       <Image src={tempPic} alt="mainIMG" placeholder="blur" />
@@ -14,7 +21,10 @@ const Enter: NextPage = () => {
           '뚝딱' 은 익명을 보장합니다. 이야기를 나누거나 모임을 만들어 보세요.
         </span>
       </div>
-      <button className=" rounded-xl shadow-xl bg-purple-500 text-white px-10 py-4 text-2xl hover:ring-2 hover:ring-offset-2 hover:ring-purple-400 hover:bg-purple-400 focus:outline-none">
+      <button
+        onClick={onClick}
+        className=" rounded-xl shadow-xl bg-purple-500 text-white px-10 py-4 text-2xl hover:ring-2 hover:ring-offset-2 hover:ring-purple-400 hover:bg-purple-400 focus:outline-none"
+      >
         Sign in
       </button>
     </div>
