@@ -2,9 +2,9 @@ import Button from './button';
 
 const MakeDdukddak = () => {
   return (
-    <div>
-      {/* 뚝딱 만들기  */}
-      <div className="flex flex-col justify-center items-center xl:col-span-2">
+    <div className="flex justify-center col-span-2">
+      <div className="flex flex-col justify-center items-center">
+        {/* 뚝딱 만들기  */}
         <form className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">
           <h2 className="font-semibold text-3xl text-center text-white mt-10">어떤 뚝딱을 만들고 싶나요?</h2>
           <input

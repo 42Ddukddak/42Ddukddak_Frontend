@@ -3,6 +3,7 @@ import Button from '@/components/button';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
+import Chatting from '@/components/chatting';
 
 export default function Home() {
   const tokenInfo:
@@ -23,9 +24,10 @@ export default function Home() {
     <Layout logo>
       <div className="grid gap-10 py-24 px-10 xl:grid-cols-3 min-h-screen xl:place-content-center">
         {/* 뚝딱 만들기 or 채팅 방 */}
-        <MakeDdukddak />
+        {/* <MakeDdukddak /> */}
+        <Chatting />
         {/* 전체 채팅  */}
-        <div className=" flex flex-col justify-between border-2 rounded-xl py-4 px-5 shadow-2xl xl:h-[80vh]">
+        <div className="flex flex-col border-2 rounded-xl py-4 px-5 shadow-2xl xl:min-h-[80vh]">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold text-violet-950">전체 채팅</h2>
             <div className="grid grid-cols-2 gap-1 place-items-center">
@@ -81,7 +83,7 @@ export default function Home() {
             </div>
           </div>
           {/* 채팅내용  */}
-          <div className="space-y-4 py-4 overflow-auto max-h-[60vh]">
+          <div className="space-y-4 py-4 overflow-auto max-h-[44vh] xl:max-h-[70vh]">
             <div className="flex items-start text-gray-800 space-x-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
