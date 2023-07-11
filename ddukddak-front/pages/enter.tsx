@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import tempPic from '../public/Ddukddak_logo.png';
+import redirect from '@/libs/redirect';
 
 const Enter: NextPage = () => {
   const url = 'https://api.intra.42.fr/oauth/token';
@@ -20,13 +21,15 @@ const Enter: NextPage = () => {
     '&' +
     'scope=public';
 
-  const onClick = () => {
-    fetch(url + query, {
-      method: 'POST',
-      headers: {},
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+  const onClick = async () => {
+    try {
+      await fetch(url + query, {
+        method: 'POST',
+        headers: {},
+      }).then((res) => redirect('/'));
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="mt-16 px-16 flex flex-col justify-center items-center space-y-5">
