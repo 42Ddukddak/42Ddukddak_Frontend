@@ -5,28 +5,19 @@ import { useEffect } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
 import Chatting from '@/components/chatting';
 
+interface MyProps {
+  session: any; // 세션 정보에 따라 타입을 수정해야 합니다.
+}
+
 export default function Home() {
-  const tokenInfo:
-    | {
-        id: number;
-        nickname: string;
-      }
-    | undefined = { id: 1, nickname: 'a' };
-  const router = useRouter();
-
+  const route = useRouter();
   useEffect(() => {
-    const url = new URL(window.location.href);
-
-    const fetchAuth = async () => {
-      const code = url.searchParams.get('code');
-      console.log(code);
-      const config = {
-        url: '/42login',
-        method: 'post',
-        data: { code },
-      };
-    };
+    const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
+    if (!accessToken) {
+      route.push('/enter');
+    }
   }, []);
+
   return (
     <Layout logo>
       <div className="grid gap-10 py-24 px-8 xl:grid-cols-3 xl:place-content-center">

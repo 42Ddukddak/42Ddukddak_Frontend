@@ -1,12 +1,14 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import tempPic from '../public/Ddukddak_logo.png';
-import redirect from '@/libs/redirect';
+import { useRouter } from 'next/router';
 
 const Enter: NextPage = () => {
+  const route = useRouter();
   const onClick = () => {
-    redirect('/42login');
+    route.push('http://localhost:8080/42login');
   };
+
   return (
     <div className="mt-16 px-16 flex flex-col justify-center items-center space-y-5">
       <Image src={tempPic} alt="mainIMG" placeholder="blur" />
