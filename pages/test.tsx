@@ -1,5 +1,3 @@
-import type { NextPage } from 'next';
-
 export default function NextPage() {
   return (
     <div className="bg-slate-400 py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen xl:place-content-center">

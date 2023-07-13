@@ -10,9 +10,13 @@ const Chatting = () => {
           <span className="text-gray-400 text-sm">last seen 5 mins ago</span>
         </div>
         <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
-          <button className=" hover:text-violet-500 transition-colors">뚝딱뚝딱</button>
+          <button type="button" className=" hover:text-violet-500 transition-colors">
+            뚝딱뚝딱
+          </button>
           <div className="w-[2px] h-6 bg-black" />
-          <button className="hover:text-violet-500 transition-colors">Leave</button>
+          <button type="button" className="hover:text-violet-500 transition-colors">
+            Leave
+          </button>
         </div>
       </div>
       {/* 채팅 내용 */}

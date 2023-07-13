@@ -4,32 +4,36 @@ import tempPic from '../public/Ddukddak_logo.png';
 import redirect from '@/libs/redirect';
 
 const Enter: NextPage = () => {
-  const url = 'https://api.intra.42.fr/oauth/token';
-  const query =
-    '?' +
-    'grant_type=' +
-    'client_credentials' +
-    '&' +
-    'client_id=' +
-    process.env.NEXT_PUBLIC_UID_42 +
-    '&' +
-    'client_secret=' +
-    process.env.NEXT_PUBLIC_SECRET_42 +
-    '&' +
-    'redirect_uri=' +
-    process.env.NEXT_PUBLIC_REDIRECT_URL +
-    '&' +
-    'scope=public';
+  // const url = 'https://api.intra.42.fr/oauth/token';
+  // const query =
+  //   '?' +
+  //   'grant_type=' +
+  //   'client_credentials' +
+  //   '&' +
+  //   'client_id=' +
+  //   process.env.NEXT_PUBLIC_UID_42 +
+  //   '&' +
+  //   'client_secret=' +
+  //   process.env.NEXT_PUBLIC_SECRET_42 +
+  //   '&' +
+  //   'redirect_uri=' +
+  //   process.env.NEXT_PUBLIC_REDIRECT_URL +
+  //   '&' +
+  //   'scope=public';
 
-  const onClick = async () => {
-    try {
-      await fetch(url + query, {
-        method: 'POST',
-        headers: {},
-      }).then((res) => redirect('/'));
-    } catch (error) {
-      console.log(error);
-    }
+  // const onClick = async () => {
+  //   try {
+  //     await fetch(url + query, {
+  //       method: 'POST',
+  //       headers: {},
+  //     }).then((res) => redirect('/'));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const onClick = () => {
+    redirect('/42login');
   };
   return (
     <div className="mt-16 px-16 flex flex-col justify-center items-center space-y-5">

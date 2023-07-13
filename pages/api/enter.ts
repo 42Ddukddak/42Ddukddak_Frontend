@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-interface myReq {
+interface MyReq {
   req: NextApiRequest;
   res: NextApiResponse;
 }
 
-export default ({ req, res }: myReq) => {
+export default ({ req, res }: MyReq) => {
   if (req.method === 'POST') {
     console.log(res);
   }

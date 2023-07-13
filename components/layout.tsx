@@ -2,11 +2,16 @@ import { useRouter } from 'next/router';
 import { cls } from '../libs/utils';
 import Image from 'next/image';
 import logoPic from '../public/Ddukddak_logo.png';
+import React from 'react';
 
 interface LayoutProps {
   logo?: boolean;
   children: React.ReactNode;
 }
+
+Layout.defualtProps = {
+  logo: false,
+};
 
 export default function Layout({ logo, children }: LayoutProps) {
   const router = useRouter();
@@ -22,7 +27,7 @@ export default function Layout({ logo, children }: LayoutProps) {
         )}
       >
         {logo ? (
-          <button onClick={onClick}>
+          <button type="button" onClick={onClick}>
             <Image
               src={logoPic}
               alt="logo"
