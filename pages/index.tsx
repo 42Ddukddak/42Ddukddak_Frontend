@@ -11,14 +11,21 @@ export default function Home() {
         id: number;
         nickname: string;
       }
-    | undefined = 'a';
+    | undefined = { id: 1, nickname: 'a' };
   const router = useRouter();
 
   useEffect(() => {
-    if (!tokenInfo) {
-      const local = process.env.NEXT_PUBLIC_LOCALHOST;
-      router.push(`${local}/enter`);
-    }
+    const url = new URL(window.location.href);
+
+    const fetchAuth = async () => {
+      const code = url.searchParams.get('code');
+      console.log(code);
+      const config = {
+        url: '/42login',
+        method: 'post',
+        data: { code },
+      };
+    };
   }, []);
   return (
     <Layout logo>

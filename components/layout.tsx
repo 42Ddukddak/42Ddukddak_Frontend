@@ -9,10 +9,6 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-Layout.defualtProps = {
-  logo: false,
-};
-
 export default function Layout({ logo, children }: LayoutProps) {
   const router = useRouter();
   const onClick = () => {
