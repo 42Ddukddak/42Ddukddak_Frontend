@@ -8,8 +8,8 @@ export default function WholeDdukddak() {
         <div>
           <h2>밥 먹으러 가실분</h2>
           <div>
-            <div>2</div>
-            <div>10 min</div>
+            <span>2</span>
+            <span>10 min</span>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
       <div className="flex space-x-2">
         <h2 className="text-xl font-semibold text-violet-950">{text}</h2>
         {isSearch ? (
-          <div className=" rounded-full cursor-pointer w-6 h-6 hover:text-violet-800 hover:ring-violet-500 hover:ring-2 transition-colors">
+          <div className="flex justify-center items-center rounded-full cursor-pointer w-7 h-7 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -28,7 +28,7 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
         ) : null}
       </div>
       <div className="grid grid-cols-2 gap-1 place-items-center">
-        <div className="w-6 h-6">
+        <div className="flex justify-center items-center rounded-full cursor-pointer w-7 h-7 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -44,7 +44,7 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
             />
           </svg>
         </div>
-        <div className="w-6 h-6">
+        <div className="flex justify-center items-center rounded-full cursor-pointer w-7 h-7 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -60,8 +60,8 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
             />
           </svg>
         </div>
-        <div className="w-6 h-6"></div>
-        <div className="w-6 h-6">
+        <div className="w-7 h-7"></div>
+        <div className="flex justify-center items-center rounded-full cursor-pointer w-7 h-7 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
