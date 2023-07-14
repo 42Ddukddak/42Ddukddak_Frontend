@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
     if (!accessToken) {
-      route.push('/enter');
+      // route.push('/enter');
     }
   }, []);
 
@@ -24,7 +24,7 @@ export default function Home() {
         {/* 뚝딱 만들기 or 채팅 방 */}
         {/* <MakeDdukddak /> */}
         <Chatting />
-        {/* 전체 채팅  */}
+        {/* 전체 채팅 or 전체 뚝딱 */}
         <div className="flex flex-col border-2 rounded-xl py-4 px-5 shadow-2xl xl:min-h-[80vh]">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold text-violet-950">전체 채팅</h2>
