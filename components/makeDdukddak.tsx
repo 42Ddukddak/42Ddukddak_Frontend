@@ -1,6 +1,6 @@
 import Button from './button';
 
-const MakeDdukddak = () => {
+export default function MakeDdukddak() {
   return (
     <div className="flex justify-center xl:col-span-2">
       <div className="flex flex-col justify-center items-center">
@@ -30,6 +30,4 @@ const MakeDdukddak = () => {
       </div>
     </div>
   );
-};
-
-export default MakeDdukddak;
+}

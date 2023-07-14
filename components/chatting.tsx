@@ -1,6 +1,6 @@
 import Button from './button';
 
-const Chatting = () => {
+export default function Chatting() {
   return (
     <div className="xl:col-span-2 border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 bg-indigo-300">
       {/* 상단 바 */}
@@ -104,5 +104,3 @@ const Chatting = () => {
     </div>
   );
 };
-
-export default Chatting;
