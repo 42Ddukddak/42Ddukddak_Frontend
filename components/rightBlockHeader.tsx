@@ -1,7 +1,32 @@
-export default function RightBlockHeader() {
+interface HeaderProps {
+  text: string;
+  isSearch?: boolean;
+}
+
+export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
   return (
     <div className="flex justify-between">
-      <h2 className="text-xl font-semibold text-violet-950">전체 채팅</h2>
+      <div className="flex space-x-2">
+        <h2 className="text-xl font-semibold text-violet-950">{text}</h2>
+        {isSearch ? (
+          <div className=" rounded-full cursor-pointer w-6 h-6 hover:text-violet-800 hover:ring-violet-500 hover:ring-2 transition-colors">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </div>
+        ) : null}
+      </div>
       <div className="grid grid-cols-2 gap-1 place-items-center">
         <div className="w-6 h-6">
           <svg
