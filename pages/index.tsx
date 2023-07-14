@@ -13,12 +13,14 @@ interface MyProps {
 
 export default function Home() {
   const route = useRouter();
-  useEffect(() => {
-    const accessToken = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
-    if (!accessToken) {
-      // route.push('/enter');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const session = typeof window !== 'undefined' ? sessionStorage.getItem('name') : null;
+  //   // const cookies = getCookie(route.req, 'cookieName');
+  //   console.log(session);
+  //   if (!session) {
+  //     route.push('/enter');
+  //   }
+  // }, [session]);
 
   return (
     <Layout logo>
