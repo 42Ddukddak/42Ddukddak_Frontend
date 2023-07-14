@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
 import Chatting from '@/components/chatting';
 import PublicChatting from '@/components/publicChatting';
+import WholeDdukddak from '@/components/wholeDdukddak';
 
 interface MyProps {
   session: any; // 세션 정보에 따라 타입을 수정해야 합니다.
@@ -26,7 +27,8 @@ export default function Home() {
         {/* <MakeDdukddak /> */}
         <Chatting />
         {/* 전체 채팅 or 전체 뚝딱 */}
-        <PublicChatting />
+        {/* <PublicChatting /> */}
+        <WholeDdukddak />
       </div>
     </Layout>
   );

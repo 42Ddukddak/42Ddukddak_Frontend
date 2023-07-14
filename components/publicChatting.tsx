@@ -4,7 +4,7 @@ import RightBlockHeader from './rightBlockHeader';
 export default function PublicChatting() {
   return (
     <div className="flex flex-col border-2 rounded-xl py-4 px-5 shadow-2xl xl:min-h-[80vh]">
-      <RightBlockHeader />
+      <RightBlockHeader text={'전채 채팅'} />
       {/* 채팅내용  */}
       <div className="space-y-4 py-4 overflow-auto max-h-[44vh] xl:max-h-[70vh]">
         <div className="flex items-start text-gray-800 space-x-2 text-sm">
