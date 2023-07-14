@@ -7,9 +7,9 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
   return (
     <div className="flex justify-between">
       <div className="flex space-x-2">
-        <h2 className="text-xl font-semibold text-violet-950">{text}</h2>
+        <h2 className="text-2xl font-semibold text-violet-950">{text}</h2>
         {isSearch ? (
-          <div className="flex justify-center items-center rounded-full cursor-pointer w-7 h-7 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
+          <div className="mt-1 flex justify-center items-center rounded-full cursor-pointer w-7 h-7 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
