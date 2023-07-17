@@ -1,5 +1,4 @@
 import Layout from '@/components/layout';
-import Button from '@/components/button';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
@@ -7,20 +6,29 @@ import Chatting from '@/components/chatting';
 import PublicChatting from '@/components/publicChatting';
 import WholeDdukddak from '@/components/wholeDdukddak';
 
-interface MyProps {
-  session: any; // 세션 정보에 따라 타입을 수정해야 합니다.
+function getCookieValue(key: string) {
+  const cookies = document.cookie.split(';');
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+
+    if (cookie.startsWith(`${key}=`)) {
+      return cookie.substring(key.length + 1);
+    }
+  }
+
+  return null;
 }
 
 export default function Home() {
   const route = useRouter();
-  // useEffect(() => {
-  //   const session = typeof window !== 'undefined' ? sessionStorage.getItem('name') : null;
-  //   // const cookies = getCookie(route.req, 'cookieName');
-  //   console.log(session);
-  //   if (!session) {
-  //     route.push('/enter');
-  //   }
-  // }, [session]);
+
+  useEffect(() => {
+    const value = getCookieValue('key');
+    if (!value) {
+      route.push('/enter');
+    }
+  });
 
   return (
     <Layout logo>

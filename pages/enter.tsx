@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 const Enter: NextPage = () => {
   const route = useRouter();
   const onClick = () => {
-    route.push('http://localhost:8080/42login');
+    route.push('api/42login');
   };
 
   return (
