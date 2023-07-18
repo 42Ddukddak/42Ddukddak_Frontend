@@ -1,33 +1,168 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef, useCallback } from 'react';
 import Button from './button';
 import RightBlockHeader from './rightBlockHeader';
-import io from 'socket.io-client';
 
-const socket = io('http://localhost/ws');
 export default function PublicChatting() {
   const [message, setMessage] = useState('');
-  const [receivedMessage, setReceivedMessage] = useState('');
+  const [name, setName] = useState('');
+  const [chatt, setChatt] = useState([]);
+  const [chkLog, setChkLog] = useState(false);
+  const [socketData, setSocketData] = useState<any>();
+  const ws = useRef<WebSocket | null>(null);
+  const msgBox = chatt.map((item: any, idx: number) => (
+    <div key={idx} className={item.name === name ? 'me' : 'other'}>
+      <span>
+        <b>{item.name}</b>
+      </span>{' '}
+      [ {item.date} ]<br />
+      <span>{item.msg}</span>
+    </div>
+  ));
 
   useEffect(() => {
-    socket.on('message', (data) => {
-      console.log('Recevied message: ', data);
-    });
-  }, []);
+    if (socketData !== undefined) {
+      const tempData = chatt.concat(socketData);
+      console.log(tempData);
+      setChatt(tempData);
+    }
+  }, [socketData]);
 
-  const sendMessage = () => {
-    socket.emit('message', message);
-  };
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
     setMessage(event.target.value);
   };
+
+  const webSocketLogin = useCallback(() => {
+    ws.current = new WebSocket('ws://localhost');
+
+    ws.current.onmessage = (message: MessageEvent) => {
+      const dataSet = JSON.parse(message.data);
+      setSocketData(dataSet);
+    };
+  }, []);
+
+  const send = useCallback(() => {
+    if (message !== '') {
+      const data = {
+        name,
+        message,
+        date: new Date().toLocaleString(),
+      }; //전송 데이터(JSON)
+
+      const temp = JSON.stringify(data);
+
+      if (ws.current?.readyState === WebSocket.CONNECTING) {
+        //readyState는 웹 소켓 연결 상태를 나타냄
+        ws.current.onopen = () => {
+          //webSocket이 맺어지고 난 후, 실행
+          console.log(ws.current.readyState);
+          ws.current?.send(temp);
+        };
+      } else if (ws.current?.readyState === WebSocket.OPEN) {
+        ws.current?.send(temp);
+      }
+    } else {
+      alert('메세지를 입력하세요.');
+      document.getElementById('msg')?.focus();
+      return;
+    }
+    setMessage('');
+  }, [message, name]);
+  // export default function PublicChatting() {
+  //   const [message, setMessage] = useState('');
+  //   const [name, setName] = useState('');
+  //   const [chatt, setChatt] = useState([]);
+  //   const [chkLog, setChkLog] = useState(false);
+  //   const [socketData, setSocketData] = useState();
+  //   // const [receivedMessage, setReceivedMessage] = useState('');
+  //   const ws = useRef(null);
+  //   const msgBox = chatt.map((item, idx) => (
+  //     <div key={idx} className={item.name === name ? 'me' : 'other'}>
+  //       <span>
+  //         <b>{item.name}</b>
+  //       </span>{' '}
+  //       [ {item.date} ]<br />
+  //       <span>{item.msg}</span>
+  //     </div>
+  //   ));
+
+  //   useEffect(() => {
+  //     if (socketData !== undefined) {
+  //       const tempData = chatt.concat(socketData);
+  //       console.log(tempData);
+  //       setChatt(tempData);
+  //     }
+  //   }, [socketData]);
+
+  //   const onText = (event) => {
+  //     console.log(event.target.value);
+  //     setMessage(event.target.value);
+  //   };
+
+  //   const webSocketLogin = useCallback(() => {
+  //     ws.current = new WebSocket('ws://localhost');
+
+  //     ws.current.onmessage = (message) => {
+  //       const dataSet = JSON.parse(message.data);
+  //       setSocketData(dataSet);
+  //     };
+  //   }, []);
+
+  //   const send = useCallback(() => {
+  //     if (message !== '') {
+  //       const data = {
+  //         name,
+  //         message,
+  //         date: new Date().toLocaleString(),
+  //       }; //전송 데이터(JSON)
+
+  //       const temp = JSON.stringify(data);
+
+  //       if (ws.current.readyState === 0) {
+  //         //readyState는 웹 소켓 연결 상태를 나타냄
+  //         ws.current.onopen = () => {
+  //           //webSocket이 맺어지고 난 후, 실행
+  //           console.log(ws.current.readyState);
+  //           ws.current.send(temp);
+  //         };
+  //       } else {
+  //         ws.current.send(temp);
+  //       }
+  //     } else {
+  //       alert('메세지를 입력하세요.');
+  //       document.getElementById('msg').focus();
+  //       return;
+  //     }
+  //     setMessage('');
+  //   }, []);
+  // useEffect(() => {
+  //   socket.on('message', (data) => {
+  //     setReceivedMessage(data);
+  //     console.log('Recevied message: ', data);
+  //   });
+  // }, []);
+
+  // const sendMessage = () => {
+  //   // socket.emit('message', message);
+  //   setMessage('');
+  // };
+
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setMessage(event.target.value);
+  // };
+
+  // const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.key === 'Enter') {
+  //     sendMessage();
+  //   }
+  // };
 
   return (
     <div className="flex flex-col border-2 rounded-xl py-4 px-5 shadow-2xl max-h-[50vh] xl:min-h-[80vh]">
       <RightBlockHeader text={'전채 채팅'} />
       {/* 채팅내용  */}
       <div className="space-y-4 py-4 overflow-auto max-h-[44vh] xl:max-h-[70vh]">
-        <p>Received Message: {receivedMessage}</p>
+        {msgBox}
         {/* <div className="flex items-start text-gray-800 space-x-2 text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,13 +200,18 @@ export default function PublicChatting() {
       </div>
       {/* 인풋 박스  */}
       <div className="">
-        <form className="flex relative">
+        <div className="flex relative">
           <input
             type="text"
             placeholder="안녕하세요^^ 인사해볼까요?"
             required
             value={message}
-            onChange={handleChange}
+            onChange={onText}
+            onKeyDown={(ev) => {
+              if (ev.key === 'Enter') {
+                send();
+              }
+            }}
             className="overflow-visible peer border rounded-xl w-full placeholder:pl-2 py-2 mt-2 pl-3 pr-[58px] focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
           />
           <div className="absolute right-2 -bottom-[0.5px]">
@@ -83,7 +223,7 @@ export default function PublicChatting() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  onClick={sendMessage}
+                  onClick={send}
                   className="w-6 h-6 peer-invalid:bg-gray-800 my-1"
                 >
                   <path
@@ -95,7 +235,7 @@ export default function PublicChatting() {
               }
             />
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
