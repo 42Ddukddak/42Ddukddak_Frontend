@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const value = getCookieValue('key');
     if (!value) {
-      route.push('/enter');
+      // route.push('/enter');
     }
   });
 
@@ -37,8 +37,8 @@ export default function Home() {
         {/* <MakeDdukddak /> */}
         <Chatting />
         {/* 전체 채팅 or 전체 뚝딱 */}
-        {/* <PublicChatting /> */}
-        <WholeDdukddak />
+        <PublicChatting />
+        {/* <WholeDdukddak /> */}
       </div>
     </Layout>
   );
