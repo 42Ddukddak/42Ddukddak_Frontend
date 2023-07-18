@@ -5,7 +5,9 @@ import RightBlockHeader from './rightBlockHeader';
 export default function PublicChatting() {
   const [message, setMessage] = useState('');
   const [chatt, setChatt] = useState([]);
+  const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
+  // const [receivedMessage, setReceivedMessage] = useState('');
   const ws = useRef(null);
   const msgBox = chatt.map((item, idx) => (
     <div key={idx}>
@@ -17,6 +19,7 @@ export default function PublicChatting() {
   useEffect(() => {
     if (socketData !== undefined) {
       const tempData = chatt.concat(socketData);
+      console.log(tempData);
       setChatt(tempData);
     }
   }, [socketData]);
@@ -35,10 +38,13 @@ export default function PublicChatting() {
   }, []);
 
   const send = useCallback(() => {
-    webSocketLogin();
+    if (!chkLog) {
+      webSocketLogin();
+      setChkLog(true);
+    }
+
     if (message !== '') {
       const data = {
-        name,
         message,
         date: new Date().toLocaleString(),
       }; //전송 데이터(JSON)
@@ -57,78 +63,10 @@ export default function PublicChatting() {
       }
     } else {
       alert('메세지를 입력하세요.');
-      document.getElementById('msg').focus();
       return;
     }
     setMessage('');
   }, []);
-  // export default function PublicChatting() {
-  //   const [message, setMessage] = useState('');
-  //   const [name, setName] = useState('');
-  //   const [chatt, setChatt] = useState([]);
-  //   const [chkLog, setChkLog] = useState(false);
-  //   const [socketData, setSocketData] = useState();
-  //   // const [receivedMessage, setReceivedMessage] = useState('');
-  //   const ws = useRef(null);
-  //   const msgBox = chatt.map((item, idx) => (
-  //     <div key={idx} className={item.name === name ? 'me' : 'other'}>
-  //       <span>
-  //         <b>{item.name}</b>
-  //       </span>{' '}
-  //       [ {item.date} ]<br />
-  //       <span>{item.msg}</span>
-  //     </div>
-  //   ));
-
-  //   useEffect(() => {
-  //     if (socketData !== undefined) {
-  //       const tempData = chatt.concat(socketData);
-  //       console.log(tempData);
-  //       setChatt(tempData);
-  //     }
-  //   }, [socketData]);
-
-  //   const onText = (event) => {
-  //     console.log(event.target.value);
-  //     setMessage(event.target.value);
-  //   };
-
-  //   const webSocketLogin = useCallback(() => {
-  //     ws.current = new WebSocket('ws://localhost');
-
-  //     ws.current.onmessage = (message) => {
-  //       const dataSet = JSON.parse(message.data);
-  //       setSocketData(dataSet);
-  //     };
-  //   }, []);
-
-  //   const send = useCallback(() => {
-  //     if (message !== '') {
-  //       const data = {
-  //         name,
-  //         message,
-  //         date: new Date().toLocaleString(),
-  //       }; //전송 데이터(JSON)
-
-  //       const temp = JSON.stringify(data);
-
-  //       if (ws.current.readyState === 0) {
-  //         //readyState는 웹 소켓 연결 상태를 나타냄
-  //         ws.current.onopen = () => {
-  //           //webSocket이 맺어지고 난 후, 실행
-  //           console.log(ws.current.readyState);
-  //           ws.current.send(temp);
-  //         };
-  //       } else {
-  //         ws.current.send(temp);
-  //       }
-  //     } else {
-  //       alert('메세지를 입력하세요.');
-  //       document.getElementById('msg').focus();
-  //       return;
-  //     }
-  //     setMessage('');
-  //   }, []);
   // useEffect(() => {
   //   socket.on('message', (data) => {
   //     setReceivedMessage(data);
