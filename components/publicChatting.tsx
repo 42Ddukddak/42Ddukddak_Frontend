@@ -3,16 +3,18 @@ import Button from './button';
 import RightBlockHeader from './rightBlockHeader';
 
 export default function PublicChatting() {
-  const [message, setMessage] = useState('');
+  const [msg, setMsg] = useState('');
   const [chatt, setChatt] = useState([]);
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
-  // const [receivedMessage, setReceivedMessage] = useState('');
-  const ws = useRef(null);
+
+  const ws = useRef(null); //webSocket을 담는 변수,
+  //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
+
   const msgBox = chatt.map((item, idx) => (
     <div key={idx}>
       [ {item.date} ]<br />
-      <span>{item.message}</span>
+      <span>{item.msg}</span>
     </div>
   ));
 
@@ -24,8 +26,14 @@ export default function PublicChatting() {
     }
   }, [socketData]);
 
+  //webSocket
+  //webSocket
+  //webSocket
+  //webSocket
+  //webSocket
+  //webSocket
   const onText = (event) => {
-    setMessage(event.target.value);
+    setMsg(event.target.value);
   };
 
   const webSocketLogin = useCallback(() => {
@@ -43,9 +51,9 @@ export default function PublicChatting() {
       setChkLog(true);
     }
 
-    if (message !== '') {
+    if (msg !== '') {
       const data = {
-        message,
+        msg,
         date: new Date().toLocaleString(),
       }; //전송 데이터(JSON)
 
@@ -65,7 +73,7 @@ export default function PublicChatting() {
       alert('메세지를 입력하세요.');
       return;
     }
-    setMessage('');
+    setMsg('');
   }, []);
   // useEffect(() => {
   //   socket.on('message', (data) => {
@@ -137,7 +145,7 @@ export default function PublicChatting() {
             type="text"
             placeholder="안녕하세요^^ 인사해볼까요?"
             required
-            value={message}
+            value={msg}
             onChange={onText}
             onKeyDown={(ev) => {
               if (ev.key === 'Enter') {
