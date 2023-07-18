@@ -9,15 +9,20 @@ export default function PublicChatting() {
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState<any>();
   const ws = useRef<WebSocket | null>(null);
+
   const msgBox = chatt.map((item: any, idx: number) => (
     <div key={idx} className={item.name === name ? 'me' : 'other'}>
       <span>
         <b>{item.name}</b>
       </span>{' '}
       [ {item.date} ]<br />
-      <span>{item.msg}</span>
+      <span>{item.message}</span>
     </div>
   ));
+
+  useEffect(() => {
+    webSocketLogin();
+  }, []);
 
   useEffect(() => {
     if (socketData !== undefined) {
@@ -44,7 +49,6 @@ export default function PublicChatting() {
   const send = useCallback(() => {
     if (message !== '') {
       const data = {
-        name,
         message,
         date: new Date().toLocaleString(),
       }; //전송 데이터(JSON)
@@ -55,7 +59,6 @@ export default function PublicChatting() {
         //readyState는 웹 소켓 연결 상태를 나타냄
         ws.current.onopen = () => {
           //webSocket이 맺어지고 난 후, 실행
-          console.log(ws.current.readyState);
           ws.current?.send(temp);
         };
       } else if (ws.current?.readyState === WebSocket.OPEN) {
@@ -67,7 +70,7 @@ export default function PublicChatting() {
       return;
     }
     setMessage('');
-  }, [message, name]);
+  }, [message]);
   // export default function PublicChatting() {
   //   const [message, setMessage] = useState('');
   //   const [name, setName] = useState('');
