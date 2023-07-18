@@ -19,6 +19,10 @@ export default function PublicChatting() {
   ));
 
   useEffect(() => {
+    webSocketLogin();
+  });
+
+  useEffect(() => {
     if (socketData !== undefined) {
       const tempData = chatt.concat(socketData);
       console.log(tempData);
@@ -37,7 +41,7 @@ export default function PublicChatting() {
   };
 
   const webSocketLogin = useCallback(() => {
-    ws.current = new WebSocket('ws://localhost');
+    ws.current = new WebSocket('ws://localhost:8080');
 
     ws.current.onmessage = (message) => {
       const dataSet = JSON.parse(message.data);
@@ -46,11 +50,6 @@ export default function PublicChatting() {
   }, []);
 
   const send = useCallback(() => {
-    if (!chkLog) {
-      webSocketLogin();
-      setChkLog(true);
-    }
-
     if (msg !== '') {
       const data = {
         msg,
@@ -74,7 +73,7 @@ export default function PublicChatting() {
       return;
     }
     setMsg('');
-  }, []);
+  }, [msg]);
   // useEffect(() => {
   //   socket.on('message', (data) => {
   //     setReceivedMessage(data);
