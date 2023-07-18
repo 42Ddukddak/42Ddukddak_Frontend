@@ -8,7 +8,7 @@ export default function PublicChatting() {
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
 
-  const ws = useRef(null); //webSocket을 담는 변수,
+  let ws = useRef(null); //webSocket을 담는 변수,
   //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
 
   const msgBox = chatt.map((item, idx) => (
@@ -19,7 +19,10 @@ export default function PublicChatting() {
   ));
 
   useEffect(() => {
-    webSocketLogin();
+    if (!chkLog) {
+      webSocketLogin();
+      setChkLog(true);
+    }
   });
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function PublicChatting() {
   };
 
   const webSocketLogin = useCallback(() => {
-    ws.current = new WebSocket('ws://localhost:8080');
+    ws.current = new WebSocket('ws://localhost/ws');
 
     ws.current.onmessage = (message) => {
       const dataSet = JSON.parse(message.data);
