@@ -150,7 +150,8 @@ export default function PublicChatting() {
             value={msg}
             onChange={onText}
             onKeyDown={(ev) => {
-              if (ev.key === 'Enter') {
+              if (ev.nativeEvent.isComposing) {
+              } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
                 send();
               }
             }}
