@@ -1,6 +1,94 @@
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Button from './button';
+import { CompatClient, Stomp } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import axios from 'axios';
+
+export interface IChatDetail {
+  type: string;
+  roomId: string;
+  sender: string;
+  message: string;
+}
 
 export default function Chatting() {
+  const useHandleInputMessage = () => {
+    const [inputMessage, setInputMessage] = useState('');
+    const handleInputMessage = (e: ChangeEvent<HTMLInputElement>) => {
+      setInputMessage(e.target.value);
+    };
+    const handleDeleteInputMessage = () => {
+      setInputMessage('');
+    };
+
+    return { inputMessage, handleInputMessage, handleDeleteInputMessage };
+  };
+
+  const client = useRef<CompatClient>();
+  const [chatMessage, setChatMessage] = useState<IChatDetail>();
+  const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
+  const [roomId, setRoomId] = useState('');
+  const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
+
+  useEffect(() => {
+    if (chatMessage) {
+      setChatMessageList([...chatMessageList, chatMessage]);
+    }
+  }, [chatMessage]);
+
+  useEffect(() => {
+    connectHandler('1');
+  });
+
+  const msgBox = chatMessageList.map((item, idx) => (
+    <div key={idx}>
+      [ {item.roomId} ]<br />
+      <span>{item.message}</span>
+    </div>
+  ));
+
+  const sendHandler = () => {
+    console.log('room Id:' + roomId);
+    client.current!.send(
+      '/pub/chat/message',
+      {},
+      JSON.stringify({
+        type: 'TALK',
+        roomId: roomId,
+        // sender: user.name,
+        message: inputMessage,
+      }),
+    );
+    handleDeleteInputMessage();
+  };
+
+  const connectHandler = (id: string) => {
+    client.current = Stomp.over(() => {
+      const sock = new SockJS('http://localhost/stomp/chat');
+      return sock;
+    });
+    setChatMessageList([]);
+    client.current.connect(
+      {
+        // 여기에서 유효성 검증을 위해 header를 넣어줄 수 있음.
+        // ex)
+        // Authorization: token,
+      },
+      () => {
+        // callback 함수 설정, 대부분 여기에 sub 함수 씀
+        client.current?.subscribe(
+          `/sub/chat/room/${id}`,
+          (message) => {
+            setChatMessage(JSON.parse(message.body));
+          },
+          {
+            // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
+          },
+        );
+      },
+    );
+    setRoomId(`${id}`);
+  };
   return (
     <div className="xl:col-span-2 border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 bg-indigo-300">
       {/* 상단 바 */}
@@ -21,7 +109,8 @@ export default function Chatting() {
       </div>
       {/* 채팅 내용 */}
       <div className="space-y-4 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
-        <div className="flex items-start text-gray-800 space-x-2 text-sm">
+        {msgBox}
+        {/* <div className="flex items-start text-gray-800 space-x-2 text-sm">
           <div className="pr-10">
             <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
               <p>
@@ -68,15 +157,21 @@ export default function Chatting() {
               <span>10 am</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* input 박스 */}
       <div className="">
-        <form className="flex relative">
+        <div className="flex relative">
           <input
             type="text"
             placeholder="Message"
             required
+            onKeyDown={(ev) => {
+              if (ev.nativeEvent.isComposing) {
+              } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
+                sendHandler();
+              }
+            }}
             className="overflow-visible peer border rounded-xl w-full placeholder:pl-2 py-2 mt-2 pl-3 pr-[58px] focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
           />
           <div className="absolute right-2 -bottom-[0.5px]">
@@ -88,6 +183,7 @@ export default function Chatting() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
+                  onClick={sendHandler}
                   className="w-6 h-6 peer-invalid:bg-gray-800 my-1"
                 >
                   <path
@@ -99,8 +195,8 @@ export default function Chatting() {
               }
             />
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
-};
+}

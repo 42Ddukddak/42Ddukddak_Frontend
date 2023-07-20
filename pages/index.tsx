@@ -37,8 +37,8 @@ export default function Home() {
         {/* <MakeDdukddak /> */}
         <Chatting />
         {/* 전체 채팅 or 전체 뚝딱 */}
-        <PublicChatting />
-        {/* <WholeDdukddak /> */}
+        {/* <PublicChatting /> */}
+        <WholeDdukddak />
       </div>
     </Layout>
   );
