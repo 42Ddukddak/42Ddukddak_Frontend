@@ -28,7 +28,7 @@ export default function Chatting() {
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
   const [roomId, setRoomId] = useState('');
-  // const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
+  const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
 
   useEffect(() => {
     if (chatMessage) {
@@ -47,10 +47,6 @@ export default function Chatting() {
     </div>
   ));
 
-  const onText = (event) => {
-    setChatMessage(event.target.value);
-  };
-
   const sendHandler = () => {
     console.log('room Id:' + roomId);
     client.current?.send(
@@ -63,13 +59,17 @@ export default function Chatting() {
         message: chatMessage,
       }),
     );
-    setChatMessage({ message: '' });
+    handleDeleteInputMessage();
   };
 
   const connectHandler = (id: string) => {
     client.current = Stomp.over(() => {
-      const sock = new SockJS('http://localhost/stomp/chat');
-      return sock;
+      try {
+        const sock = new SockJS('http://localhost/stomp/chat');
+        return sock;
+      } catch (error) {
+        return console.log(error);
+      }
     });
     setChatMessageList([]);
     client.current.connect(
@@ -92,7 +92,7 @@ export default function Chatting() {
       },
     );
     setRoomId(`${id}`);
-    client.current?.send(`/pub/chat/enter`, {}, JSON.stringify({ roomId: roomId }));
+    // client.current?.send(`/pub/chat/enter`, {}, JSON.stringify({ roomId: roomId }));
   };
 
   // const connectHandler = (id: string) => {
@@ -187,7 +187,7 @@ export default function Chatting() {
             type="text"
             placeholder="Message"
             required
-            onChange={onText}
+            onChange={handleInputMessage}
             onKeyDown={(ev) => {
               if (ev.nativeEvent.isComposing) {
               } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
