@@ -38,7 +38,7 @@ export default function Chatting() {
 
   useEffect(() => {
     connectHandler('1');
-  });
+  }, []);
 
   const msgBox = chatMessageList.map((item, idx) => (
     <div key={idx}>
@@ -80,15 +80,19 @@ export default function Chatting() {
       },
       () => {
         // callback 함수 설정, 대부분 여기에 sub 함수 씀
-        client.current?.subscribe(
-          `/sub/chat/room/${id}`,
-          (message) => {
-            setChatMessage(JSON.parse(message.body));
-          },
-          {
-            // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
-          },
-        );
+        try {
+          client.current?.subscribe(
+            `/sub/chat/room/${id}`,
+            (message) => {
+              setChatMessage(JSON.parse(message.body));
+            },
+            {
+              // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
+            },
+          );
+        } catch (error) {
+          return console.log(error);
+        }
       },
     );
     setRoomId(`${id}`);
