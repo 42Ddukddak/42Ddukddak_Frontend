@@ -1,29 +1,11 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from './button';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import axios from 'axios';
-
-export interface IChatDetail {
-  type?: string;
-  roomId?: string;
-  sender?: string;
-  message?: string;
-}
+import useHandleInputMessage from '@/libs/inputMessage';
+import { IChatDetail } from '@/interface/ChatDetail';
 
 export default function Chatting() {
-  const useHandleInputMessage = () => {
-    const [inputMessage, setInputMessage] = useState('');
-    const handleInputMessage = (e: ChangeEvent<HTMLInputElement>) => {
-      setInputMessage(e.target.value);
-    };
-    const handleDeleteInputMessage = () => {
-      setInputMessage('');
-    };
-
-    return { inputMessage, handleInputMessage, handleDeleteInputMessage };
-  };
-
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
@@ -41,9 +23,16 @@ export default function Chatting() {
   }, []);
 
   const msgBox = chatMessageList.map((item, idx) => (
-    <div key={idx}>
-      [ {item.roomId} ]<br />
-      <span>{item.message}</span>
+    <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
+      <div className="pr-10">
+        <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
+          <p>{item.message}</p>
+        </div>
+        <div className="flex justify-between px-2 text-xs text-gray-600">
+          <span>10 am</span>
+          <span>신고</span>
+        </div>
+      </div>
     </div>
   ));
 
@@ -97,24 +86,7 @@ export default function Chatting() {
       },
     );
     setRoomId(`${id}`);
-    // client.current?.send(`/pub/chat/enter`, {}, JSON.stringify({ roomId: roomId }));
   };
-
-  // const connectHandler = (id: string) => {
-  //   let sockjs = new SockJS('/stomp/chat');
-  //   let stomp = Stomp.over(sockjs);
-  //   stomp.connect({}, () => {
-  //     console.log('stomp connected');
-
-  //     stomp.subscribe(`/sub/chat/room/${id}`, (chat) => {
-  //       var content = JSON.parse(chat.body);
-
-  //       var message = content.message;
-  //       var str = '';
-  //     });
-  //   });
-  //   stomp.send(`/pub/chat/${id}`, {}, JSON.stringify({ roomId: id }));
-  // };
   return (
     <div className="xl:col-span-2 border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 bg-indigo-300">
       {/* 상단 바 */}

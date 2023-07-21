@@ -1,104 +1,101 @@
-import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef, useCallback } from 'react';
+import { useEffect, useState, KeyboardEvent, useRef, useCallback } from 'react';
 import Button from './button';
 import RightBlockHeader from './rightBlockHeader';
+import useHandleInputMessage from '@/libs/inputMessage';
+import { IChatDetail } from '@/interface/ChatDetail';
+import { CompatClient, Stomp } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 export default function PublicChatting() {
-  const [msg, setMsg] = useState('');
-  const [chatt, setChatt] = useState([]);
+  const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
+  const [chatMessage, setChatMessage] = useState<IChatDetail>();
+  const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
   const [chkLog, setChkLog] = useState(false);
-  const [socketData, setSocketData] = useState();
+  const [roomId, setRoomId] = useState('');
+  const client = useRef<CompatClient>();
 
-  let ws = useRef(null); //webSocket을 담는 변수,
-  //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
-
-  const msgBox = chatt.map((item, idx) => (
-    <div key={idx}>
-      [ {item.date} ]<br />
-      <span>{item.msg}</span>
+  const msgBox = chatMessageList.map((item, idx) => (
+    <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-5 h-5 mt-2"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+      <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+        <p>{item.message}</p>
+      </div>
     </div>
   ));
 
   useEffect(() => {
     if (!chkLog) {
-      webSocketLogin();
+      connectHandler('1');
       setChkLog(true);
     }
   });
 
-  useEffect(() => {
-    if (socketData !== undefined) {
-      const tempData = chatt.concat(socketData);
-      console.log(tempData);
-      setChatt(tempData);
-    }
-  }, [socketData]);
-
-  //webSocket
-  //webSocket
-  //webSocket
-  //webSocket
-  //webSocket
-  //webSocket
-  const onText = (event) => {
-    setMsg(event.target.value);
+  const sendHandler = () => {
+    console.log('room Id:' + roomId);
+    console.log('message:' + inputMessage);
+    client.current?.send(
+      '/pub/chat/message/public',
+      {},
+      JSON.stringify({
+        // type: 'TALK',
+        roomId: roomId,
+        // sender: user.name,
+        message: inputMessage,
+      }),
+    );
+    handleDeleteInputMessage();
   };
 
-  const webSocketLogin = useCallback(() => {
-    ws.current = new WebSocket('ws://localhost/ws');
-
-    ws.current.onmessage = (message) => {
-      const dataSet = JSON.parse(message.data);
-      setSocketData(dataSet);
-    };
-  }, []);
-
-  const send = useCallback(() => {
-    if (msg !== '') {
-      const data = {
-        msg,
-        date: new Date().toLocaleString(),
-      }; //전송 데이터(JSON)
-
-      const temp = JSON.stringify(data);
-
-      if (ws.current.readyState === 0) {
-        //readyState는 웹 소켓 연결 상태를 나타냄
-        ws.current.onopen = () => {
-          //webSocket이 맺어지고 난 후, 실행
-          console.log(ws.current.readyState);
-          ws.current.send(temp);
-        };
-      } else {
-        ws.current.send(temp);
-      }
-    } else {
-      alert('메세지를 입력하세요.');
-      return;
+  useEffect(() => {
+    if (chatMessage) {
+      setChatMessageList([...chatMessageList, chatMessage]);
     }
-    setMsg('');
-  }, [msg]);
-  // useEffect(() => {
-  //   socket.on('message', (data) => {
-  //     setReceivedMessage(data);
-  //     console.log('Recevied message: ', data);
-  //   });
-  // }, []);
+  }, [chatMessage]);
 
-  // const sendMessage = () => {
-  //   // socket.emit('message', message);
-  //   setMessage('');
-  // };
-
-  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setMessage(event.target.value);
-  // };
-
-  // const handleEnter = (event: KeyboardEvent<HTMLInputElement>) => {
-  //   if (event.key === 'Enter') {
-  //     sendMessage();
-  //   }
-  // };
-
+  const connectHandler = (id: string) => {
+    client.current = Stomp.over(() => {
+      try {
+        const sock = new SockJS('http://localhost/stomp/chat');
+        return sock;
+      } catch (error) {
+        return console.log(error);
+      }
+    });
+    setChatMessageList([]);
+    client.current.connect(
+      {
+        // 여기에서 유효성 검증을 위해 header를 넣어줄 수 있음.
+        // ex)
+        // Authorization: token,
+      },
+      () => {
+        // callback 함수 설정, 대부분 여기에 sub 함수 씀
+        try {
+          client.current?.subscribe(
+            `/sub/chat/room/${id}`,
+            (message) => {
+              setChatMessage(JSON.parse(message.body));
+            },
+            {
+              // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
+            },
+          );
+        } catch (error) {
+          return console.log(error);
+        }
+      },
+    );
+    setRoomId(`${id}`);
+  };
   return (
     <div className="flex flex-col border-2 rounded-xl py-4 px-5 shadow-2xl max-h-[50vh] xl:min-h-[80vh]">
       <RightBlockHeader text={'전채 채팅'} />
@@ -147,12 +144,12 @@ export default function PublicChatting() {
             type="text"
             placeholder="안녕하세요^^ 인사해볼까요?"
             required
-            value={msg}
-            onChange={onText}
+            value={inputMessage}
+            onChange={handleInputMessage}
             onKeyDown={(ev) => {
               if (ev.nativeEvent.isComposing) {
               } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
-                send();
+                sendHandler();
               }
             }}
             className="overflow-visible peer border rounded-xl w-full placeholder:pl-2 py-2 mt-2 pl-3 pr-[58px] focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
@@ -166,7 +163,7 @@ export default function PublicChatting() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  onClick={send}
+                  onClick={sendHandler}
                   className="w-6 h-6 peer-invalid:bg-gray-800 my-1"
                 >
                   <path
