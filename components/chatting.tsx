@@ -62,32 +62,47 @@ export default function Chatting() {
     handleDeleteInputMessage();
   };
 
+  // const connectHandler = (id: string) => {
+  //   client.current = Stomp.over(() => {
+  //     const sock = new SockJS('http://localhost/stomp/chat');
+  //     return sock;
+  //   });
+  //   setChatMessageList([]);
+  //   client.current.connect(
+  //     {
+  //       // 여기에서 유효성 검증을 위해 header를 넣어줄 수 있음.
+  //       // ex)
+  //       // Authorization: token,
+  //     },
+  //     () => {
+  //       // callback 함수 설정, 대부분 여기에 sub 함수 씀
+  //       client.current?.subscribe(
+  //         `/sub/chat/room/${id}`,
+  //         (message) => {
+  //           setChatMessage(JSON.parse(message.body));
+  //         },
+  //         {
+  //           // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
+  //         },
+  //       );
+  //     },
+  //   );
+  //   setRoomId(`${id}`);
+  // };
   const connectHandler = (id: string) => {
-    client.current = Stomp.over(() => {
-      const sock = new SockJS('http://localhost/stomp/chat');
-      return sock;
+    let sockjs = new SockJS('/stomp/chat');
+    let stomp = Stomp.over(sockjs);
+    stomp.connect(() => {
+      console.log('stomp connected');
+
+      stomp.subscribe(`/sub/chat/room/${id}`, (chat) => {
+        var content = JSON.parse(chat.body);
+
+        var message = content.message;
+        var str = '';
+      });
     });
-    setChatMessageList([]);
-    client.current.connect(
-      {
-        // 여기에서 유효성 검증을 위해 header를 넣어줄 수 있음.
-        // ex)
-        // Authorization: token,
-      },
-      () => {
-        // callback 함수 설정, 대부분 여기에 sub 함수 씀
-        client.current?.subscribe(
-          `/sub/chat/room/${id}`,
-          (message) => {
-            setChatMessage(JSON.parse(message.body));
-          },
-          {
-            // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
-          },
-        );
-      },
-    );
-    setRoomId(`${id}`);
+    stomp.send(`/pub/chat/${id}`, {}, JSON.stringify({ roomId: id }));
   };
   return (
     <div className="xl:col-span-2 border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 bg-indigo-300">
