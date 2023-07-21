@@ -92,7 +92,7 @@ export default function Chatting() {
   const connectHandler = (id: string) => {
     let sockjs = new SockJS('/stomp/chat');
     let stomp = Stomp.over(sockjs);
-    stomp.connect(() => {
+    stomp.connect({}, () => {
       console.log('stomp connected');
 
       stomp.subscribe(`/sub/chat/room/${id}`, (chat) => {
