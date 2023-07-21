@@ -49,14 +49,15 @@ export default function Chatting() {
 
   const sendHandler = () => {
     console.log('room Id:' + roomId);
+    console.log('message:' + inputMessage);
     client.current?.send(
       '/pub/chat/message',
       {},
       JSON.stringify({
-        type: 'TALK',
+        // type: 'TALK',
         roomId: roomId,
         // sender: user.name,
-        message: chatMessage,
+        message: inputMessage,
       }),
     );
     handleDeleteInputMessage();
@@ -191,6 +192,7 @@ export default function Chatting() {
             type="text"
             placeholder="Message"
             required
+            value={inputMessage}
             onChange={handleInputMessage}
             onKeyDown={(ev) => {
               if (ev.nativeEvent.isComposing) {
