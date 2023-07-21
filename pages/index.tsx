@@ -16,7 +16,6 @@ function getCookieValue(key: string) {
       return cookie.substring(key.length + 1);
     }
   }
-
   return null;
 }
 

@@ -1,11 +1,19 @@
 import { AppProps } from 'next/app';
 import '../styles/globals.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Loading from './loading';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const [loading, setLoading] = useState(false);
   const route = useRouter();
+
+  if (loading) {
+    route.push('/loading');
+  }
+
   useEffect(() => {
     const url = new URL(window.location.href);
 
@@ -25,6 +33,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
     if (url.pathname === '/auth/callback') {
       postData();
+      setLoading(true);
     }
   }, []);
   return (
