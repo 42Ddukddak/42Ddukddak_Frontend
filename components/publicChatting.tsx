@@ -13,6 +13,11 @@ export default function PublicChatting() {
   const [chkLog, setChkLog] = useState(false);
   const [roomId, setRoomId] = useState('');
   const client = useRef<CompatClient>();
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessageList]);
 
   const msgBox = chatMessageList.map((item, idx) => (
     <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
@@ -137,6 +142,7 @@ export default function PublicChatting() {
           </div>
         </div> */}
       </div>
+      <div ref={messageEndRef}></div>
       {/* 인풋 박스  */}
       <div className="">
         <div className="flex relative">

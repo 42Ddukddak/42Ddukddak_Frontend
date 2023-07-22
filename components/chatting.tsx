@@ -11,6 +11,11 @@ export default function Chatting() {
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
   const [roomId, setRoomId] = useState('');
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessageList]);
 
   useEffect(() => {
     if (chatMessage) {
@@ -88,7 +93,7 @@ export default function Chatting() {
     setRoomId(`${id}`);
   };
   return (
-    <div className="xl:col-span-2 border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 bg-indigo-300">
+    <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
@@ -157,6 +162,7 @@ export default function Chatting() {
           </div>
         </div> */}
       </div>
+      <div ref={messageEndRef}></div>
       {/* input 박스 */}
       <div className="">
         <div className="flex relative">
