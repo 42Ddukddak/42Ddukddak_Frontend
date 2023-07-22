@@ -38,11 +38,11 @@ const Enter: NextPage = () => {
   }, []);
 
   return (
-    <div className="mt-16 px-16 flex flex-col justify-center items-center space-y-5">
+    <div>
       {loading ? (
         <Loading />
       ) : (
-        <div>
+        <div className='"mt-16 px-16 flex flex-col justify-center items-center space-y-5"'>
           <Image src={tempPic} alt="mainIMG" placeholder="blur" />
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-dashed border-purple-300 my-4 pb-3 text-center">
