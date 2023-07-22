@@ -8,7 +8,7 @@ const useHandleInputMessage = () => {
     const checkValidate = messageValidate(temp);
     console.log(checkValidate);
     if (checkValidate.includes('*')) {
-      alert('욕설 사용하면 되요~?? 안되요~??');
+      alert('욕설 사용하면 돼요~?? 안돼요~??');
     } else {
       setInputMessage(e.target.value);
     }
