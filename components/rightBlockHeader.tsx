@@ -1,9 +1,18 @@
+import { AppContext } from '@/pages/index';
+import { useContext } from 'react';
+
 interface HeaderProps {
   text: string;
   isSearch?: boolean;
 }
 
 export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
+  const [info, setInfo] = useContext(AppContext);
+  const handleClick = () => {
+    setInfo({
+      context: !info.context,
+    });
+  };
   return (
     <div className="flex justify-between">
       <div className="flex space-x-2 m-1">
@@ -27,7 +36,7 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
           </div>
         ) : null}
       </div>
-      <div className="m-1">
+      <div onClick={handleClick} className="m-1">
         <div className="flex items-center justify-center rounded-full cursor-pointer w-8 h-8 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"

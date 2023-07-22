@@ -1,6 +1,6 @@
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
 import Chatting from '@/components/chatting';
 import PublicChatting from '@/components/publicChatting';
@@ -19,7 +19,17 @@ function getCookieValue(key: string) {
   return null;
 }
 
+type IContext = {
+  context?: boolean;
+  ddukddak?: boolean;
+};
+
+type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>>];
+
+export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
 export default function Home() {
+  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
+
   const route = useRouter();
 
   useEffect(() => {
@@ -32,12 +42,12 @@ export default function Home() {
   return (
     <Layout logo>
       <div className="grid gap-10 py-24 px-8 xl:grid-cols-3 xl:place-content-center">
-        {/* 뚝딱 만들기 or 채팅 방 */}
-        {/* <MakeDdukddak /> */}
-        <Chatting />
-        {/* 전체 채팅 or 전체 뚝딱 */}
-        <PublicChatting />
-        {/* <WholeDdukddak /> */}
+        <AppContext.Provider value={[info, setInfo]}>
+          {/* 뚝딱 만들기 or 채팅 방 */}
+          {info.ddukddak ? <Chatting /> : <MakeDdukddak />}
+          {/* 전체 채팅 or 전체 뚝딱 */}
+          {info.context ? <PublicChatting /> : <WholeDdukddak />}
+        </AppContext.Provider>
       </div>
     </Layout>
   );
