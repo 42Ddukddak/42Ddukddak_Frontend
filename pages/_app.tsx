@@ -3,16 +3,11 @@ import '../styles/globals.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Loading from './loading';
+import Loading from '../components/loading';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false);
   const route = useRouter();
-
-  if (loading) {
-    route.push('/loading');
-  }
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -24,7 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           .post('/api/auth/42login', null, {
             params: { code: code },
           })
-          .then((res) => console.log(res));
+          .then(() => setLoading(false));
         route.push('/');
       } catch (error) {
         console.error(error);
@@ -38,6 +33,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <div>
+      {loading ? <Loading /> : null}
       <Component {...pageProps} />
     </div>
   );

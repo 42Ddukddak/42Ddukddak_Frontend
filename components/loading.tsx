@@ -4,7 +4,7 @@ import tempPic from '../public/Ddukddak_logo.png';
 export default function Loading() {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
-      <Image src={tempPic} alt="mainIMG" placeholder="blur" className="w-auto h-auto mb-40" />
+      <Image src={tempPic} alt="mainIMG" placeholder="blur" className="w-auto h-auto pb-[40px]" />
       <div></div>
       <div className="text-[100px] animate-bounce">👀</div>
       <div className="text-[100px] animate-bounce">👃</div>
