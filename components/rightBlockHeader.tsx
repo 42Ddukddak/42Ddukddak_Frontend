@@ -10,6 +10,7 @@ export default function RightBlockHeader({ text, isSearch }: HeaderProps) {
   const [info, setInfo] = useContext(AppContext);
   const handleClick = () => {
     setInfo({
+      ddukddak: info.ddukddak,
       context: !info.context,
     });
   };

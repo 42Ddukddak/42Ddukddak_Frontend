@@ -28,7 +28,7 @@ type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>
 
 export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
 export default function Home() {
-  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
+  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: true });
 
   const route = useRouter();
 
@@ -41,7 +41,7 @@ export default function Home() {
 
   return (
     <Layout logo>
-      <div className="grid gap-10 py-24 px-8 xl:grid-cols-3 xl:place-content-center">
+      <div className="grid gap-10 py-24 px-8 xl:grid-cols-3 h-screen">
         <AppContext.Provider value={[info, setInfo]}>
           {/* 뚝딱 만들기 or 채팅 방 */}
           {info.ddukddak ? <Chatting /> : <MakeDdukddak />}
