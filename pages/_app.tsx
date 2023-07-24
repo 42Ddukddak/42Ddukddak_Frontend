@@ -3,7 +3,7 @@ import '../styles/globals.css';
 import React, { Suspense, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import Loading from '../components/loading';
+import Loading from './loading';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const route = useRouter();
