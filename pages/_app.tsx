@@ -11,11 +11,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const start = () => {
-      // NProgress.start();
       setLoading(true);
     };
     const end = () => {
-      // NProgress.done();
       setLoading(false);
     };
 
@@ -36,10 +34,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const postData = async () => {
       const code = url.searchParams.get('code');
       try {
-        await axios.post('/api/auth/42login', null, {
-          params: { code: code },
-        });
-        route.push('/');
+        await axios
+          .post('/api/auth/42login', null, {
+            params: { code: code },
+          })
+          .then(() => setLoading(false))
+          .then(() => route.push('/'));
       } catch (error) {
         console.error(error);
       }
@@ -47,6 +47,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
     if (url.pathname === '/auth/callback') {
       postData();
+      setLoading(true);
     }
   }, []);
   return loading ? <Loading /> : <Component {...pageProps} />;
