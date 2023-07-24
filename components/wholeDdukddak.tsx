@@ -6,10 +6,7 @@ export default function WholeDdukddak() {
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <div
-            key={i}
-            className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 rounded-full cursor-pointer"
-          >
+          <div key={i} className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer">
             <h2 className="self-center text-lg font-semibold w-3/5">
               밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러
               가실분~!

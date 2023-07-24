@@ -7,6 +7,7 @@ import { CompatClient, Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
+import { formatTime } from '@/libs/formatTime';
 
 export default function PublicChatting() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
@@ -43,7 +44,7 @@ export default function PublicChatting() {
       <div className="px-2 py-2  border border-gray-300 rounded-md">
         <p>{item.message}</p>
       </div>
-      <span>{item.time}</span>
+      <span>{formatTime(item.time)}</span>
     </div>
   ));
 

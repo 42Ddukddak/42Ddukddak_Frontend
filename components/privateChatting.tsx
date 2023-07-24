@@ -6,6 +6,7 @@ import useHandleInputMessage from '@/libs/inputMessage';
 import { IChatDetail } from '@/interface/ChatDetail';
 import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
+import { formatTime } from '@/libs/formatTime';
 
 export default function PrivateChatting() {
   const client = useRef<CompatClient>();
@@ -42,7 +43,7 @@ export default function PrivateChatting() {
           <p>{item.message}</p>
         </div>
         <div className="flex justify-between px-2 text-xs text-gray-600">
-          <span>10 am</span>
+          <span>{formatTime(item.time)}</span>
           <span>신고</span>
         </div>
       </div>
