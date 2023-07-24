@@ -44,16 +44,20 @@ export default function PrivateChatting() {
   const sendHandler = () => {
     console.log('room Id:' + roomId);
     console.log('message:' + inputMessage);
-    client.current?.send(
-      '/pub/chat/message',
-      {},
-      JSON.stringify({
-        // type: 'TALK',
-        roomId: roomId,
-        // sender: user.name,
-        message: inputMessage,
-      }),
-    );
+    try {
+      client.current?.send(
+        '/pub/chat/message/private',
+        {},
+        JSON.stringify({
+          // type: 'TALK',
+          roomId: roomId,
+          // sender: user.name,
+          message: inputMessage,
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+    }
     handleDeleteInputMessage();
   };
 
@@ -161,8 +165,8 @@ export default function PrivateChatting() {
             </div>
           </div>
         </div> */}
+        <div ref={messageEndRef}></div>
       </div>
-      <div ref={messageEndRef}></div>
       {/* input 박스 */}
       <div className="">
         <div className="flex relative">

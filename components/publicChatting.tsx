@@ -145,8 +145,8 @@ export default function PublicChatting() {
             <p>안녕하세요ㅋㅋ 시시발발로로마마</p>
           </div>
         </div> */}
+        <div ref={messageEndRef}></div>
       </div>
-      <div ref={messageEndRef}></div>
       {/* 인풋 박스  */}
       <div className="">
         <div className="flex relative">
