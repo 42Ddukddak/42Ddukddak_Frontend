@@ -18,6 +18,7 @@ export default function PublicChatting() {
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    console.log(chatMessageList);
   }, [chatMessageList]);
 
   const msgBox = chatMessageList.map((item, idx) => (
