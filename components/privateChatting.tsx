@@ -5,6 +5,7 @@ import SockJS from 'sockjs-client';
 import useHandleInputMessage from '@/libs/inputMessage';
 import { IChatDetail } from '@/interface/ChatDetail';
 import getCookieValue from '@/libs/getCookieValue';
+import { cls } from '@/libs/utils';
 
 export default function PrivateChatting() {
   const client = useRef<CompatClient>();
@@ -29,7 +30,13 @@ export default function PrivateChatting() {
   }, []);
 
   const msgBox = chatMessageList.map((item, idx) => (
-    <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
+    <div
+      key={idx}
+      className={cls(
+        item.sender === getCookieValue('intraId') ? 'flex-row-reverse' : '',
+        'flex items-start text-gray-800 space-x-2 text-sm',
+      )}
+    >
       <div className="pr-10">
         <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
           <p>{item.message}</p>
@@ -116,7 +123,7 @@ export default function PrivateChatting() {
         </div>
       </div>
       {/* 채팅 내용 */}
-      <div className="space-y-4 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
+      <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
         {msgBox}
         {/* <div className="flex items-start text-gray-800 space-x-2 text-sm">
           <div className="pr-10">
