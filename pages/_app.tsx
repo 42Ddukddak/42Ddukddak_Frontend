@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import '../styles/globals.css';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Loading from '../components/loading';
@@ -34,7 +34,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
       {/* {loading ? <Loading /> : null} */}
-      <Component {...pageProps} />
+      <Suspense fallback={<Loading />}>
+        <Component {...pageProps} />
+      </Suspense>
     </div>
   );
 }
