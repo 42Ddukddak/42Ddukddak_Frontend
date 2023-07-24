@@ -5,6 +5,7 @@ import useHandleInputMessage from '@/libs/inputMessage';
 import { IChatDetail } from '@/interface/ChatDetail';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import getCookieValue from '@/libs/getCookieValue';
 
 export default function PublicChatting() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
@@ -54,7 +55,7 @@ export default function PublicChatting() {
         JSON.stringify({
           // type: 'TALK',
           roomId: roomId,
-          // sender: user.name,
+          sender: getCookieValue('intraId'),
           message: inputMessage,
         }),
       );
