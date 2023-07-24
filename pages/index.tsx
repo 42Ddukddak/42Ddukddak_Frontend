@@ -5,19 +5,7 @@ import MakeDdukddak from '@/components/makeDdukddak';
 import PrivateChatting from '@/components/privateChatting';
 import PublicChatting from '@/components/publicChatting';
 import WholeDdukddak from '@/components/wholeDdukddak';
-
-function getCookieValue(key: string) {
-  const cookies = document.cookie.split(';');
-
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-
-    if (cookie.startsWith(`${key}=`)) {
-      return cookie.substring(key.length + 1);
-    }
-  }
-  return null;
-}
+import getCookieValue from '@/libs/getCookieValue';
 
 type IContext = {
   context?: boolean;
@@ -33,7 +21,7 @@ export default function Home() {
   const route = useRouter();
 
   useEffect(() => {
-    const value = getCookieValue('key');
+    const value = getCookieValue('intraId');
     if (!value) {
       // route.push('/enter');
     }

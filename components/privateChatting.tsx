@@ -4,6 +4,7 @@ import { CompatClient, Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import useHandleInputMessage from '@/libs/inputMessage';
 import { IChatDetail } from '@/interface/ChatDetail';
+import getCookieValue from '@/libs/getCookieValue';
 
 export default function PrivateChatting() {
   const client = useRef<CompatClient>();
@@ -51,7 +52,7 @@ export default function PrivateChatting() {
         JSON.stringify({
           // type: 'TALK',
           roomId: roomId,
-          // sender: user.name,
+          sender: getCookieValue('intraId'),
           message: inputMessage,
         }),
       );
