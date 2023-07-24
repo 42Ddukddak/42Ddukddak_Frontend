@@ -19,11 +19,11 @@ export default function Layout({ logo, children }: LayoutProps) {
       <div
         className={cls(
           !logo ? 'justify-center' : '',
-          'bg-white text-lg  font-medium fixed text-gray-800 top-8 left-8  flex items-center rounded-full',
+          'bg-white text-lg  font-medium fixed text-gray-800 top-8 left-8  flex items-center rounded-full ',
         )}
       >
         {logo ? (
-          <button type="button" onClick={onClick}>
+          <button type="button" onClick={onClick} className="focus:outline-none">
             <Image
               src={logoPic}
               alt="logo"

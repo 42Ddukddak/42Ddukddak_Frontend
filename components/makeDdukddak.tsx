@@ -1,15 +1,30 @@
+import useHandleInputMessage from '@/libs/inputMessage';
 import Button from './button';
 
 export default function MakeDdukddak() {
+  const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
+
+  const makeRoom = () => {
+    console.log(inputMessage);
+    handleDeleteInputMessage();
+  };
   return (
-    <div className="flex justify-center items-center xl:col-span-2 h-1/2">
+    <div className="flex justify-center items-center xl:col-span-2">
       <div className="flex flex-col justify-center items-center">
         {/* 뚝딱 만들기  */}
-        <form className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">
+        <div className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">
           <h2 className="font-semibold text-3xl text-center text-white mt-10">어떤 뚝딱을 만들고 싶나요?</h2>
           <input
             type="text"
             required
+            value={inputMessage}
+            onChange={handleInputMessage}
+            onKeyDown={(ev) => {
+              if (ev.nativeEvent.isComposing) {
+              } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
+                makeRoom();
+              }
+            }}
             placeholder="방 제목을 입력해주세요."
             className="border py-3 rounded-full peer placeholder:text-center shadow-sm px-16 my-hover"
           />
@@ -25,7 +40,7 @@ export default function MakeDdukddak() {
               }
             />
           </div>
-        </form>
+        </div>
         <span className="text-gray-500 text-sm">뚝딱은 모임, 예약, 파티, 약속, 집합 등을 통칭합니다.</span>
       </div>
     </div>

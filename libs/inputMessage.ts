@@ -6,7 +6,6 @@ const useHandleInputMessage = () => {
   const handleInputMessage = (e: ChangeEvent<HTMLInputElement>) => {
     const temp = e.target.value.trim().replace(' ', '');
     const checkValidate = messageValidate(temp);
-    console.log(checkValidate);
     if (checkValidate.includes('*')) {
       alert('욕설 사용하면 돼요~?? 안돼요~??');
     } else {
