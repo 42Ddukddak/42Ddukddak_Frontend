@@ -2,11 +2,33 @@ import { AppProps } from 'next/app';
 import '../styles/globals.css';
 import React, { Suspense, useEffect, useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
-import Loading from './loading';
+import { Router, useRouter } from 'next/router';
+import Loading from '@/components/loading';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const route = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const start = () => {
+      // NProgress.start();
+      setLoading(true);
+    };
+    const end = () => {
+      // NProgress.done();
+      setLoading(false);
+    };
+
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
+
+    return () => {
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
+    };
+  }, []);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -27,11 +49,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       postData();
     }
   }, []);
-  return (
-    <div>
-      <Suspense fallback={<Loading />}>
-        <Component {...pageProps} />
-      </Suspense>
-    </div>
-  );
+  return loading ? <Loading /> : <Component {...pageProps} />;
 }
