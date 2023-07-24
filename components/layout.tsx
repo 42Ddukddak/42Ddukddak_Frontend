@@ -9,10 +9,16 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
+function deleteCookie(cookieName: string) {
+  // 현재 시간보다 이전 날짜로 만료일을 설정하여 쿠키를 삭제합니다.
+  document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
 export default function Layout({ logo, children }: LayoutProps) {
   const router = useRouter();
   const onClick = () => {
-    router.back();
+    // router.back();
+    deleteCookie('intraId');
   };
   return (
     <div>
