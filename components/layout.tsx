@@ -19,6 +19,7 @@ export default function Layout({ logo, children }: LayoutProps) {
   const onClick = () => {
     // router.back();
     deleteCookie('intraId');
+    router.reload();
   };
   return (
     <div>
