@@ -5,7 +5,7 @@ import SockJS from 'sockjs-client';
 import useHandleInputMessage from '@/libs/inputMessage';
 import { IChatDetail } from '@/interface/ChatDetail';
 
-export default function Chatting() {
+export default function PrivateChatting() {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);

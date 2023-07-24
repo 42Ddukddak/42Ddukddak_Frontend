@@ -39,7 +39,7 @@ export default function PublicChatting() {
 
   useEffect(() => {
     if (!chkLog) {
-      connectHandler('1');
+      connectHandler('999');
       setChkLog(true);
     }
   });
@@ -47,16 +47,20 @@ export default function PublicChatting() {
   const sendHandler = () => {
     console.log('room Id:' + roomId);
     console.log('message:' + inputMessage);
-    client.current?.send(
-      '/pub/chat/message/public',
-      {},
-      JSON.stringify({
-        // type: 'TALK',
-        roomId: roomId,
-        // sender: user.name,
-        message: inputMessage,
-      }),
-    );
+    try {
+      client.current?.send(
+        '/pub/chat/message/public',
+        {},
+        JSON.stringify({
+          // type: 'TALK',
+          roomId: roomId,
+          // sender: user.name,
+          message: inputMessage,
+        }),
+      );
+    } catch (error) {
+      console.log(error);
+    }
     handleDeleteInputMessage();
   };
 
@@ -86,7 +90,7 @@ export default function PublicChatting() {
         // callback 함수 설정, 대부분 여기에 sub 함수 씀
         try {
           client.current?.subscribe(
-            `/sub/chat/room/${id}`,
+            `/sub/chat/public/${id}`,
             (message) => {
               setChatMessage(JSON.parse(message.body));
             },

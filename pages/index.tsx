@@ -2,7 +2,7 @@ import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 import { createContext, useEffect, useState } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
-import Chatting from '@/components/chatting';
+import PrivateChatting from '@/components/privateChatting';
 import PublicChatting from '@/components/publicChatting';
 import WholeDdukddak from '@/components/wholeDdukddak';
 
@@ -28,7 +28,7 @@ type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>
 
 export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
 export default function Home() {
-  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
+  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: true });
 
   const route = useRouter();
 
@@ -44,7 +44,7 @@ export default function Home() {
       <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen">
         <AppContext.Provider value={[info, setInfo]}>
           {/* 뚝딱 만들기 or 채팅 방 */}
-          {info.ddukddak ? <Chatting /> : <MakeDdukddak />}
+          {info.ddukddak ? <PrivateChatting /> : <MakeDdukddak />}
           {/* 전체 채팅 or 전체 뚝딱 */}
           {info.context ? <PublicChatting /> : <WholeDdukddak />}
         </AppContext.Provider>
