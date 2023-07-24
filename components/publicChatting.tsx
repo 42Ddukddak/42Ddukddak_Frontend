@@ -18,26 +18,44 @@ export default function PublicChatting() {
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    console.log(chatMessageList);
   }, [chatMessageList]);
 
-  const msgBox = chatMessageList.map((item, idx) => (
-    <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-5 h-5 mt-2"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-      </svg>
-      <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
-        <p>{item.message}</p>
+  const msgBox = chatMessageList.map((item, idx) =>
+    item.sender === getCookieValue('intraId') ? (
+      <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-5 h-5 mt-2"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+        <div className=" w-4/5 px-2 py-2  border border-gray-300 rounded-md">
+          <p>{item.message}</p>
+        </div>
       </div>
-    </div>
-  ));
+    ) : (
+      <div key={idx} className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-5 h-5 mt-2"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+
+        <div className=" px-2 py-2  border border-gray-300 rounded-md">
+          <p>{item.message}</p>
+        </div>
+      </div>
+    ),
+  );
 
   useEffect(() => {
     if (!chkLog) {
