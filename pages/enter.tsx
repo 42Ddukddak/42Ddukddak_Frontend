@@ -2,38 +2,12 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import tempPic from '../public/Ddukddak_logo.png';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Loading from '@/components/loading';
 
 const Enter: NextPage = () => {
   const route = useRouter();
-  // const [loading, setLoading] = useState(false);
   const onClick = () => {
     route.push('/api/42login');
   };
-
-  useEffect(() => {
-    const url = new URL(window.location.href);
-
-    const postData = async () => {
-      const code = url.searchParams.get('code');
-      try {
-        await axios.post('/api/auth/42login', null, {
-          params: { code: code },
-        });
-        // .then(() => setLoading(false))
-        route.push('/');
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    if (url.pathname === '/auth/callback') {
-      postData();
-      // setLoading(true);
-    }
-  }, []);
 
   return (
     <div>
