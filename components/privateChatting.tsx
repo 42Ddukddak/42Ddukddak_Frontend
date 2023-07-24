@@ -50,14 +50,11 @@ export default function PrivateChatting() {
   ));
 
   const sendHandler = () => {
-    console.log('room Id:' + roomId);
-    console.log('message:' + inputMessage);
     try {
       client.current?.send(
         '/pub/chat/message/private',
         {},
         JSON.stringify({
-          // type: 'TALK',
           roomId: roomId,
           sender: getCookieValue('intraId'),
           message: inputMessage,
