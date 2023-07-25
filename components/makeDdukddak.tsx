@@ -1,11 +1,33 @@
 import useHandleInputMessage from '@/libs/inputMessage';
 import Button from './button';
+import { useContext } from 'react';
+import { AppContext } from '@/pages';
+import axios from 'axios';
+import getCookieValue from '@/libs/getCookieValue';
 
 export default function MakeDdukddak() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
+  const [info, setInfo] = useContext(AppContext);
 
-  const makeRoom = () => {
+  const makeRoom = async () => {
+    // 방을 만드는 버튼을 누르면
+    // input에 들어간 내용과 누가 만들었는지 전달하자!
     console.log(inputMessage);
+    try {
+      await axios
+        .post('/api/chat/ddukddak', null, {
+          params: { roomName: inputMessage, intraId: getCookieValue('intraId') },
+        })
+        .then(() =>
+          setInfo({
+            ddukddak: !info.ddukddak,
+            context: info.context,
+          }),
+        );
+    } catch (err) {
+      console.log(err);
+    }
+
     handleDeleteInputMessage();
   };
   return (

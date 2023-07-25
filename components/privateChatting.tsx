@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Button from './button';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -7,6 +7,7 @@ import { IChatDetail } from '@/interface/ChatDetail';
 import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
 import { formatTime } from '@/libs/formatTime';
+import { AppContext } from '@/pages';
 
 export default function PrivateChatting() {
   const client = useRef<CompatClient>();
@@ -15,6 +16,7 @@ export default function PrivateChatting() {
   const [roomId, setRoomId] = useState('');
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [info, setInfo] = useContext(AppContext);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -29,6 +31,13 @@ export default function PrivateChatting() {
   useEffect(() => {
     connectHandler('1');
   }, []);
+
+  const onLeave = () => {
+    setInfo({
+      ddukddak: !info.ddukddak,
+      context: info.context,
+    });
+  };
 
   const msgBox = chatMessageList.map((item, idx) => (
     <div
@@ -115,7 +124,7 @@ export default function PrivateChatting() {
             뚝딱뚝딱
           </button>
           <div className="w-[2px] h-6 bg-black" />
-          <button type="button" className="hover:text-violet-500 transition-colors">
+          <button onClick={onLeave} type="button" className="hover:text-violet-500 transition-colors">
             Leave
           </button>
         </div>
