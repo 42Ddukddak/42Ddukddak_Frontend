@@ -16,7 +16,7 @@ export default function MakeDdukddak() {
     try {
       await axios
         .post('/api/chat/ddukddak', null, {
-          params: { roomName: inputMessage, intraId: getCookieValue('intraId') },
+          params: { roomName: inputMessage, login: getCookieValue('intraId') },
         })
         .then(() =>
           setInfo({
