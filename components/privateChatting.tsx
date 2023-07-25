@@ -13,7 +13,6 @@ export default function PrivateChatting() {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
-  const [roomId, setRoomId] = useState('');
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [info, setInfo] = useContext(AppContext);
@@ -29,13 +28,16 @@ export default function PrivateChatting() {
   }, [chatMessage]);
 
   useEffect(() => {
-    connectHandler('1');
+    if (info.roomInfo?.roomID) {
+      connectHandler(info.roomInfo?.roomID);
+    }
   }, []);
 
   const onLeave = () => {
     setInfo({
       ddukddak: !info.ddukddak,
       context: info.context,
+      roomInfo: undefined,
     });
   };
 
@@ -65,13 +67,13 @@ export default function PrivateChatting() {
         '/pub/chat/message/private',
         {},
         JSON.stringify({
-          roomId: roomId,
+          roomId: info.roomInfo?.roomID,
           sender: getCookieValue('intraId'),
           message: inputMessage,
         }),
       );
     } catch (error) {
-      console.log(error);
+      console.log('send', error);
     }
     handleDeleteInputMessage();
   };
@@ -82,7 +84,7 @@ export default function PrivateChatting() {
         const sock = new SockJS('http://localhost/stomp/chat');
         return sock;
       } catch (error) {
-        return console.log(error);
+        return console.log('SockJS', error);
       }
     });
     setChatMessageList([]);
@@ -93,7 +95,6 @@ export default function PrivateChatting() {
         // Authorization: token,
       },
       () => {
-        // callback 함수 설정, 대부분 여기에 sub 함수 씀
         try {
           client.current?.subscribe(
             `/sub/chat/room/${id}`,
@@ -105,25 +106,28 @@ export default function PrivateChatting() {
             },
           );
         } catch (error) {
-          return console.log(error);
+          return console.log('sub', error);
         }
       },
     );
-    setRoomId(`${id}`);
   };
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
-          <h3 className=" text-lg text-gray-800 font-bold">밥 먹을 놈들 with 5</h3>
-          <span className="text-gray-400 text-sm">last seen 5 mins ago</span>
+          <h3 className=" text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
+          <span className="text-gray-400 text-sm">방 폭파까지 {info.roomInfo?.remainingTime}남았습니다.</span>
         </div>
         <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
-          <button type="button" className=" hover:text-violet-500 transition-colors">
-            뚝딱뚝딱
-          </button>
-          <div className="w-[2px] h-6 bg-black" />
+          {info.roomInfo?.host === getCookieValue('intraId') ? (
+            <div>
+              <button type="button" className=" hover:text-violet-500 transition-colors">
+                뚝딱뚝딱
+              </button>
+              <div className="w-[2px] h-6 bg-black" />
+            </div>
+          ) : null}
           <button onClick={onLeave} type="button" className="hover:text-violet-500 transition-colors">
             Leave
           </button>

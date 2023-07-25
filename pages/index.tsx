@@ -6,11 +6,7 @@ import PrivateChatting from '@/components/privateChatting';
 import PublicChatting from '@/components/publicChatting';
 import WholeDdukddak from '@/components/wholeDdukddak';
 import getCookieValue from '@/libs/getCookieValue';
-
-type IContext = {
-  context?: boolean;
-  ddukddak?: boolean;
-};
+import { IContext } from '@/interface/Context';
 
 type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>>];
 
