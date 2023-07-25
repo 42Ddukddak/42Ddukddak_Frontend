@@ -1,12 +1,30 @@
+import { useContext, useEffect } from 'react';
 import RightBlockHeader from './rightBlockHeader';
+import { AppContext } from '@/pages';
+import axios from 'axios';
 
 export default function WholeDdukddak() {
+  const [info, setInfo] = useContext(AppContext);
+
+  useEffect(() => {
+    const roomList = async () => {
+      await axios.get('/api/roomList');
+    };
+    console.log(roomList);
+  });
+  const onClick = (event: MouseEvent) => {
+    console.log(event);
+  };
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <div key={i} className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer">
+          <div
+            key={i}
+            onClick={onClick}
+            className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer"
+          >
             <h2 className="self-center text-lg font-semibold w-3/5">
               밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러 가실분~!밥 먹으러
               가실분~!

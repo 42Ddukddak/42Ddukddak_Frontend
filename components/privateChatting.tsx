@@ -78,7 +78,7 @@ export default function PrivateChatting() {
     handleDeleteInputMessage();
   };
 
-  const connectHandler = (id: string) => {
+  const connectHandler = (id: number) => {
     client.current = Stomp.over(() => {
       try {
         const sock = new SockJS('http://localhost/stomp/chat');

@@ -14,13 +14,16 @@ export default function MakeDdukddak() {
     // input에 들어간 내용과 누가 만들었는지 전달하자!
     console.log(inputMessage);
     try {
-      await axios.post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') }).then((res) =>
-        setInfo({
-          ddukddak: !info.ddukddak,
-          context: info.context,
-          roomInfo: res.data,
-        }),
-      );
+      await axios
+        .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
+        .then((res) =>
+          setInfo({
+            ddukddak: !info.ddukddak,
+            context: info.context,
+            roomInfo: res.data,
+          }),
+        )
+        .then((res) => console.log('make room post response', res));
     } catch (err) {
       console.log('makeRoom post', err);
     }

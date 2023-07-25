@@ -1,5 +1,5 @@
 type IResponse = {
-  roomID: string;
+  roomID: number;
   roomName: string;
   remainingTime: string;
   host: string;
