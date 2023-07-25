@@ -1,14 +1,11 @@
-import { useContext, useEffect, MouseEvent } from 'react';
-import RightBlockHeader from './rightBlockHeader';
-import { AppContext } from '@/pages';
 import axios from 'axios';
+import RightBlockHeader from './rightBlockHeader';
+import { MouseEvent, useEffect } from 'react';
 
-export default function WholeDdukddak() {
-  const [info, setInfo] = useContext(AppContext);
-
+export default function JoinedDdukddak() {
   useEffect(() => {
     const roomList = async () => {
-      await axios.get('/api/roomList');
+      await axios.get('/api/joined');
     };
     console.log(roomList);
   });
@@ -17,9 +14,10 @@ export default function WholeDdukddak() {
     console.log(event.currentTarget.getAttribute('data-custom'));
     console.log(event);
   };
+
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
-      <RightBlockHeader text={'전체 뚝딱'} isSearch />
+      <RightBlockHeader text={'참가했던 뚝딱'} isSearch mypage />
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((items, i) => (
           <div
