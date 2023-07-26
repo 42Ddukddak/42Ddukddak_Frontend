@@ -8,6 +8,7 @@ import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
 import { formatTime } from '@/libs/formatTime';
 import { AppContext } from '@/pages';
+import axios from 'axios';
 
 interface MypageProps {
   mypage?: boolean;
@@ -32,10 +33,22 @@ export default function PrivateChatting({ mypage }: MypageProps) {
   }, [chatMessage]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/private/${info.roomInfo?.roomId}`);
+        console.log('chatting data : ', response);
+      } catch (err) {
+        console.log('private chatting get', err);
+      }
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
     if (info.roomInfo?.roomId) {
       connectHandler(info.roomInfo?.roomId);
     }
-  }, []);
+  }, [info.roomInfo]);
 
   const onLeave = () => {
     setInfo({

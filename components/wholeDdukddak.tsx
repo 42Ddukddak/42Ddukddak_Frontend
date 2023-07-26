@@ -12,7 +12,6 @@ export default function WholeDdukddak() {
     const fetchRoomList = async () => {
       try {
         const response = await axios.get('/api/chat/roomList');
-        console.log('roomList get data', response.data);
         setRoomList(response.data);
       } catch (err) {
         console.log('roomList get', err);
