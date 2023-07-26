@@ -23,16 +23,23 @@ export default function WholeDdukddak() {
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     console.log('data: ', event.currentTarget.getAttribute('data-custom'));
-    console.log(event);
+    console.log('data: ', typeof event.currentTarget.getAttribute('data-custom'));
+    // const target = event.currentTarget.getAttribute('data-custom');
+    // setInfo({
+    //   ddukddak: true,
+    //   context: info.context,
+    //   roomInfo: target,
+    // });
   };
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
-        {roomList.map((item) => (
+        {roomList.map((item, i) => (
           <div
-            key={item.roomId}
-            data-custom={item}
+            key={i}
+            // data-custom={[item.roomId, item.roomName, item.participantsNum, item.remainingTime, item.login]}
+            data-custom={roomList[i]}
             onClick={onClick}
             className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer"
           >
