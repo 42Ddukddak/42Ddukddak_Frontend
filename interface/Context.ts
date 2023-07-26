@@ -1,8 +1,8 @@
-type IResponse = {
-  roomID: number;
+export type IResponse = {
+  roomId: number;
   roomName: string;
   remainingTime: number;
-  host: string;
+  login: string;
   participantsNum: number;
 };
 

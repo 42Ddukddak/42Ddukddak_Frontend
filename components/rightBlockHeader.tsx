@@ -13,6 +13,7 @@ export default function RightBlockHeader({ text, isSearch, mypage }: HeaderProps
     setInfo({
       ddukddak: info.ddukddak,
       context: !info.context,
+      roomInfo: info.roomInfo,
     });
   };
   return (

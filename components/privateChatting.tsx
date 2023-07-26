@@ -32,8 +32,8 @@ export default function PrivateChatting({ mypage }: MypageProps) {
   }, [chatMessage]);
 
   useEffect(() => {
-    if (info.roomInfo?.roomID) {
-      connectHandler(info.roomInfo?.roomID);
+    if (info.roomInfo?.roomId) {
+      connectHandler(info.roomInfo?.roomId);
     }
   }, []);
 
@@ -71,7 +71,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
         '/pub/chat/message/private',
         {},
         JSON.stringify({
-          roomId: info.roomInfo?.roomID,
+          roomId: info.roomInfo?.roomId,
           sender: intraId,
           message: inputMessage,
         }),
@@ -127,7 +127,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
         </div>
         {mypage ? null : (
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
-            {info.roomInfo?.host === intraId ? (
+            {info.roomInfo?.login === intraId ? (
               <div>
                 <button type="button" className=" hover:text-violet-500 transition-colors">
                   뚝딱뚝딱
