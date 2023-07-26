@@ -23,13 +23,14 @@ export default function WholeDdukddak() {
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     console.log('data: ', event.currentTarget.getAttribute('data-custom'));
-    console.log('data: ', JSON.parse(event.currentTarget.getAttribute('data-custom')));
-    // const target = event.currentTarget.getAttribute('data-custom');
-    // setInfo({
-    //   ddukddak: true,
-    //   context: info.context,
-    //   roomInfo: target,
-    // });
+    const target = event.currentTarget.getAttribute('data-custom');
+    if (target) {
+      setInfo({
+        ddukddak: true,
+        context: info.context,
+        roomInfo: JSON.parse(target),
+      });
+    }
   };
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">

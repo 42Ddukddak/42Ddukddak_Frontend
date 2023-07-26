@@ -9,5 +9,5 @@ export type IResponse = {
 export type IContext = {
   context?: boolean;
   ddukddak?: boolean;
-  roomInfo?: IResponse;
+  roomInfo?: IResponse | null;
 };
