@@ -23,8 +23,7 @@ export default function WholeDdukddak() {
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     console.log('data: ', event.currentTarget.getAttribute('data-custom'));
-    console.log('data: ', event.currentTarget.innerText);
-    console.log('data: ', event.target.dataset.custom);
+    console.log('data: ', JSON.parse(event.currentTarget.getAttribute('data-custom')));
     // const target = event.currentTarget.getAttribute('data-custom');
     // setInfo({
     //   ddukddak: true,
@@ -40,7 +39,7 @@ export default function WholeDdukddak() {
           <div
             key={i}
             // data-custom={[item.roomId, item.roomName, item.participantsNum, item.remainingTime, item.login]}
-            data-custom={roomList[i]}
+            data-custom={JSON.stringify(roomList[i])}
             onClick={onClick}
             className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer"
           >
