@@ -6,18 +6,21 @@ import { IContext } from '@/interface/Context';
 
 export default function WholeDdukddak() {
   const [info, setInfo] = useContext(AppContext);
-  const [roomList, setRoomList] = useState([]);
+  const [roomList, setRoomList] = useState<Array<[string, unknown]>>([]);
+
   useEffect(() => {
     const fetchRoomList = async () => {
       try {
         const response = await axios.get('/api/chat/roomList');
         console.log('roomList get data', response);
-        setRoomList(response.data);
+        setRoomList(Object.entries(response.data));
+        console.log(roomList);
       } catch (err) {
         console.log('roomList get', err);
       }
     };
-  });
+    fetchRoomList();
+  }, []);
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     console.log('data: ', event.currentTarget.getAttribute('data-custom'));
