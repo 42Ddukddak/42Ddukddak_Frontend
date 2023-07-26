@@ -16,14 +16,14 @@ export default function MakeDdukddak() {
     try {
       await axios
         .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
-        .then((res) =>
+        .then((res) => {
+          console.log('makeRoom response', res.data);
           setInfo({
             ddukddak: !info.ddukddak,
             context: info.context,
             roomInfo: res.data,
-          }),
-        )
-        .then((res) => console.log('make room post response', res));
+          });
+        });
     } catch (err) {
       console.log('makeRoom post', err);
     }
@@ -49,7 +49,7 @@ export default function MakeDdukddak() {
             placeholder="방 제목을 입력해주세요."
             className="border py-3 rounded-full peer placeholder:text-center shadow-sm px-16 my-hover"
           />
-          <div className="absolute right-14 top-[105px]">
+          <div onClick={makeRoom} className="absolute right-14 top-[105px]">
             <Button
               svg={
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512 512">

@@ -12,7 +12,7 @@ type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>
 
 export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
 export default function Home() {
-  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
+  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: true });
 
   const route = useRouter();
 

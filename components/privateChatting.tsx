@@ -19,6 +19,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [info, setInfo] = useContext(AppContext);
+  const intraId = getCookieValue('intraId');
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,7 +49,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
     <div
       key={idx}
       className={cls(
-        item.sender === getCookieValue('intraId') ? 'flex-row-reverse' : '',
+        item.sender === intraId ? 'flex-row-reverse' : '',
         'flex items-start text-gray-800 space-x-2 text-sm',
       )}
     >
@@ -71,7 +72,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
         {},
         JSON.stringify({
           roomId: info.roomInfo?.roomID,
-          sender: getCookieValue('intraId'),
+          sender: intraId,
           message: inputMessage,
         }),
       );
@@ -126,7 +127,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
         </div>
         {mypage ? null : (
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
-            {info.roomInfo?.host === getCookieValue('intraId') ? (
+            {info.roomInfo?.host === intraId ? (
               <div>
                 <button type="button" className=" hover:text-violet-500 transition-colors">
                   뚝딱뚝딱
