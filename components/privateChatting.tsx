@@ -32,21 +32,20 @@ export default function PrivateChatting({ mypage }: MypageProps) {
     }
   }, [chatMessage]);
 
-  useEffect(() => {
     const fetchData = async () => {
+      console.log("roomid", info.roomInfo?.roomId);
       try {
-        const response = await axios.get(`/api/private/${info.roomInfo?.roomId}`);
-        console.log('chatting data : ', response);
+        const response = await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`);
+        setChatMessageList(response.data);
       } catch (err) {
         console.log('private chatting get', err);
       }
     };
-    fetchData();
-  });
 
   useEffect(() => {
     if (info.roomInfo?.roomId) {
       connectHandler(info.roomInfo?.roomId);
+      fetchData();
     }
   }, [info.roomInfo]);
 
