@@ -21,7 +21,6 @@ export default function WholeDdukddak() {
   }, []);
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
-    console.log('data: ', event.currentTarget.getAttribute('data-custom'));
     const target = event.currentTarget.getAttribute('data-custom');
     if (target) {
       setInfo({

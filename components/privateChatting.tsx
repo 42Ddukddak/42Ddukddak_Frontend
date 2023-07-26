@@ -135,13 +135,13 @@ export default function PrivateChatting({ mypage }: MypageProps) {
         <div className="flex flex-col pl-5">
           <h3 className=" text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
           {mypage ? null : (
-            <span className="text-gray-400 text-sm">방 폭파까지 {info.roomInfo?.remainingTime}남았습니다.</span>
+            <span className="text-gray-400 text-sm">방 폭파까지 {info.roomInfo?.remainingTime}분 남았습니다.</span>
           )}
         </div>
         {mypage ? null : (
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
             {info.roomInfo?.login === intraId ? (
-              <div>
+              <div className="flex justify-center items-center space-x-2">
                 <button type="button" className=" hover:text-violet-500 transition-colors">
                   뚝딱뚝딱
                 </button>
