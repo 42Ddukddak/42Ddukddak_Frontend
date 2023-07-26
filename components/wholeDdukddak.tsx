@@ -23,7 +23,8 @@ export default function WholeDdukddak() {
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     console.log('data: ', event.currentTarget.getAttribute('data-custom'));
-    console.log('data: ', typeof event.currentTarget.getAttribute('data-custom'));
+    console.log('data: ', event.currentTarget.innerText);
+    console.log('data: ', event.target.dataset.custom);
     // const target = event.currentTarget.getAttribute('data-custom');
     // setInfo({
     //   ddukddak: true,
