@@ -3,10 +3,12 @@ import RightBlockHeader from './rightBlockHeader';
 import { AppContext } from '@/pages';
 import axios from 'axios';
 import { IResponse } from '@/interface/Context';
+import Modal from './modal';
 
 export default function WholeDdukddak() {
   const [info, setInfo] = useContext(AppContext);
   const [roomList, setRoomList] = useState<Array<IResponse>>([]);
+  const [enter, setEnter] = useState();
 
   useEffect(() => {
     const fetchRoomList = async () => {
@@ -20,6 +22,7 @@ export default function WholeDdukddak() {
     fetchRoomList();
   }, []);
 
+  const confirmEnter = () => {};
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.currentTarget.getAttribute('data-custom');
     if (target) {
@@ -33,6 +36,7 @@ export default function WholeDdukddak() {
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
+      <Modal text="해당 방에 들어가시겠습니까?" />
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {roomList.map((item, i) => (
           <div

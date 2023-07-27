@@ -10,10 +10,14 @@ import { formatTime } from '@/libs/formatTime';
 import { AppContext } from '@/pages';
 import axios from 'axios';
 
-interface MypageProps {
+interface IMypageProps {
   mypage?: boolean;
 }
-export default function PrivateChatting({ mypage }: MypageProps) {
+interface IChangeValues {
+  remainingTime: string;
+  participantsNum: number;
+}
+export default function PrivateChatting({ mypage }: IMypageProps) {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
@@ -21,6 +25,7 @@ export default function PrivateChatting({ mypage }: MypageProps) {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [info, setInfo] = useContext(AppContext);
   const intraId = getCookieValue('intraId');
+  const [changeValues, setChangeValues] = useState<IChangeValues>();
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -29,23 +34,23 @@ export default function PrivateChatting({ mypage }: MypageProps) {
   useEffect(() => {
     if (chatMessage) {
       setChatMessageList([...chatMessageList, chatMessage]);
+      
     }
   }, [chatMessage]);
 
-    const fetchData = async () => {
-      console.log("roomid", info.roomInfo?.roomId);
-      try {
-        const response = await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`);
-        setChatMessageList(response.data);
-      } catch (err) {
-        console.log('private chatting get', err);
-      }
-    };
+  const fetchChattingMessage = async () => {
+    try {
+      const response = await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`);
+      setChatMessageList(response.data);
+    } catch (err) {
+      console.log('private chatting get', err);
+    }
+  };
 
   useEffect(() => {
     if (info.roomInfo?.roomId) {
       connectHandler(info.roomInfo?.roomId);
-      fetchData();
+      fetchChattingMessage();
     }
   }, [info.roomInfo]);
 
@@ -132,9 +137,12 @@ export default function PrivateChatting({ mypage }: MypageProps) {
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
+          <div>
           <h3 className=" text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
+          <span> {info.roomInfo?.participantsNum}</span>
+          </div>
           {mypage ? null : (
-            <span className="text-gray-400 text-sm">방 폭파까지 {info.roomInfo?.remainingTime}분 남았습니다.</span>
+            <span className="text-gray-400 text-sm">방 폭파까지 {( || info.roomInfo?.remainingTime)}분 남았습니다.</span>
           )}
         </div>
         {mypage ? null : (
