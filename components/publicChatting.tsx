@@ -17,6 +17,7 @@ export default function PublicChatting() {
   const [roomId, setRoomId] = useState('');
   const client = useRef<CompatClient>();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const intraId = getCookieValue('intraId');
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,7 +27,7 @@ export default function PublicChatting() {
     <div
       key={idx}
       className={cls(
-        item.sender === getCookieValue('intraId') ? 'flex-row-reverse' : '',
+        item.sender === intraId ? 'flex-row-reverse' : '',
         'flex  items-start text-gray-800 space-x-2 text-sm',
       )}
     >
@@ -62,7 +63,7 @@ export default function PublicChatting() {
         {},
         JSON.stringify({
           roomId: roomId,
-          sender: getCookieValue('intraId'),
+          sender: intraId,
           message: inputMessage,
         }),
       );

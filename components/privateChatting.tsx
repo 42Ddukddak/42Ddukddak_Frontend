@@ -13,10 +13,12 @@ import axios from 'axios';
 interface IMypageProps {
   mypage?: boolean;
 }
+
 interface IChangeValues {
-  remainingTime?: string;
+  remainingTime?: number;
   participantsNum?: number;
 }
+
 export default function PrivateChatting({ mypage }: IMypageProps) {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
@@ -34,12 +36,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   useEffect(() => {
     console.log(chatMessage);
     if (chatMessage) {
-      let items: IChangeValues = {
-        remainingTime: chatMessage.remainingTime,
-        participantsNum: chatMessage.participantsNum,
-      };
       setChatMessageList([...chatMessageList, chatMessage]);
-      setChangeValues(items);
+      setChangeValues({
+        remainingTime: chatMessage.roomInfo?.remainingTime,
+        participantsNum: chatMessage.roomInfo?.participantsNum,
+      });
     }
   }, [chatMessage]);
 
@@ -76,13 +77,13 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       )}
     >
       <div className="pr-10">
-        <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
-          <p>{item.message}</p>
+        <div className="flex">
+          <span className="text-sm text-gray-600 font-light">`{formatTime(item.time)} `</span>
+          <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
+            <p>{item.message}</p>
+          </div>
         </div>
-        <div className="flex justify-between px-2 text-xs text-gray-600">
-          <span>{formatTime(item.time)}</span>
-          <span>신고</span>
-        </div>
+        <span className="text-xs text-gray-600">신고</span>
       </div>
     </div>
   ));
@@ -142,9 +143,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
-          <div>
-            <h3 className=" text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
-            <span> {changeValues?.participantsNum || info.roomInfo?.participantsNum}</span>
+          <div className="flex">
+            <h3 className="text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
+            <span className="text-gray-500 text-sm ml-2">
+              {changeValues?.participantsNum || info.roomInfo?.participantsNum}
+            </span>
           </div>
           {mypage ? null : (
             <span className="text-gray-400 text-sm">
