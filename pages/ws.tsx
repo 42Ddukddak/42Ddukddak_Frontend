@@ -1,7 +1,9 @@
+import Modal from '@/components/modal';
+
 export default function Ws() {
-  return <div>
+  return (
     <div>
-      안영
+      <Modal text="test" subText='' />
     </div>
-  </div>
+  );
 }

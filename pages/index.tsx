@@ -24,15 +24,15 @@ export default function Home() {
   });
 
   return (
-    <Layout logo>
-      <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen">
-        <AppContext.Provider value={[info, setInfo]}>
+    <AppContext.Provider value={[info, setInfo]}>
+      <Layout logo>
+        <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen z-[1]">
           {/* 뚝딱 만들기 or 채팅 방 */}
           {info.ddukddak ? <PrivateChatting /> : <MakeDdukddak />}
           {/* 전체 채팅 or 전체 뚝딱 */}
           {info.context ? <PublicChatting /> : <WholeDdukddak />}
-        </AppContext.Provider>
-      </div>
-    </Layout>
+        </div>
+      </Layout>
+    </AppContext.Provider>
   );
 }
