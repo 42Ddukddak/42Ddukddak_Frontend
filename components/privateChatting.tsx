@@ -32,9 +32,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   }, [chatMessageList]);
 
   useEffect(() => {
+    console.log(chatMessage);
     if (chatMessage) {
       setChatMessageList([...chatMessageList, chatMessage]);
-      
+
     }
   }, [chatMessage]);
 
