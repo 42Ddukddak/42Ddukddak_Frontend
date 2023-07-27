@@ -131,7 +131,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           client.current?.subscribe(
             `/sub/chat/room/${id}`,
             (message) => {
-              setChatMessage(JSON.parse(message.body));
+              if (message.body === 'room_deleted') {
+                onLeave();
+              } else {
+                setChatMessage(JSON.parse(message.body));
+              }
             },
             {
               // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음

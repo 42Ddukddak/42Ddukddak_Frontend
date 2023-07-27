@@ -1,3 +1,7 @@
 export default function Ws() {
-  return <div>hi</div>;
+  return <div>
+    <div>
+      안영
+    </div>
+  </div>
 }
