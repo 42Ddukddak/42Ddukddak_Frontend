@@ -61,6 +61,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   }, [info.roomInfo]);
 
   const onLeave = () => {
+    if (info.roomInfo?.login === intraId) {
+      if (confirm('방장이 방을 떠나면 방이 사라집니다. 나가시나여??')) {
+        alert('응 못나가~~~');
+      }
+    }
     setInfo({
       ddukddak: !info.ddukddak,
       context: info.context,
