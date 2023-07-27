@@ -81,14 +81,14 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         'flex items-start text-gray-800 space-x-2 text-sm',
       )}
     >
-      <div className="flex justify-end items-end pr-10">
+      <div className="flex flex-col justify-end items-end pr-10">
         <div className="flex justify-end items-end">
-          <span className="text-sm text-gray-600 font-light">{formatTime(item.time)} </span>
+          <span className="text-sm text-gray-600 font-light mr-2">{formatTime(item.time)} </span>
           <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
             <p>{item.message}</p>
           </div>
         </div>
-        <span className="text-xs text-gray-600">신고</span>
+        <span className="text-xs text-gray-600 mr-1">신고</span>
       </div>
     </div>
   ));
@@ -148,17 +148,31 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
-          <div className="flex">
+          <div className="flex space-x-2">
             <h3 className="text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
-            <span className="text-gray-500 text-sm ml-2">
-              {changeValues?.participantsNum || info.roomInfo?.participantsNum}
-            </span>
+            <div className="flex self-center space-x-1 justify-center items-center border rounded-full px-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4 text-gray-600"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                />
+              </svg>
+              <span className="text-gray-500 text-sm self-center">
+                {changeValues?.participantsNum || info.roomInfo?.participantsNum}
+              </span>
+            </div>
           </div>
-          {mypage ? null : (
-            <span className="text-gray-400 text-sm">
-              방 폭파까지 {changeValues?.remainingTime || info.roomInfo?.remainingTime}분 남았습니다.
-            </span>
-          )}
+          <span className="text-gray-400 text-sm">
+            방 폭파까지 {changeValues?.remainingTime || info.roomInfo?.remainingTime}분 남았습니다.
+          </span>
         </div>
         {mypage ? null : (
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
