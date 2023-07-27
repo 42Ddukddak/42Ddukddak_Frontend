@@ -38,8 +38,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     if (chatMessage) {
       setChatMessageList([...chatMessageList, chatMessage]);
       setChangeValues({
-        remainingTime: chatMessage.roomInfo?.remainingTime,
-        participantsNum: chatMessage.roomInfo?.participantsNum,
+        remainingTime: chatMessage.remainingTime,
+        participantsNum: chatMessage.participantsNum,
       });
     }
   }, [chatMessage]);
@@ -76,9 +76,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         'flex items-start text-gray-800 space-x-2 text-sm',
       )}
     >
-      <div className="pr-10">
-        <div className="flex">
-          <span className="text-sm text-gray-600 font-light">`{formatTime(item.time)} `</span>
+      <div className="flex justify-end items-end pr-10">
+        <div className="flex justify-end items-end">
+          <span className="text-sm text-gray-600 font-light">{formatTime(item.time)} </span>
           <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
             <p>{item.message}</p>
           </div>
