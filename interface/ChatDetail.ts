@@ -6,6 +6,6 @@ export interface IChatDetail {
 
   roomName?: string;
   remainingTime?: string;
-  host?: string;
+  login?: string;
   participantsNum?: number;
 }

@@ -14,8 +14,8 @@ interface IMypageProps {
   mypage?: boolean;
 }
 interface IChangeValues {
-  remainingTime: string;
-  participantsNum: number;
+  remainingTime?: string;
+  participantsNum?: number;
 }
 export default function PrivateChatting({ mypage }: IMypageProps) {
   const client = useRef<CompatClient>();
@@ -34,8 +34,12 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   useEffect(() => {
     console.log(chatMessage);
     if (chatMessage) {
+      let items: IChangeValues = {
+        remainingTime: chatMessage.remainingTime,
+        participantsNum: chatMessage.participantsNum,
+      };
       setChatMessageList([...chatMessageList, chatMessage]);
-
+      setChangeValues(items);
     }
   }, [chatMessage]);
 
@@ -139,11 +143,13 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
           <div>
-          <h3 className=" text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
-          <span> {info.roomInfo?.participantsNum}</span>
+            <h3 className=" text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
+            <span> {changeValues?.participantsNum || info.roomInfo?.participantsNum}</span>
           </div>
           {mypage ? null : (
-            <span className="text-gray-400 text-sm">방 폭파까지 {( || info.roomInfo?.remainingTime)}분 남았습니다.</span>
+            <span className="text-gray-400 text-sm">
+              방 폭파까지 {changeValues?.remainingTime || info.roomInfo?.remainingTime}분 남았습니다.
+            </span>
           )}
         </div>
         {mypage ? null : (
