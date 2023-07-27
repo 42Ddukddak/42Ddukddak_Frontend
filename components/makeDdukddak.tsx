@@ -1,18 +1,21 @@
 import useHandleInputMessage from '@/libs/inputMessage';
 import Button from './button';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '@/pages';
 import axios from 'axios';
 import getCookieValue from '@/libs/getCookieValue';
+import Modal from './modal';
 
 export default function MakeDdukddak() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
   const [info, setInfo] = useContext(AppContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isConform, setIsConform] = useState(false);
 
   const makeRoom = async () => {
     // 방을 만드는 버튼을 누르면
     // input에 들어간 내용과 누가 만들었는지 전달하자!
-    console.log(inputMessage);
+    setIsOpen(true);
     try {
       await axios
         .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
@@ -31,6 +34,7 @@ export default function MakeDdukddak() {
   };
   return (
     <div className="flex justify-center items-center xl:col-span-2">
+      <Modal title="방만들기" subText={`${inputMessage}로 방을 만듭니다.`} />
       <div className="flex flex-col justify-center items-center">
         {/* 뚝딱 만들기  */}
         <div className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">

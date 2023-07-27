@@ -7,10 +7,12 @@ import PublicChatting from '@/components/publicChatting';
 import WholeDdukddak from '@/components/wholeDdukddak';
 import getCookieValue from '@/libs/getCookieValue';
 import { IContext } from '@/interface/Context';
+import { IModal } from '@/interface/Modal';
 
 type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>>];
-
+type IModalContext = [IModal, React.Dispatch<React.SetStateAction<IContext>>];
 export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
+export const ModalContext = createContext<IModalContext>([{}, () => null]);
 export default function Home() {
   const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
 
@@ -24,15 +26,15 @@ export default function Home() {
   });
 
   return (
-    <AppContext.Provider value={[info, setInfo]}>
-      <Layout logo>
-        <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen z-[1]">
+    <Layout logo>
+      <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen">
+        <AppContext.Provider value={[info, setInfo]}>
           {/* 뚝딱 만들기 or 채팅 방 */}
           {info.ddukddak ? <PrivateChatting /> : <MakeDdukddak />}
           {/* 전체 채팅 or 전체 뚝딱 */}
           {info.context ? <PublicChatting /> : <WholeDdukddak />}
-        </div>
-      </Layout>
-    </AppContext.Provider>
+        </AppContext.Provider>
+      </div>
+    </Layout>
   );
 }

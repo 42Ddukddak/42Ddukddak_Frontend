@@ -115,7 +115,7 @@ export default function PublicChatting() {
     setRoomId(`${id}`);
   };
   return (
-    <div className="flex flex-col justify-between border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
+    <div className="flex flex-col justify-between border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh] z-[1]">
       <RightBlockHeader text={'전체 채팅'} />
       {/* 채팅내용  */}
       <div className="space-y-4 py-4 flex-1 overflow-auto max-h-[44vh] xl:max-h-[70vh]">

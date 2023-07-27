@@ -1,4 +1,3 @@
-
 export interface IChatDetail {
   sender?: string;
   message?: string;
