@@ -14,7 +14,7 @@ export default function MakeDdukddak() {
 
   useEffect(() => {
     if (isConform.isConform) {
-      const makeRequest = async () => {
+      async () => {
         try {
           await axios
             .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
@@ -37,44 +37,15 @@ export default function MakeDdukddak() {
           console.log('makeRoom post', err);
         }
       };
-      makeRequest();
-    } else {
-      handleDeleteInputMessage();
     }
   }, [isConform.isConform]);
 
-  const makeRoom = async () => {
-    // 방을 만드는 버튼을 누르면
-    // input에 들어간 내용과 누가 만들었는지 전달하자!
+  const makeRoom = () => {
     if (inputMessage) {
       setIsOpen(true);
-      // if (isConform.isConform) {
-      //   try {
-      //     await axios
-      //       .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
-      //       .then((res) => {
-      //         console.log('makeRoom response', res.data);
-      //         setInfo({
-      //           ddukddak: !info.ddukddak,
-      //           context: info.context,
-      //           roomInfo: res.data,
-      //         });
-      //       })
-      //       .then(() => {
-      //         setIsConform({
-      //           isConform: false,
-      //         });
-      //         handleDeleteInputMessage();
-      //         setIsOpen(false);
-      //       });
-      //   } catch (err) {
-      //     console.log('makeRoom post', err);
-      //   }
-      // } else {
-      //   handleDeleteInputMessage();
-      // }
     }
   };
+
   return (
     <div className="flex justify-center items-center xl:col-span-2">
       {isOpen ? <Modal title="방만들기" subText={`${inputMessage}로 방을 만듭니다.`} setIsOpen={setIsOpen} /> : null}

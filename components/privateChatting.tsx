@@ -7,8 +7,10 @@ import { IChatDetail } from '@/interface/ChatDetail';
 import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
 import { formatTime } from '@/libs/formatTime';
-import { AppContext } from '@/pages';
+import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
+import Modal from './modal';
+import { ModalMessage } from '@/const/modalMessage';
 
 interface IMypageProps {
   mypage?: boolean;
@@ -29,6 +31,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const intraId = getCookieValue('intraId');
   const [changeValues, setChangeValues] = useState<IChangeValues>();
   const [roomIsGone, setRoomIsGone] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isConform, setIsConform] = useContext(ModalContext);
+  let [title, subText]: string[] = ['', ''];
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -72,23 +77,36 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   }, [roomIsGone]);
 
-  const onLeave = async () => {
-    if (info.roomInfo?.login === intraId) {
-      if (confirm('방장이 방을 떠나면 방이 사라집니다. 나가시나여??')) {
+  useEffect(() => {
+    if (isConform.isConform) {
+      async () => {
         try {
-          axios.post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`).then((res) =>
-            res.status === 200
-              ? setInfo({
-                  ddukddak: !info.ddukddak,
-                  context: info.context,
-                  roomInfo: undefined,
-                })
-              : alert('내보내기 실패했습니다.'),
-          );
+          axios
+            .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`)
+            .then((res) =>
+              res.status === 200
+                ? setInfo({
+                    ddukddak: !info.ddukddak,
+                    context: info.context,
+                    roomInfo: undefined,
+                  })
+                : alert('내보내기 실패했습니다.'),
+            )
+            .then(() => {
+              setIsConform({ isConform: false });
+              setIsOpen(false);
+            });
         } catch (err) {
           console.log(err);
         }
-      }
+      };
+    }
+  }, [isConform.isConform]);
+
+  const onLeave = async () => {
+    if (info.roomInfo?.login === intraId) {
+      [(title = `${ModalMessage.hostLeave.title}`), (subText = `${ModalMessage.hostLeave.subText}`)];
+      setIsOpen(true);
     } else {
       setInfo({
         ddukddak: !info.ddukddak,
@@ -175,6 +193,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   };
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
+      {isOpen ? <Modal title={title} subText={subText} setIsOpen={setIsOpen} /> : null}
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
