@@ -12,7 +12,7 @@ import { IModal } from '@/interface/Modal';
 type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>>];
 type IModalContext = [IModal, React.Dispatch<React.SetStateAction<IModal>>];
 export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
-export const ModalContext = createContext<IModalContext>([{}, () => null]);
+export const ModalContext = createContext<IModalContext>([{ isConform: false }, () => null]);
 
 export default function Home() {
   const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
