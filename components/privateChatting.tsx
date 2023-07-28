@@ -218,10 +218,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 예약 확정
   const onReservation = () => {
     type = 'reservation';
-    [
-      (title = ModalMessage.RESERVATION.title),
-      (subText = `${info.roomInfo?.roomName}  ${ModalMessage.RESERVATION.subText}`),
-    ];
+    [(title = ModalMessage.RESERVATION.title), (subText = info.roomInfo?.roomName + ModalMessage.RESERVATION.subText)];
     setIsOpen(true);
   };
 
