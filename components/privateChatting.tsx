@@ -11,6 +11,7 @@ import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import Modal from './modal';
 import { ModalMessage } from '@/const/modalMessage';
+import { Message } from '@/const/message';
 
 interface IMypageProps {
   mypage?: boolean;
@@ -34,13 +35,15 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isConform, setIsConform] = useContext(ModalContext);
   let [title, subText]: string[] = ['', ''];
+  let type: string = '';
 
+  // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessageList]);
 
+  // 채팅 메세지가 도착하면 변동값 (방인원, 방 남은 시간) 새로고침
   useEffect(() => {
-    console.log(chatMessage);
     if (chatMessage) {
       setChatMessageList([...chatMessageList, chatMessage]);
       setChangeValues({
@@ -50,7 +53,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   }, [chatMessage]);
 
-  const fetchChattingMessage = async () => {
+  // 새로 들어온 사람 기존 방 채팅 내역 가져오기
+  const loadChattingMessage = async () => {
     try {
       const response = await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`);
       setChatMessageList(response.data);
@@ -59,16 +63,18 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   };
 
+  // 방에 처음 들어오면 소켓연결, 채팅 내역가져오기
   useEffect(() => {
     if (info.roomInfo?.roomId) {
       connectHandler(info.roomInfo?.roomId);
-      fetchChattingMessage();
+      loadChattingMessage();
     }
   }, [info.roomInfo]);
 
+  // 방장이 방을 떠났을 때 폭파
   useEffect(() => {
     if (roomIsGone) {
-      alert('방장이 방을 떠나서 방이 폭파되었습니다.');
+      alert(Message.HOSTLEAVE);
       setInfo({
         ddukddak: !info.ddukddak,
         context: info.context,
@@ -77,35 +83,52 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   }, [roomIsGone]);
 
+  // modal 반응 함수 (방장이 방떠남, 예약확정) @@@@
   useEffect(() => {
     if (isConform.isConform) {
-      async () => {
-        try {
-          axios
-            .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`)
-            .then((res) =>
-              res.status === 200
-                ? setInfo({
-                    ddukddak: !info.ddukddak,
-                    context: info.context,
-                    roomInfo: undefined,
-                  })
-                : alert('내보내기 실패했습니다.'),
-            )
-            .then(() => {
-              setIsConform({ isConform: false });
-              setIsOpen(false);
-            });
-        } catch (err) {
-          console.log(err);
-        }
-      };
+      if (type === 'hostLeave') {
+        async () => {
+          try {
+            await axios
+              .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`)
+              .then((res) =>
+                res.status === 200
+                  ? setInfo({
+                      ddukddak: !info.ddukddak,
+                      context: info.context,
+                      roomInfo: undefined,
+                    })
+                  : alert('내보내기 실패했습니다.'),
+              )
+              .then(() => {
+                setIsConform({ isConform: false });
+                setIsOpen(false);
+              });
+          } catch (err) {
+            console.log(err);
+          }
+        };
+      } else if (type === 'reservation') {
+        async () => {
+          try {
+            await axios
+              .post(`/api/chat/private/${info.roomInfo?.roomId}/reserved`, `${info.roomInfo?.roomId}`)
+              .then((res) => {
+                res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
+              });
+          } catch (err) {
+            console.log(err);
+          }
+        };
+      }
     }
   }, [isConform.isConform]);
 
+  // 'leave' button 클릭 이벤트
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
-      [(title = `${ModalMessage.hostLeave.title}`), (subText = `${ModalMessage.hostLeave.subText}`)];
+      [(title = `${ModalMessage.HOSTLEAVE.title}`), (subText = `${ModalMessage.HOSTLEAVE.subText}`)];
+      type = 'hostLeave';
       setIsOpen(true);
     } else {
       setInfo({
@@ -116,26 +139,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   };
 
-  const msgBox = chatMessageList.map((item, idx) => (
-    <div
-      key={idx}
-      className={cls(
-        item.sender === intraId ? 'flex-row-reverse' : '',
-        'flex items-start text-gray-800 space-x-2 text-sm',
-      )}
-    >
-      <div className="flex flex-col justify-end items-end pr-10">
-        <div className="flex justify-end items-end">
-          <span className="text-sm text-gray-600 font-light mr-2">{formatTime(item.time)} </span>
-          <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
-            <p>{item.message}</p>
-          </div>
-        </div>
-        <span className="text-xs text-gray-600 mr-1">신고</span>
-      </div>
-    </div>
-  ));
-
+  // 채팅 메시지 보내기
   const sendHandler = () => {
     if (inputMessage) {
       try {
@@ -155,6 +159,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   };
 
+  // 서버와 소켓 연결하기
   const connectHandler = (id: number) => {
     client.current = Stomp.over(() => {
       try {
@@ -191,6 +196,35 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       },
     );
   };
+
+  // 전달 받은 메세지 뿌려줄 박스
+  const msgBox = chatMessageList.map((item, idx) => (
+    <div
+      key={idx}
+      className={cls(
+        item.sender === intraId ? 'flex-row-reverse' : '',
+        'flex items-start text-gray-800 space-x-2 text-sm',
+      )}
+    >
+      <div className="flex flex-col justify-end items-end pr-10">
+        <div className="flex justify-end items-end">
+          <span className="text-sm text-gray-600 font-light mr-2">{formatTime(item.time)} </span>
+          <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
+            <p>{item.message}</p>
+          </div>
+        </div>
+        <span className="text-xs text-gray-600 mr-1">신고</span>
+      </div>
+    </div>
+  ));
+
+  // 예약 확정
+  const onReservation = () => {
+    type = 'reservation';
+    [(title = `${ModalMessage.HOSTLEAVE.title}`), (subText = `${ModalMessage.HOSTLEAVE.subText}`)];
+    setIsOpen(true);
+  };
+
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
       {isOpen ? <Modal title={title} subText={subText} setIsOpen={setIsOpen} /> : null}
@@ -242,54 +276,6 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       {/* 채팅 내용 */}
       <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
         {msgBox}
-        {/* <div className="flex items-start text-gray-800 space-x-2 text-sm">
-          <div className="pr-10">
-            <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
-              <p>
-                Hi how much are you selling them for?how much are you selling them for?how much are you selling them
-                for?how much are you selling them for?
-              </p>
-            </div>
-            <div className="flex justify-between px-2 text-xs text-gray-600">
-              <span>10 am</span>
-              <span>신고</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
-          <div className="pl-10">
-            <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-500 text-white">
-              <p>안녕하세요. 밥 먹으러 몇시에 가시나여??</p>
-            </div>
-            <div className="flex flex-row-reverse justify-between px-2 text-xs text-gray-600">
-              <span>10 am</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-start text-gray-800 space-x-2 text-sm">
-          <div className="pr-10">
-            <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
-              <p>
-                Hi how much are you selling them for?how much are you selling them for?how much are you selling them
-                for?how much are you selling them for?
-              </p>
-            </div>
-            <div className="flex justify-between px-2 text-xs text-gray-600">
-              <span>10 am</span>
-              <span>신고</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row-reverse items-start text-gray-800 space-x-2 text-sm">
-          <div className="pl-10">
-            <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-500 text-white">
-              <p>안녕하세요. 밥 먹으러 몇시에 가시나여??</p>
-            </div>
-            <div className="flex flex-row-reverse justify-between px-2 text-xs text-gray-600">
-              <span>10 am</span>
-            </div>
-          </div>
-        </div> */}
         <div ref={messageEndRef}></div>
       </div>
       {/* input 박스 */}
