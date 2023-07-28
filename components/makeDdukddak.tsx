@@ -5,6 +5,7 @@ import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import getCookieValue from '@/libs/getCookieValue';
 import Modal from './modal';
+import { ModalMessage } from '@/const/modalMessage';
 
 export default function MakeDdukddak() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
@@ -48,7 +49,13 @@ export default function MakeDdukddak() {
 
   return (
     <div className="flex justify-center items-center xl:col-span-2">
-      {isOpen ? <Modal title="방만들기" subText={`${inputMessage}로 방을 만듭니다.`} setIsOpen={setIsOpen} /> : null}
+      {isOpen ? (
+        <Modal
+          title={`${ModalMessage.MAKE_ROOM.title}`}
+          subText={`${ModalMessage.MAKE_ROOM.subText}로 방을 만듭니다.`}
+          setIsOpen={setIsOpen}
+        />
+      ) : null}
       <div className="flex flex-col justify-center items-center">
         {/* 뚝딱 만들기  */}
         <div className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">

@@ -87,6 +87,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   useEffect(() => {
     if (isConform.isConform) {
       if (type === 'hostLeave') {
+        // @@@@ 방장 떠났을 때
         async () => {
           try {
             await axios
@@ -109,13 +110,12 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           }
         };
       } else if (type === 'reservation') {
+        // @@@@ 예약 확정
         async () => {
           try {
-            await axios
-              .post(`/api/chat/private/${info.roomInfo?.roomId}/reserved`, `${info.roomInfo?.roomId}`)
-              .then((res) => {
-                res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
-              });
+            await axios.post(`/api/reserved/${info.roomInfo?.roomId}`, info.roomInfo).then((res) => {
+              res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
+            });
           } catch (err) {
             console.log(err);
           }
@@ -221,7 +221,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 예약 확정
   const onReservation = () => {
     type = 'reservation';
-    [(title = `${ModalMessage.HOSTLEAVE.title}`), (subText = `${ModalMessage.HOSTLEAVE.subText}`)];
+    [
+      (title = `${ModalMessage.RESERVATION.title}`),
+      (subText = `${info.roomInfo?.roomName}  ${ModalMessage.RESERVATION.subText}`),
+    ];
     setIsOpen(true);
   };
 
@@ -261,7 +264,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
             {info.roomInfo?.login === intraId ? (
               <div className="flex justify-center items-center space-x-2">
-                <button type="button" className=" hover:text-violet-500 transition-colors">
+                <button onClick={onReservation} type="button" className=" hover:text-violet-500 transition-colors">
                   뚝딱뚝딱
                 </button>
                 <div className="w-[2px] h-6 bg-black" />
