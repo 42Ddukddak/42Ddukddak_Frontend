@@ -28,6 +28,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [info, setInfo] = useContext(AppContext);
   const intraId = getCookieValue('intraId');
   const [changeValues, setChangeValues] = useState<IChangeValues>();
+  const [roomIsGone, setRoomIsGone] = useState(false);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -60,25 +61,41 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   }, [info.roomInfo]);
 
-  const onLeave = () => {
+  useEffect(() => {
+    if (roomIsGone) {
+      alert('방장이 방을 떠나서 방이 폭파되었습니다.');
+      setInfo({
+        ddukddak: !info.ddukddak,
+        context: info.context,
+        roomInfo: undefined,
+      });
+    }
+  }, [roomIsGone]);
+
+  const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
       if (confirm('방장이 방을 떠나면 방이 사라집니다. 나가시나여??')) {
-        async () => {
-          try {
-            await axios
-              .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`)
-              .then((res) => console.log('leave response data : ', res.data));
-          } catch (err) {
-            console.log(err);
-          }
-        };
+        try {
+          axios.post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`).then((res) =>
+            res.status === 200
+              ? setInfo({
+                  ddukddak: !info.ddukddak,
+                  context: info.context,
+                  roomInfo: undefined,
+                })
+              : alert('내보내기 실패했습니다.'),
+          );
+        } catch (err) {
+          console.log(err);
+        }
       }
+    } else {
+      setInfo({
+        ddukddak: !info.ddukddak,
+        context: info.context,
+        roomInfo: undefined,
+      });
     }
-    setInfo({
-      ddukddak: !info.ddukddak,
-      context: info.context,
-      roomInfo: undefined,
-    });
   };
 
   const msgBox = chatMessageList.map((item, idx) => (
@@ -139,8 +156,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           client.current?.subscribe(
             `/sub/chat/room/${id}`,
             (message) => {
-              console.log('message', message);
               setChatMessage(JSON.parse(message.body));
+              if (message.body === '"OK"') {
+                setRoomIsGone(true);
+              }
             },
             {
               // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
