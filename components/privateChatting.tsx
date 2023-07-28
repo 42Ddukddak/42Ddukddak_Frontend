@@ -127,7 +127,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 'leave' button 클릭 이벤트
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
-      [(title = `${ModalMessage.HOSTLEAVE.title}`), (subText = `${ModalMessage.HOSTLEAVE.subText}`)];
+      [(title = ModalMessage.HOSTLEAVE.title), (subText = ModalMessage.HOSTLEAVE.subText)];
       type = 'hostLeave';
       setIsOpen(true);
     } else {
@@ -219,7 +219,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onReservation = () => {
     type = 'reservation';
     [
-      (title = `${ModalMessage.RESERVATION.title}`),
+      (title = ModalMessage.RESERVATION.title),
       (subText = `${info.roomInfo?.roomName}  ${ModalMessage.RESERVATION.subText}`),
     ];
     setIsOpen(true);
