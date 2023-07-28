@@ -23,20 +23,22 @@ export default function MakeDdukddak() {
             .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
             .then((res) => {
               console.log('makeRoom response', res.data);
-              setIsConform({
-                isConform: false,
-              });
               setInfo({
                 ddukddak: !info.ddukddak,
                 context: info.context,
                 roomInfo: res.data,
               });
+            })
+            .then(() => {
+              setIsConform({
+                isConform: false,
+              });
+              handleDeleteInputMessage();
               setIsOpen(false);
             });
         } catch (err) {
           console.log('makeRoom post', err);
         }
-        handleDeleteInputMessage();
       } else {
         handleDeleteInputMessage();
       }
