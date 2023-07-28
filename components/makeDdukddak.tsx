@@ -1,6 +1,6 @@
 import useHandleInputMessage from '@/libs/inputMessage';
 import Button from './button';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import getCookieValue from '@/libs/getCookieValue';
@@ -12,12 +12,9 @@ export default function MakeDdukddak() {
   const [isConform, setIsConform] = useContext(ModalContext);
   const [info, setInfo] = useContext(AppContext);
 
-  const makeRoom = async () => {
-    // 방을 만드는 버튼을 누르면
-    // input에 들어간 내용과 누가 만들었는지 전달하자!
-    if (inputMessage) {
-      setIsOpen(true);
-      if (isConform.isConform) {
+  useEffect(() => {
+    if (isConform.isConform) {
+      const makeRequest = async () => {
         try {
           await axios
             .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
@@ -39,9 +36,43 @@ export default function MakeDdukddak() {
         } catch (err) {
           console.log('makeRoom post', err);
         }
-      } else {
-        handleDeleteInputMessage();
-      }
+      };
+      makeRequest();
+    } else {
+      handleDeleteInputMessage();
+    }
+  }, [isConform.isConform]);
+
+  const makeRoom = async () => {
+    // 방을 만드는 버튼을 누르면
+    // input에 들어간 내용과 누가 만들었는지 전달하자!
+    if (inputMessage) {
+      setIsOpen(true);
+      // if (isConform.isConform) {
+      //   try {
+      //     await axios
+      //       .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
+      //       .then((res) => {
+      //         console.log('makeRoom response', res.data);
+      //         setInfo({
+      //           ddukddak: !info.ddukddak,
+      //           context: info.context,
+      //           roomInfo: res.data,
+      //         });
+      //       })
+      //       .then(() => {
+      //         setIsConform({
+      //           isConform: false,
+      //         });
+      //         handleDeleteInputMessage();
+      //         setIsOpen(false);
+      //       });
+      //   } catch (err) {
+      //     console.log('makeRoom post', err);
+      //   }
+      // } else {
+      //   handleDeleteInputMessage();
+      // }
     }
   };
   return (
