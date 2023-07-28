@@ -13,31 +13,33 @@ export default function MakeDdukddak() {
   const [isConform, setIsConform] = useContext(ModalContext);
   const [info, setInfo] = useContext(AppContext);
 
+  const makeRoomPost = async () => {
+    try {
+      await axios
+        .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
+        .then((res) => {
+          console.log('makeRoom response', res.data);
+          setInfo({
+            ddukddak: !info.ddukddak,
+            context: info.context,
+            roomInfo: res.data,
+          });
+        })
+        .then(() => {
+          setIsConform({
+            isConform: false,
+          });
+          handleDeleteInputMessage();
+          setIsOpen(false);
+        });
+    } catch (err) {
+      console.log('makeRoom post', err);
+    }
+  };
+
   useEffect(() => {
     if (isConform.isConform) {
-      async () => {
-        try {
-          await axios
-            .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
-            .then((res) => {
-              console.log('makeRoom response', res.data);
-              setInfo({
-                ddukddak: !info.ddukddak,
-                context: info.context,
-                roomInfo: res.data,
-              });
-            })
-            .then(() => {
-              setIsConform({
-                isConform: false,
-              });
-              handleDeleteInputMessage();
-              setIsOpen(false);
-            });
-        } catch (err) {
-          console.log('makeRoom post', err);
-        }
-      };
+      makeRoomPost();
     }
   }, [isConform.isConform]);
 
