@@ -1,40 +1,48 @@
 import useHandleInputMessage from '@/libs/inputMessage';
 import Button from './button';
 import { useContext, useState } from 'react';
-import { AppContext } from '@/pages';
+import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import getCookieValue from '@/libs/getCookieValue';
 import Modal from './modal';
 
 export default function MakeDdukddak() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
-  const [info, setInfo] = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [isConform, setIsConform] = useState(false);
+  const [isConform, setIsConform] = useContext(ModalContext);
+  const [info, setInfo] = useContext(AppContext);
 
   const makeRoom = async () => {
     // 방을 만드는 버튼을 누르면
     // input에 들어간 내용과 누가 만들었는지 전달하자!
-    setIsOpen(true);
-    try {
-      await axios
-        .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
-        .then((res) => {
-          console.log('makeRoom response', res.data);
-          setInfo({
-            ddukddak: !info.ddukddak,
-            context: info.context,
-            roomInfo: res.data,
-          });
+    if (inputMessage) {
+      setIsOpen(true);
+      if (isConform) {
+        try {
+          await axios
+            .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
+            .then((res) => {
+              console.log('makeRoom response', res.data);
+              setInfo({
+                ddukddak: !info.ddukddak,
+                context: info.context,
+                roomInfo: res.data,
+              });
+            });
+        } catch (err) {
+          console.log('makeRoom post', err);
+        }
+        handleDeleteInputMessage();
+        setIsConform({
+          isConform: false,
         });
-    } catch (err) {
-      console.log('makeRoom post', err);
+        setIsOpen(false);
+      }
     }
-    handleDeleteInputMessage();
   };
   return (
     <div className="flex justify-center items-center xl:col-span-2">
-      <Modal title="방만들기" subText={`${inputMessage}로 방을 만듭니다.`} />
+      {isOpen ? <Modal title="방만들기" subText={`${inputMessage}로 방을 만듭니다.`} setIsOpen={setIsOpen} /> : null}
       <div className="flex flex-col justify-center items-center">
         {/* 뚝딱 만들기  */}
         <div className="my-flex-center space-y-4 bg-violet-600 rounded-3xl shadow-xl relative py-6 px-10">

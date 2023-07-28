@@ -57,20 +57,22 @@ export default function PublicChatting() {
   });
 
   const sendHandler = () => {
-    try {
-      client.current?.send(
-        '/pub/chat/message/public',
-        {},
-        JSON.stringify({
-          roomId: roomId,
-          sender: intraId,
-          message: inputMessage,
-        }),
-      );
-    } catch (error) {
-      console.log(error);
+    if (inputMessage) {
+      try {
+        client.current?.send(
+          '/pub/chat/message/public',
+          {},
+          JSON.stringify({
+            roomId: roomId,
+            sender: intraId,
+            message: inputMessage,
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      handleDeleteInputMessage();
     }
-    handleDeleteInputMessage();
   };
 
   useEffect(() => {

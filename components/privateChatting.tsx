@@ -94,20 +94,22 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   ));
 
   const sendHandler = () => {
-    try {
-      client.current?.send(
-        '/pub/chat/message/private',
-        {},
-        JSON.stringify({
-          roomId: info.roomInfo?.roomId,
-          sender: intraId,
-          message: inputMessage,
-        }),
-      );
-    } catch (error) {
-      console.log('send', error);
+    if (inputMessage) {
+      try {
+        client.current?.send(
+          '/pub/chat/message/private',
+          {},
+          JSON.stringify({
+            roomId: info.roomInfo?.roomId,
+            sender: intraId,
+            message: inputMessage,
+          }),
+        );
+      } catch (error) {
+        console.log('send', error);
+      }
+      handleDeleteInputMessage();
     }
-    handleDeleteInputMessage();
   };
 
   const connectHandler = (id: number) => {
