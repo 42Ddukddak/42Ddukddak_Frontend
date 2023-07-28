@@ -17,7 +17,7 @@ export default function MakeDdukddak() {
     // input에 들어간 내용과 누가 만들었는지 전달하자!
     if (inputMessage) {
       setIsOpen(true);
-      if (isConform) {
+      if (isConform.isConform) {
         try {
           await axios
             .post('/api/chat/ddukddak', { roomName: inputMessage, login: getCookieValue('intraId') })
