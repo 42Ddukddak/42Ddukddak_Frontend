@@ -200,7 +200,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => (
-    <div key={idx} className="flex items-start text-gray-800 space-x-2 text-sm">
+    <div key={idx} className="">
       <div
         className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex flex-col justify-end items-end pr-10')}
       >
