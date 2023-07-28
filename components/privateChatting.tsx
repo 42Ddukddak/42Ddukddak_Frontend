@@ -91,7 +91,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         async () => {
           try {
             await axios
-              .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`)
+              .post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`)
               .then((res) =>
                 res.status === 200
                   ? setInfo({
@@ -219,6 +219,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onReservation = () => {
     type = 'reservation';
     [(title = ModalMessage.RESERVATION.title), (subText = info.roomInfo?.roomName + ModalMessage.RESERVATION.subText)];
+    console.log(title, subText);
     setIsOpen(true);
   };
 
