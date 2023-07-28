@@ -63,7 +63,15 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onLeave = () => {
     if (info.roomInfo?.login === intraId) {
       if (confirm('방장이 방을 떠나면 방이 사라집니다. 나가시나여??')) {
-        alert('응 못나가~~~');
+        async () => {
+          try {
+            await axios
+              .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId}`)
+              .then((res) => console.log(res.data));
+          } catch (err) {
+            console.log(err);
+          }
+        };
       }
     }
     setInfo({
