@@ -127,8 +127,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 'leave' button 클릭 이벤트
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
-      [(title = ModalMessage.HOSTLEAVE.title), (subText = ModalMessage.HOSTLEAVE.subText)];
       type = 'hostLeave';
+      [(title = ModalMessage.HOSTLEAVE.title), (subText = ModalMessage.HOSTLEAVE.subText)];
       setIsOpen(true);
     } else {
       setInfo({
@@ -200,9 +200,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => (
-    <div key={idx} className="">
+    <div key={idx} className="w-full">
       <div
-        className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex flex-col justify-end items-end pr-10')}
+        className={cls(item.sender === intraId ? 'flex-row-reverse' : '', 'flex flex-col justify-end items-end pr-10')}
       >
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
           <span className="text-sm text-gray-600 font-light mr-2">{formatTime(item.time)} </span>
