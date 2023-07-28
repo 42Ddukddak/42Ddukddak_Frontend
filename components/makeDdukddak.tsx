@@ -52,7 +52,7 @@ export default function MakeDdukddak() {
       {isOpen ? (
         <Modal
           title={`${ModalMessage.MAKE_ROOM.title}`}
-          subText={`${ModalMessage.MAKE_ROOM.subText}로 방을 만듭니다.`}
+          subText={`${inputMessage} ${ModalMessage.MAKE_ROOM.subText}`}
           setIsOpen={setIsOpen}
         />
       ) : null}

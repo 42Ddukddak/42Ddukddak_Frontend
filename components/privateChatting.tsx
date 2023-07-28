@@ -184,6 +184,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               setChatMessage(JSON.parse(message.body));
               if (message.body === '"OK"') {
                 setRoomIsGone(true);
+                console.log('방이 사라졌습니다.');
               }
             },
             {
