@@ -9,7 +9,7 @@ interface ButtonProps {
 }
 
 export default function Button({ svg, text, cancel }: ButtonProps) {
-  const [, setIsConform] = useContext(ModalContext);
+  const [isConform, setIsConform] = useContext(ModalContext);
 
   const onClick = () => {
     if (!cancel && text) {
