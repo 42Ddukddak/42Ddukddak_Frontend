@@ -40,8 +40,8 @@ export default function WholeDdukddak() {
   }, [isConfirm.isConfirm]);
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
-    setIsOpen(true);
     setTarget(event.currentTarget.getAttribute('data-custom'));
+    setIsOpen(true);
   };
 
   return (
