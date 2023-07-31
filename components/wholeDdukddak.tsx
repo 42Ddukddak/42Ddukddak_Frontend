@@ -11,7 +11,7 @@ export default function WholeDdukddak() {
   const [roomList, setRoomList] = useState<Array<IResponse>>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
-  const [target, setTarget] = useState();
+  const [target, setTarget] = useState<IResponse | null>(null);
 
   useEffect(() => {
     const fetchRoomList = async () => {
@@ -62,7 +62,7 @@ export default function WholeDdukddak() {
         {roomList.map((item, i) => (
           <div
             key={i}
-            data-custom={JSON.stringify(roomList[i])}
+            data-custom={JSON.stringify(item)}
             onClick={onClick}
             className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer"
           >
