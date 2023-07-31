@@ -11,7 +11,7 @@ export default function WholeDdukddak() {
   const [roomList, setRoomList] = useState<Array<IResponse>>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
-  const [target, setTarget] = useState<string | null>(null);
+  const [target, setTarget] = useState();
 
   useEffect(() => {
     const fetchRoomList = async () => {
@@ -31,7 +31,7 @@ export default function WholeDdukddak() {
         setInfo({
           ddukddak: true,
           context: info.context,
-          roomInfo: JSON.parse(target),
+          roomInfo: target,
         });
         setIsConfirm({ isConfirm: false });
         setIsOpen(false);
@@ -40,17 +40,20 @@ export default function WholeDdukddak() {
   }, [isConfirm.isConfirm]);
 
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
-    setTarget(event.currentTarget.getAttribute('data-custom'));
-    setIsOpen(true);
+    const t = event.currentTarget.getAttribute('data-custom');
+    if (t !== null) {
+      setTarget(JSON.parse(t));
+      setIsOpen(true);
+    }
   };
 
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
-      {isOpen ? (
+      {isOpen && target ? (
         <Modal
           title={ModalMessage.ENTER_ROOM.title}
-          subText={`${target} ${ModalMessage.ENTER_ROOM.subText}`}
+          subText={`${target.roomName} ${ModalMessage.ENTER_ROOM.subText}`}
           setIsOpen={setIsOpen}
         />
       ) : null}
