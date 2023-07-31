@@ -41,7 +41,7 @@ export default function MakeDdukddak() {
 
   useEffect(() => {
     if (isConfirm.isConfirm) {
-      if (inputMessage && isCreate) {
+      if (isCreate) {
         makeRoomPost();
       }
     }
