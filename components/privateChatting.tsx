@@ -90,15 +90,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // @@@@ 방장 떠났을 때
   const requestDestroy = async () => {
     try {
-      await axios
-        .post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`)
-        .then((res) => {
-          res.status === 200 ? setRoomIsGone(true) : alert('내보내기 실패했습니다.');
-        })
-        .then(() => {
-          setIsConfirm({ isConfirm: false });
-          setIsOpen(false);
-        });
+      await axios.post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`).then(() => {
+        setIsConfirm({ isConfirm: false });
+        setIsOpen(false);
+      });
     } catch (err) {
       console.log('requestDestroy err: ', err);
     }
