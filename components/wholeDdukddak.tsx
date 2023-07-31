@@ -27,6 +27,7 @@ export default function WholeDdukddak() {
 
   useEffect(() => {
     if (isConfirm.isConfirm) {
+      console.log('target: ', target);
       if (target) {
         setInfo({
           ddukddak: true,
