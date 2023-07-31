@@ -1,13 +1,17 @@
 import { useContext, useEffect, MouseEvent, useState } from 'react';
 import RightBlockHeader from './rightBlockHeader';
-import { AppContext } from '@/pages';
+import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import { IResponse } from '@/interface/Context';
 import Modal from './modal';
+import { ModalMessage } from '@/const/modalMessage';
 
 export default function WholeDdukddak() {
   const [info, setInfo] = useContext(AppContext);
   const [roomList, setRoomList] = useState<Array<IResponse>>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isConfirm, setIsConfirm] = useContext(ModalContext);
+  const [target, setTarget] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRoomList = async () => {
@@ -21,26 +25,39 @@ export default function WholeDdukddak() {
     fetchRoomList();
   }, []);
 
-  const confirmEnter = () => {};
-  const onClick = (event: MouseEvent<HTMLDivElement>) => {
-    const target = event.currentTarget.getAttribute('data-custom');
-    if (target) {
-      setInfo({
-        ddukddak: true,
-        context: info.context,
-        roomInfo: JSON.parse(target),
-      });
+  useEffect(() => {
+    if (isConfirm.isConfirm) {
+      if (target) {
+        setInfo({
+          ddukddak: true,
+          context: info.context,
+          roomInfo: JSON.parse(target),
+        });
+        setIsConfirm({ isConfirm: false });
+        setIsOpen(false);
+      }
     }
+  }, [isConfirm.isConfirm]);
+
+  const onClick = (event: MouseEvent<HTMLDivElement>) => {
+    setTarget(event.currentTarget.getAttribute('data-custom'));
+    setIsOpen(true);
   };
+
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
-      {/* <Modal title="해당 방에 들어가시겠습니까?" subText="제발 " /> */}
+      {isOpen ? (
+        <Modal
+          title={ModalMessage.ENTER_ROOM.title}
+          subText={`${target} ${ModalMessage.ENTER_ROOM.subText}`}
+          setIsOpen={setIsOpen}
+        />
+      ) : null}
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {roomList.map((item, i) => (
           <div
             key={i}
-            // data-custom={[item.roomId, item.roomName, item.participantsNum, item.remainingTime, item.login]}
             data-custom={JSON.stringify(roomList[i])}
             onClick={onClick}
             className="flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer"

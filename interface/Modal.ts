@@ -1,3 +1,3 @@
 export interface IModal {
-  isConform?: boolean;
+  isConfirm?: boolean;
 }

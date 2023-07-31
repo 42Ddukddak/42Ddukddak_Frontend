@@ -33,9 +33,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [changeValues, setChangeValues] = useState<IChangeValues>();
   const [roomIsGone, setRoomIsGone] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [isConform, setIsConform] = useContext(ModalContext);
+  const [isConfirm, setIsConfirm] = useContext(ModalContext);
   let [title, subText]: string[] = ['', ''];
-  let type: string = '';
+  const [type, setType] = useState<string>('');
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
             : alert('내보내기 실패했습니다.');
         })
         .then(() => {
-          setIsConform({ isConform: false });
+          setIsConfirm({ isConfirm: false });
           setIsOpen(false);
         });
     } catch (err) {
@@ -115,7 +115,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
         })
         .then(() => {
-          setIsConform({ isConform: false });
+          setIsConfirm({ isConfirm: false });
           setIsOpen(false);
         });
     } catch (err) {
@@ -125,19 +125,19 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // modal 반응 함수 (방장이 방떠남, 예약확정) @@@@
   useEffect(() => {
-    if (isConform.isConform) {
+    if (isConfirm.isConfirm) {
       if (type === 'hostLeave') {
         requestDestroy();
       } else if (type === 'reservation') {
         requestReservation();
       }
     }
-  }, [isConform.isConform]);
+  }, [isConfirm.isConfirm]);
 
   // 'leave' button 클릭 이벤트
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
-      type = 'hostLeave';
+      setType('hostLeave');
       [(title = ModalMessage.HOSTLEAVE.title), (subText = ModalMessage.HOSTLEAVE.subText)];
       setIsOpen(true);
     } else {
@@ -151,7 +151,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
-    type = 'reservation';
+    setType('reservation');
     [
       (title = ModalMessage.RESERVATION.title),
       (subText = `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`),

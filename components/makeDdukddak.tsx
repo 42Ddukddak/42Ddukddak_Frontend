@@ -10,7 +10,7 @@ import { ModalMessage } from '@/const/modalMessage';
 export default function MakeDdukddak() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
   const [isOpen, setIsOpen] = useState(false);
-  const [isConform, setIsConform] = useContext(ModalContext);
+  const [isConfirm, setIsConfirm] = useContext(ModalContext);
   const [info, setInfo] = useContext(AppContext);
 
   const makeRoomPost = async () => {
@@ -26,8 +26,8 @@ export default function MakeDdukddak() {
           });
         })
         .then(() => {
-          setIsConform({
-            isConform: false,
+          setIsConfirm({
+            isConfirm: false,
           });
           handleDeleteInputMessage();
           setIsOpen(false);
@@ -38,10 +38,10 @@ export default function MakeDdukddak() {
   };
 
   useEffect(() => {
-    if (isConform.isConform) {
+    if (isConfirm.isConfirm) {
       makeRoomPost();
     }
-  }, [isConform.isConform]);
+  }, [isConfirm.isConfirm]);
 
   const makeRoom = () => {
     if (inputMessage) {
