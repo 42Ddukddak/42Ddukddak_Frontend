@@ -83,43 +83,53 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   }, [roomIsGone]);
 
+  // @@@@ 방장 떠났을 때
+  const requestDestroy = async () => {
+    try {
+      await axios
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`)
+        .then((res) => {
+          res.status === 200
+            ? setInfo({
+                ddukddak: !info.ddukddak,
+                context: info.context,
+                roomInfo: undefined,
+              })
+            : alert('내보내기 실패했습니다.');
+        })
+        .then(() => {
+          setIsConform({ isConform: false });
+          setIsOpen(false);
+        });
+    } catch (err) {
+      console.log('requestDestroy err: ', err);
+    }
+  };
+
+  // @@@@ 예약 확정
+  const requestReservation = async () => {
+    try {
+      await axios
+        .post(`/api/reserved/${info.roomInfo?.roomId}`, info.roomInfo)
+        .then((res) => {
+          res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
+        })
+        .then(() => {
+          setIsConform({ isConform: false });
+          setIsOpen(false);
+        });
+    } catch (err) {
+      console.log('requestReservation err: ', err);
+    }
+  };
+
   // modal 반응 함수 (방장이 방떠남, 예약확정) @@@@
   useEffect(() => {
     if (isConform.isConform) {
       if (type === 'hostLeave') {
-        // @@@@ 방장 떠났을 때
-        async () => {
-          try {
-            await axios
-              .post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`)
-              .then((res) =>
-                res.status === 200
-                  ? setInfo({
-                      ddukddak: !info.ddukddak,
-                      context: info.context,
-                      roomInfo: undefined,
-                    })
-                  : alert('내보내기 실패했습니다.'),
-              )
-              .then(() => {
-                setIsConform({ isConform: false });
-                setIsOpen(false);
-              });
-          } catch (err) {
-            console.log(err);
-          }
-        };
+        requestDestroy();
       } else if (type === 'reservation') {
-        // @@@@ 예약 확정
-        async () => {
-          try {
-            await axios.post(`/api/reserved/${info.roomInfo?.roomId}`, info.roomInfo).then((res) => {
-              res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
-            });
-          } catch (err) {
-            console.log(err);
-          }
-        };
+        requestReservation();
       }
     }
   }, [isConform.isConform]);
@@ -137,6 +147,16 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         roomInfo: undefined,
       });
     }
+  };
+
+  // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
+  const onReservation = () => {
+    type = 'reservation';
+    [
+      (title = ModalMessage.RESERVATION.title),
+      (subText = `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`),
+    ];
+    setIsOpen(true);
   };
 
   // 채팅 메시지 보내기
@@ -214,14 +234,6 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       </div>
     </div>
   ));
-
-  // 예약 확정
-  const onReservation = () => {
-    type = 'reservation';
-    [(title = ModalMessage.RESERVATION.title), (subText = info.roomInfo?.roomName + ModalMessage.RESERVATION.subText)];
-    console.log(title, subText);
-    setIsOpen(true);
-  };
 
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
