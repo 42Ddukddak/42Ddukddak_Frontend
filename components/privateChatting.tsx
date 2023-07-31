@@ -124,7 +124,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const requestLeave = async () => {
     try {
       await axios
-        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId} ${intraId}`)
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, {
+          roomId: `${info.roomInfo?.roomId}`,
+          intraId: `${intraId}`,
+        })
         .then((res) => {
           res.status === 200
             ? setInfo({
@@ -132,7 +135,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
                 context: info.context,
                 roomInfo: undefined,
               })
-            : alert('내보내기 실패했습니다.');
+            : console.log('leave 실패');
         })
         .then(() => {
           setIsConfirm({ isConfirm: false });
