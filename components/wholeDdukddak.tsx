@@ -28,7 +28,7 @@ export default function WholeDdukddak() {
   useEffect(() => {
     if (isConfirm.isConfirm) {
       console.log('target: ', target);
-      if (target) {
+      if (target?.roomName) {
         setInfo({
           ddukddak: true,
           context: info.context,

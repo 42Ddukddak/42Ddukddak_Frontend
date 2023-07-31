@@ -1,8 +1,8 @@
 import Button from './button';
 
 type ModalProps = {
-  title: string;
-  subText: string;
+  title?: string;
+  subText?: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

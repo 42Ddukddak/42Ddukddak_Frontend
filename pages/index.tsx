@@ -15,7 +15,7 @@ export const AppContext = createContext<IDdukddakContext>([{}, () => null]);
 export const ModalContext = createContext<IModalContext>([{ isConfirm: false }, () => null]);
 
 export default function Home() {
-  const [info, setInfo] = useState<IContext>({ context: true, ddukddak: false });
+  const [info, setInfo] = useState<IContext>({});
   const [isConfirm, setIsConfirm] = useState<IModal>({ isConfirm: false });
   const route = useRouter();
 
