@@ -124,7 +124,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const requestLeave = async () => {
     try {
       await axios
-        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: intraId })
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId: intraId } })
         .then((res) => {
           res.status === 200
             ? setInfo({
