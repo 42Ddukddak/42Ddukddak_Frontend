@@ -27,7 +27,7 @@ export default function Home() {
   });
 
   return (
-    <Layout logo>
+    <Layout>
       <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen">
         <AppContext.Provider value={[info, setInfo]}>
           <ModalContext.Provider value={[isConfirm, setIsConfirm]}>
