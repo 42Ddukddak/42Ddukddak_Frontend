@@ -9,4 +9,5 @@ export const ModalMessage = {
   RESERVATION_Cancel: { title: '', subText: '' },
   CHANGE_ROOM: { title: '❗️방 이동 경고❗️', subText: '채팅방은 ⒈개만 들어가실 수 있어요. 현재 방을 떠나시나요?' },
   ENTER_ROOM: { title: '👏방 입장👋', subText: '해당 방에 들어가시겠습니까?? 💬' },
+  LEAVE: { title: '방 나가기👋', subText: '해당 방을 정말로 떠나시겠습니까?🙊' },
 };

@@ -121,6 +121,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   };
 
+  // 유저가 방 떠나기
   const requestLeave = async () => {
     try {
       await axios
@@ -164,6 +165,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       setIsOpen(true);
     } else {
       setType('guest');
+      setText({ title: ModalMessage.LEAVE.title, subText: ModalMessage.LEAVE.subText });
       setIsOpen(true);
     }
   };
