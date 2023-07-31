@@ -12,6 +12,7 @@ export default function MakeDdukddak() {
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
   const [info, setInfo] = useContext(AppContext);
+  const [isCreate, setIsCreate] = useState(false);
 
   const makeRoomPost = async () => {
     try {
@@ -31,6 +32,7 @@ export default function MakeDdukddak() {
           });
           handleDeleteInputMessage();
           setIsOpen(false);
+          setIsCreate(false);
         });
     } catch (err) {
       console.log('makeRoom post', err);
@@ -39,7 +41,7 @@ export default function MakeDdukddak() {
 
   useEffect(() => {
     if (isConfirm.isConfirm) {
-      if (inputMessage) {
+      if (inputMessage && isCreate) {
         makeRoomPost();
       }
     }
@@ -47,6 +49,7 @@ export default function MakeDdukddak() {
 
   const makeRoom = () => {
     if (inputMessage) {
+      setIsCreate(true);
       setIsOpen(true);
     }
   };
