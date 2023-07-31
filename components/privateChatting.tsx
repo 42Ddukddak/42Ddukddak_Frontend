@@ -263,9 +263,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               </span>
             </div>
           </div>
-          <span className="text-gray-400 text-sm">
-            방 폭파까지 {changeValues?.remainingTime || info.roomInfo?.remainingTime}분 남았습니다.
-          </span>
+          {mypage ? null : (
+            <span className="text-gray-400 text-sm">
+              방 폭파까지 {changeValues?.remainingTime || info.roomInfo?.remainingTime}분 남았습니다.
+            </span>
+          )}
         </div>
         {mypage ? null : (
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
