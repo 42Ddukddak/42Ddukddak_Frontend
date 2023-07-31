@@ -1,14 +1,14 @@
 import JoinedDdukddak from '@/components/joinedDdukddak';
 import Layout from '@/components/layout';
 import PrivateChatting from '@/components/privateChatting';
+import { IResponse } from '@/interface/Context';
 import { createContext, useState } from 'react';
 
-type Contents = { contents?: Object };
-type IContents = [Contents, React.Dispatch<React.SetStateAction<Contents>>];
+type IContents = [IResponse | null, React.Dispatch<React.SetStateAction<IResponse>>];
 
-export const AppContents = createContext<IContents>([{}, () => null]);
+export const AppContents = createContext<IContents>([null, () => null]);
 export default function Mypage() {
-  const [contents, setContexts] = useState<Contents>({ contents: 'aa' });
+  const [contents, setContexts] = useState<IContents>([null, () => null]);
 
   return (
     <Layout logo>
