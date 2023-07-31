@@ -22,6 +22,10 @@ interface IChangeValues {
   participantsNum?: number;
 }
 
+type IText = {
+  title: string;
+  subText: string;
+};
 export default function PrivateChatting({ mypage }: IMypageProps) {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
@@ -34,7 +38,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [roomIsGone, setRoomIsGone] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
-  let [title, subText]: string[] = ['', ''];
+  const [text, setText] = useState<IText>();
   const [type, setType] = useState<string>('');
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
@@ -138,7 +142,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
       setType('hostLeave');
-      [(title = ModalMessage.HOSTLEAVE.title), (subText = ModalMessage.HOSTLEAVE.subText)];
+      setText({ title: ModalMessage.HOSTLEAVE.title, subText: ModalMessage.HOSTLEAVE.subText });
       setIsOpen(true);
     } else {
       setInfo({
@@ -152,10 +156,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
     setType('reservation');
-    [
-      (title = ModalMessage.RESERVATION.title),
-      (subText = `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`),
-    ];
+    setText({
+      title: ModalMessage.RESERVATION.title,
+      subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,
+    });
     setIsOpen(true);
   };
 
@@ -237,7 +241,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
-      {isOpen ? <Modal title={title} subText={subText} setIsOpen={setIsOpen} /> : null}
+      {isOpen ? <Modal title={text?.title} subText={text?.subText} setIsOpen={setIsOpen} /> : null}
       {/* 상단 바 */}
       <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
         <div className="flex flex-col pl-5">
