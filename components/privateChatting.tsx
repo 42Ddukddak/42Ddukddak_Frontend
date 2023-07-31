@@ -93,13 +93,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       await axios
         .post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`)
         .then((res) => {
-          res.status === 200
-            ? setInfo({
-                ddukddak: !info.ddukddak,
-                context: info.context,
-                roomInfo: undefined,
-              })
-            : alert('내보내기 실패했습니다.');
+          res.status === 200 ? setRoomIsGone(true) : alert('내보내기 실패했습니다.');
         })
         .then(() => {
           setIsConfirm({ isConfirm: false });
@@ -127,6 +121,28 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     }
   };
 
+  const requestLeave = async () => {
+    try {
+      await axios
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, `${info.roomInfo?.roomId} ${intraId}`)
+        .then((res) => {
+          res.status === 200
+            ? setInfo({
+                ddukddak: !info.ddukddak,
+                context: info.context,
+                roomInfo: undefined,
+              })
+            : alert('내보내기 실패했습니다.');
+        })
+        .then(() => {
+          setIsConfirm({ isConfirm: false });
+          setIsOpen(false);
+        });
+    } catch (err) {
+      console.log('request Leave: ', err);
+    }
+  };
+
   // modal 반응 함수 (방장이 방떠남, 예약확정) @@@@
   useEffect(() => {
     if (isConfirm.isConfirm) {
@@ -134,6 +150,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         requestDestroy();
       } else if (type === 'reservation') {
         requestReservation();
+      } else if (type === 'guest') {
+        requestLeave();
       }
     }
   }, [isConfirm.isConfirm]);
@@ -145,11 +163,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       setText({ title: ModalMessage.HOSTLEAVE.title, subText: ModalMessage.HOSTLEAVE.subText });
       setIsOpen(true);
     } else {
-      setInfo({
-        ddukddak: !info.ddukddak,
-        context: info.context,
-        roomInfo: undefined,
-      });
+      setType('guest');
+      setIsOpen(true);
     }
   };
 
