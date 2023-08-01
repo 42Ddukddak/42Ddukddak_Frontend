@@ -20,7 +20,7 @@ interface IMypageProps {
 
 interface IChangeValues {
   remainingTime?: number;
-  participantsNum?: number;
+  participantsNum: number;
 }
 
 export default function PrivateChatting({ mypage }: IMypageProps) {
@@ -31,7 +31,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [info, setInfo] = useContext(AppContext);
   const intraId = getCookieValue('intraId');
-  const [changeValues, setChangeValues] = useState<IChangeValues>();
+  const [changeValues, setChangeValues] = useState<IChangeValues>({ participantsNum: 0 });
   const [roomIsGone, setRoomIsGone] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
@@ -169,7 +169,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
-    if (info.roomInfo?.participantsNum !== 1 || changeValues?.participantsNum !== 1) {
+    if (changeValues?.participantsNum > 0) {
       setType('reservation');
       setText({
         title: ModalMessage.RESERVATION.title,
