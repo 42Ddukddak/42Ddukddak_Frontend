@@ -82,8 +82,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         alert(Message.ROOM_DESTROYED);
       }
       setInfo({
-        ddukddak: !info.ddukddak,
-        context: !info.context,
+        ddukddak: false,
+        context: false,
         roomInfo: undefined,
       });
     }
@@ -126,8 +126,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         .then((res) => {
           res.status === 200
             ? setInfo({
-                ddukddak: !info.ddukddak,
-                context: info.context,
+                ddukddak: false,
+                context: false,
                 roomInfo: undefined,
               })
             : console.log('leave 실패');
