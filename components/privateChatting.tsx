@@ -169,7 +169,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
-    if (changeValues?.participantsNum !== 1) {
+    if (info.roomInfo?.participantsNum !== 1 || changeValues?.participantsNum !== 1) {
       setType('reservation');
       setText({
         title: ModalMessage.RESERVATION.title,
