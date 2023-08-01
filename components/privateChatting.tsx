@@ -83,7 +83,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       }
       setInfo({
         ddukddak: !info.ddukddak,
-        context: info.context,
+        context: !info.context,
         roomInfo: undefined,
       });
     }
@@ -224,6 +224,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
                 setRoomIsGone(true);
               } else if (message.body === '1001') {
                 alert(Message.THREE_MINUTE_LEFT);
+              } else if (message.body === '1002') {
+                setRoomIsGone(true);
               } else {
                 setChatMessage(JSON.parse(message.body));
               }
