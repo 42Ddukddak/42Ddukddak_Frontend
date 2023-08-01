@@ -11,7 +11,7 @@ export default function Mypage() {
   const [contents, setContexts] = useState<IContents>([null, () => null]);
 
   return (
-    <Layout logo>
+    <Layout>
       <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen">
         <AppContents.Provider value={[contents, setContexts]}>
           <JoinedDdukddak />
