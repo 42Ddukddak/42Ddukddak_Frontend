@@ -40,6 +40,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
   const [text, setText] = useState<IText>();
   const [type, setType] = useState<string>('');
+  const [hostLeave, setHostLeave] = useState(false);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -78,7 +79,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 방장이 방을 떠났을 때 폭파
   useEffect(() => {
     if (roomIsGone) {
-      alert(Message.HOSTLEAVE);
+      if (hostLeave) {
+        alert(Message.HOSTLEAVE);
+      } else {
+        alert(Message.ROOM_DESTROYED);
+      }
       setInfo({
         ddukddak: !info.ddukddak,
         context: info.context,
@@ -93,6 +98,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       await axios.post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`).then(() => {
         setIsConfirm({ isConfirm: false });
         setIsOpen(false);
+        setHostLeave(true);
       });
     } catch (err) {
       console.log('requestDestroy err: ', err);
@@ -220,7 +226,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               setChatMessage(JSON.parse(message.body));
               if (message.body === '"OK"') {
                 setRoomIsGone(true);
-                console.log('방이 사라졌습니다.');
+              } else if (message.body === '"1001"') {
+                console.log(message.body);
+                console.log(message);
+                alert(Message.THREE_MINUTE_LEFT);
               }
             },
             {
@@ -237,14 +246,14 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => (
     <div key={idx}>
-      <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-10')}>
+      <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
           <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
           <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
             <p>{item.message}</p>
           </div>
         </div>
-        <span className="text-xs text-gray-600 mr-1">신고</span>
+        {info.roomInfo?.login === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
       </div>
     </div>
   ));
