@@ -32,9 +32,9 @@ export default function Layout({ children }: LayoutProps) {
         </div>
         {/* Speed Dial 액션들 */}
         {showBtn && (
-          <div className="space-y-3 flex flex-col">
+          <div className="mt-2 space-y-2 flex flex-col">
             <Link href={'/'}>
-              <button className=" rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+              <button className="bg-white rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path fill="currentColor" fill-opacity="0" d="M6 8L12 3L18 8V20H16V13L15 12H9L8 13V20H6V8Z">
                     <animate fill="freeze" attributeName="fill-opacity" begin="0.9s" dur="0.15s" values="0;0.3" />
@@ -57,12 +57,12 @@ export default function Layout({ children }: LayoutProps) {
               </button>
             </Link>
             <Link href={'/mypage'}>
-              <button className=" rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+              <button className="bg-white rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
                 My
               </button>
             </Link>
             <Link href={'/developer'}>
-              <button className=" rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+              <button className="bg-white rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -72,7 +72,7 @@ export default function Layout({ children }: LayoutProps) {
               </button>
             </Link>
             <Link href={'/logout'}>
-              <button className=" rounded-full self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+              <button className="bg-white rounded-full self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
                   <path
                     fill="currentColor"

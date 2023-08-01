@@ -82,7 +82,7 @@ export default function Developer() {
             <div className="ml-2 flex flex-col text-gray-700">
               <div className="w-20 font-semibold p-1 mt-2 rounded-2xl border bg-violet-500 text-white">Backend</div>
               <div className="flex flex-col justify-start items-start m-2">
-                <h1 className="font-semibold">sohyupar</h1>
+                <h1 className="font-semibold">suhwpark</h1>
                 <span className="text-gray-500">
                   안녕하세요. 저는 귀여운 것들을 좋아합니다. 그래서 저도 너무 좋아하죠.🤮
                 </span>
