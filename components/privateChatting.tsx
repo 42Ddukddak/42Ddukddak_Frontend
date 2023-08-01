@@ -147,7 +147,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       if (type === 'hostLeave') {
         requestDestroy();
       } else if (type === 'reservation') {
-        requestReservation();
+        if (info.roomInfo?.participantsNum !== 1) {
+          requestReservation();
+        }
       } else if (type === 'guest') {
         requestLeave();
       }
