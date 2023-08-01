@@ -220,11 +220,12 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           client.current?.subscribe(
             `/sub/chat/room/${id}`,
             (message) => {
-              if (JSON.parse(message.body)) setChatMessage(JSON.parse(message.body));
               if (message.body === '"OK"') {
                 setRoomIsGone(true);
               } else if (message.body === '"1001"') {
                 alert(Message.THREE_MINUTE_LEFT);
+              } else {
+                setChatMessage(JSON.parse(message.body));
               }
             },
             {

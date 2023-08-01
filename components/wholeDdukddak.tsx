@@ -15,6 +15,7 @@ export default function WholeDdukddak() {
   const [target, setTarget] = useState<IResponse | null>(null);
   const [text, setText] = useState<IText>();
 
+  // 처음 마운트 되면 roomList 가져오기
   useEffect(() => {
     const fetchRoomList = async () => {
       try {
@@ -27,6 +28,7 @@ export default function WholeDdukddak() {
     fetchRoomList();
   }, []);
 
+  // 모달 상황에 따른 행동 (방들어가기)
   useEffect(() => {
     if (isConfirm.isConfirm) {
       if (target?.roomName) {
@@ -41,6 +43,7 @@ export default function WholeDdukddak() {
     }
   }, [isConfirm.isConfirm]);
 
+  // 방 클릭 이벤트 리스너
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     const t = event.currentTarget.getAttribute('data-custom');
     if (t !== null) {
