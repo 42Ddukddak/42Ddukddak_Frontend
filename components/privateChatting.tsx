@@ -58,8 +58,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 새로 들어온 사람 기존 방 채팅 내역 가져오기
   const loadChattingMessage = async () => {
     try {
-      const response = await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`);
-      setChatMessageList(response.data);
+      await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`).then((response) => {
+        setChatMessageList(response.data);
+      });
     } catch (err) {
       console.log('private chatting get', err);
     }
@@ -170,7 +171,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
     // 1번은 0 아니면 2(채팅 쳤을 때) 2번은 1
-    if (chatMessageList[-1].participantsNum > 1 || info.roomInfo?.participantsNum !== 1) {
+    if (chatMessageList[-1].participantsNum > 1 || info.roomInfo?.participantsNum !==) {
       setType('reservation');
       setText({
         title: ModalMessage.RESERVATION.title,
