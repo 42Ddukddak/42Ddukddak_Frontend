@@ -222,7 +222,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
             (message) => {
               if (message.body === '"OK"') {
                 setRoomIsGone(true);
-              } else if (message.body === '"1001"') {
+              } else if (message.body === '1001') {
                 alert(Message.THREE_MINUTE_LEFT);
               } else {
                 setChatMessage(JSON.parse(message.body));
