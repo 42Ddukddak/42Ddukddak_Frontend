@@ -1,8 +1,8 @@
-import { useRouter } from 'next/router';
 import { cls } from '../libs/utils';
 import Image from 'next/image';
 import logoPic from '../public/Ddukddak_logo.png';
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,36 +15,49 @@ function deleteCookie(cookieName: string) {
 
 export default function Layout({ children }: LayoutProps) {
   const [showBtn, setShowBtn] = useState<boolean>(false);
-  const router = useRouter();
-  const onClick = () => {
-    // router.back();
-    // deleteCookie('intraId');
-    setShowBtn(!showBtn);
-    // router.push('/');
-  };
 
   return (
     <div>
       <div className="bg-white text-lg font-medium fixed text-gray-800 top-8 left-8 flex flex-col items-center rounded-full ">
-        <button type="button" onClick={onClick} className="focus:outline-none">
+        <div
+          className={cls(showBtn ? 'animate-spin' : '', 'mb-2 rounded-full flex justify-center items-center')}
+          onClick={() => setShowBtn(!showBtn)}
+        >
           <Image
             src={logoPic}
             alt="logo"
             placeholder="blur"
             className="w-12 h-12 shadow-xl rounded-full border border-gray-400 my-hover"
           />
-        </button>
+        </div>
+        {/* Speed Dial 액션들 */}
         {showBtn && (
-          <div className="flex flex-col space-y-4">
-            <button className="delay-100 transition translate-y-3 duration-1000 ease-in-out opacity-100 hover:opacity-0">
-              1
-            </button>
-            <button className=" animation-delay-200 transition translate-y-5 duration-500 ease-in-out opacity-100 hover:opacity-0">
-              2
-            </button>
-            <button className="delay-300 transition translate-y-7 duration-500 ease-in-out opacity-100 hover:opacity-0">
-              3
-            </button>
+          <div className="space-y-3 flex flex-col">
+            <Link href={'/mypage'}>
+              <button className=" rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+                My
+              </button>
+            </Link>
+            <Link href={'/developer'}>
+              <button className=" rounded-full border self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33c.85 0 1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"
+                  />
+                </svg>
+              </button>
+            </Link>
+            <Link href={'/logout'}>
+              <button className=" rounded-full self-center border-gray-200 w-11 h-11 hover:bg-violet-400 transition shadow-xl my-hover">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                  <path
+                    fill="currentColor"
+                    d="M17 1v1h1v4h-1V5h-1V3H6v16h10v-2h1v-1h1v4h-1v1H5v-1H4V2h1V1h12m-4 5h2v1h1v1h1v1h1v1h1v2h-1v1h-1v1h-1v1h-1v1h-2v-2h1v-1h1v-1H8v-2h7V9h-1V8h-1V6Z"
+                  />
+                </svg>
+              </button>
+            </Link>
           </div>
         )}
       </div>
