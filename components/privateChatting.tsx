@@ -147,9 +147,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       if (type === 'hostLeave') {
         requestDestroy();
       } else if (type === 'reservation') {
-        if (info.roomInfo?.participantsNum !== 1) {
-          requestReservation();
-        }
+        requestReservation();
       } else if (type === 'guest') {
         requestLeave();
       }
@@ -171,12 +169,16 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
-    setType('reservation');
-    setText({
-      title: ModalMessage.RESERVATION.title,
-      subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,
-    });
-    setIsOpen(true);
+    if (info.roomInfo?.participantsNum !== 1) {
+      setType('reservation');
+      setText({
+        title: ModalMessage.RESERVATION.title,
+        subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,
+      });
+      setIsOpen(true);
+    } else {
+      alert('혼자일때 예약해서 뭐하게 임마~~!!');
+    }
   };
 
   // 채팅 메시지 보내기
