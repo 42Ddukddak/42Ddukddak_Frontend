@@ -40,6 +40,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
   const [text, setText] = useState<IText>();
   const [type, setType] = useState<string>('');
+  const [hostLeave, setHostLeave] = useState(false);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -78,7 +79,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // 방장이 방을 떠났을 때 폭파
   useEffect(() => {
     if (roomIsGone) {
-      alert(Message.HOSTLEAVE);
+      if (hostLeave) {
+        alert(Message.HOSTLEAVE);
+      } else {
+        alert(Message.ROOM_DESTROYED);
+      }
       setInfo({
         ddukddak: !info.ddukddak,
         context: info.context,
@@ -93,6 +98,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       await axios.post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`).then(() => {
         setIsConfirm({ isConfirm: false });
         setIsOpen(false);
+        setHostLeave(true);
       });
     } catch (err) {
       console.log('requestDestroy err: ', err);
@@ -221,6 +227,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               if (message.body === '"OK"') {
                 setRoomIsGone(true);
                 console.log('방이 사라졌습니다.');
+              } else if (message.body === '"1001"') {
+                alert(Message.THREE_MINUTE_LEFT);
               }
             },
             {
