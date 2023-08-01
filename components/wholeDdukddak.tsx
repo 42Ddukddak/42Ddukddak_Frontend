@@ -47,7 +47,7 @@ export default function WholeDdukddak() {
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     const t = event.currentTarget.getAttribute('data-custom');
     if (t !== null) {
-      setTarget(JSON.parse(t));
+      setTarget(() => JSON.parse(t));
       if (info.roomInfo?.roomId === target?.roomId) {
         alert('당신이 있는 방이야 이놈아.');
       } else {
@@ -62,10 +62,8 @@ export default function WholeDdukddak() {
             subText: ModalMessage.ENTER_ROOM.subText,
           });
         }
+        setIsOpen(true);
       }
-      setIsOpen(true);
-    } else {
-      alert('이미 폭파된 방입니다. ㅎㅎ');
     }
   };
 

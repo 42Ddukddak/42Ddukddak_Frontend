@@ -105,7 +105,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const requestReservation = async () => {
     try {
       await axios
-        .post(`/api/reserved/${info.roomInfo?.roomId}`, info.roomInfo)
+        .post(`/api/reserved/${info.roomInfo?.roomId}`)
         .then((res) => {
           res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
         })
