@@ -252,7 +252,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
             <p>{item.message}</p>
           </div>
         </div>
-        <span className="text-xs text-gray-600 mr-1">신고</span>
+        {info.roomInfo?.login === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
       </div>
     </div>
   ));
