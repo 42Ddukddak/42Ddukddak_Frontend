@@ -34,7 +34,7 @@ export default function Home() {
             {/* 뚝딱 만들기 or 채팅 방 */}
             {info.ddukddak ? <PrivateChatting /> : <MakeDdukddak />}
             {/* 전체 채팅 or 전체 뚝딱 */}
-            {info.context ? <PublicChatting /> : <WholeDdukddak />}
+            {info.context ? <WholeDdukddak /> : <PublicChatting />}
           </ModalContext.Provider>
         </AppContext.Provider>
       </div>

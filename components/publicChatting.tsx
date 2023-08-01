@@ -28,7 +28,7 @@ export default function PublicChatting() {
       key={idx}
       className={cls(
         item.sender === intraId ? 'flex-row-reverse' : '',
-        'flex  items-start text-gray-800 space-x-2 text-sm',
+        'flex items-start text-gray-800 space-x-2 text-sm',
       )}
     >
       {item.sender === intraId ? (
@@ -55,10 +55,10 @@ export default function PublicChatting() {
         </svg>
       )}
 
-      <div className="px-2 py-2  border border-gray-300 rounded-md">
+      <div className="p-2 border border-gray-300 rounded-md">
         <p>{item.message}</p>
       </div>
-      <span>{formatTime(item.time)}</span>
+      <span className="self-end">{formatTime(item.time)}</span>
     </div>
   ));
 

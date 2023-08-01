@@ -5,6 +5,7 @@ import axios from 'axios';
 import { IResponse } from '@/interface/Context';
 import Modal from './modal';
 import { ModalMessage } from '@/const/modalMessage';
+import { IText } from '@/interface/Modal';
 
 export default function WholeDdukddak() {
   const [info, setInfo] = useContext(AppContext);
@@ -12,6 +13,7 @@ export default function WholeDdukddak() {
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
   const [target, setTarget] = useState<IResponse | null>(null);
+  const [text, setText] = useState<IText>();
 
   useEffect(() => {
     const fetchRoomList = async () => {
@@ -27,7 +29,6 @@ export default function WholeDdukddak() {
 
   useEffect(() => {
     if (isConfirm.isConfirm) {
-      console.log('target: ', target);
       if (target?.roomName) {
         setInfo({
           ddukddak: true,
@@ -44,7 +45,20 @@ export default function WholeDdukddak() {
     const t = event.currentTarget.getAttribute('data-custom');
     if (t !== null) {
       setTarget(JSON.parse(t));
+      if (info.roomInfo?.roomId) {
+        setText({
+          title: ModalMessage.CHANGE_ROOM.title,
+          subText: ModalMessage.CHANGE_ROOM.subText,
+        });
+      } else {
+        setText({
+          title: ModalMessage.ENTER_ROOM.title,
+          subText: ModalMessage.ENTER_ROOM.subText,
+        });
+      }
       setIsOpen(true);
+    } else {
+      alert('이미 폭파된 방입니다. ㅎㅎ');
     }
   };
 
@@ -52,11 +66,7 @@ export default function WholeDdukddak() {
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
       {isOpen && target ? (
-        <Modal
-          title={ModalMessage.ENTER_ROOM.title}
-          subText={`${target.roomName} ${ModalMessage.ENTER_ROOM.subText}`}
-          setIsOpen={setIsOpen}
-        />
+        <Modal title={text?.title} subText={`${target.roomName} ${text?.subText}`} setIsOpen={setIsOpen} />
       ) : null}
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {roomList.map((item, i) => (

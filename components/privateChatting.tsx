@@ -12,6 +12,7 @@ import axios from 'axios';
 import Modal from './modal';
 import { ModalMessage } from '@/const/modalMessage';
 import { Message } from '@/const/message';
+import { IText } from '@/interface/Modal';
 
 interface IMypageProps {
   mypage?: boolean;
@@ -22,10 +23,6 @@ interface IChangeValues {
   participantsNum?: number;
 }
 
-type IText = {
-  title: string;
-  subText: string;
-};
 export default function PrivateChatting({ mypage }: IMypageProps) {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
@@ -223,12 +220,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
           client.current?.subscribe(
             `/sub/chat/room/${id}`,
             (message) => {
-              setChatMessage(JSON.parse(message.body));
+              if (JSON.parse(message.body)) setChatMessage(JSON.parse(message.body));
               if (message.body === '"OK"') {
                 setRoomIsGone(true);
               } else if (message.body === '"1001"') {
-                console.log(message.body);
-                console.log(message);
                 alert(Message.THREE_MINUTE_LEFT);
               }
             },
@@ -253,7 +248,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
             <p>{item.message}</p>
           </div>
         </div>
-        {info.roomInfo?.login === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
+        {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
       </div>
     </div>
   ));

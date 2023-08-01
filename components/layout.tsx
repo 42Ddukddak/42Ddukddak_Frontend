@@ -18,9 +18,9 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div>
-      <div className="bg-white text-lg font-medium fixed text-gray-800 top-8 left-8 flex flex-col items-center rounded-full ">
+      <div className="text-lg font-medium fixed text-gray-800 top-8 left-8 flex flex-col items-center rounded-full ">
         <div
-          className={cls(showBtn ? 'animate-spin' : '', 'mb-2 rounded-full flex justify-center items-center')}
+          className={cls(showBtn ? 'animate-spin' : '', 'rounded-full flex justify-center items-center')}
           onClick={() => setShowBtn(!showBtn)}
         >
           <Image
