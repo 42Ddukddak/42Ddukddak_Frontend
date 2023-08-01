@@ -95,7 +95,6 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       await axios.post(`/api/chat/private/${info.roomInfo?.roomId}/destroy`, `${info.roomInfo?.roomId}`).then(() => {
         setIsConfirm({ isConfirm: false });
         setIsOpen(false);
-        setHostLeave(true);
       });
     } catch (err) {
       console.log('requestDestroy err: ', err);
@@ -221,6 +220,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
             `/sub/chat/room/${id}`,
             (message) => {
               if (message.body === '"OK"') {
+                setHostLeave(true);
                 setRoomIsGone(true);
               } else if (message.body === '1001') {
                 alert(Message.THREE_MINUTE_LEFT);
