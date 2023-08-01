@@ -170,7 +170,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
     // 1번은 0 아니면 2(채팅 쳤을 때) 2번은 1
-    if (chatMessageList[-1].participantsNum > 1) {
+    if (chatMessageList[-1].participantsNum > 1 || info.roomInfo?.participantsNum !== 1) {
       setType('reservation');
       setText({
         title: ModalMessage.RESERVATION.title,
