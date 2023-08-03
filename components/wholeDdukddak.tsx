@@ -49,8 +49,18 @@ export default function WholeDdukddak() {
   // 모달 상황에 따른 행동 (방들어가기)
   useEffect(() => {
     if (isConfirm.isConfirm) {
-      if (target?.roomId) {
-        requestChangeRoom();
+      if (!info.roomInfo?.roomId) {
+        setInfo({
+          ddukddak: true,
+          context: info.context,
+          roomInfo: target,
+        });
+        setIsConfirm({ isConfirm: false });
+        setIsOpen(false);
+      } else {
+        if (target?.roomId) {
+          requestChangeRoom();
+        }
       }
     }
   }, [isConfirm.isConfirm]);
