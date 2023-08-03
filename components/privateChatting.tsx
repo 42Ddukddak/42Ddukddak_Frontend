@@ -59,7 +59,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const loadChattingMessage = async () => {
     try {
       await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`).then((response) => {
-        setChatMessageList(response.data);
+        if (response.data.message) {
+          setChatMessageList(response.data);
+        }
+        console.log(response.data);
         setChangeValues({
           remainingTime: response.data.remainingTime,
           participantsNum: response.data.participantsNum,
@@ -252,7 +255,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   };
 
   // 전달 받은 메세지 뿌려줄 박스
-  const msgBox = chatMessageList.map((item, idx) => {
+  const msgBox = chatMessageList.map((item, idx) => (
     <div key={idx}>
       <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
@@ -263,8 +266,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         </div>
         {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
       </div>
-    </div>;
-  });
+    </div>
+  ));
 
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
