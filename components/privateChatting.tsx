@@ -60,6 +60,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     try {
       await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`).then((response) => {
         setChatMessageList(response.data);
+        setChangeValues({
+          remainingTime: response.data.remainingTime,
+          participantsNum: response.data.participantsNum,
+        });
       });
     } catch (err) {
       console.log('private chatting get', err);
@@ -171,7 +175,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
     // 1번은 1 아니면 2(채팅 쳤을 때) 2번은 1
-    if (chatMessageList[-1].participantsNum > 1) {
+    if (changeValues.participantsNum > 1) {
       setType('reservation');
       setText({
         title: ModalMessage.RESERVATION.title,
@@ -249,21 +253,17 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => {
-    item.message ? (
-      <div key={idx}>
-        <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
-          <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
-            <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
-            <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
-              <p>{item.message}</p>
-            </div>
+    <div key={idx}>
+      <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
+        <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
+          <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
+          <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
+            <p>{item.message}</p>
           </div>
-          {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
         </div>
+        {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
       </div>
-    ) : (
-      <></>
-    );
+    </div>;
   });
 
   return (
