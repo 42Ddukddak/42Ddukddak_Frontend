@@ -31,7 +31,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [info, setInfo] = useContext(AppContext);
   const intraId = getCookieValue('intraId');
-  const [changeValues, setChangeValues] = useState<IChangeValues>({ participantsNum: 0 });
+  const [changeValues, setChangeValues] = useState<IChangeValues>({ participantsNum: 1 });
   const [roomIsGone, setRoomIsGone] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirm, setIsConfirm] = useContext(ModalContext);
@@ -59,7 +59,13 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const loadChattingMessage = async () => {
     try {
       await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`).then((response) => {
-        setChatMessageList(response.data);
+        if (response.data.message) {
+          setChatMessageList(response.data);
+        }
+        setChangeValues({
+          remainingTime: response.data.remainingTime,
+          participantsNum: response.data.participantsNum,
+        });
       });
     } catch (err) {
       console.log('private chatting get', err);
@@ -170,8 +176,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
-    // 1번은 0 아니면 2(채팅 쳤을 때) 2번은 1
-    if (chatMessageList[-1].participantsNum > 1) {
+    if (changeValues.participantsNum > 1) {
       setType('reservation');
       setText({
         title: ModalMessage.RESERVATION.title,
@@ -266,37 +271,35 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
       {isOpen ? <Modal title={text?.title} subText={text?.subText} setIsOpen={setIsOpen} /> : null}
       {/* 상단 바 */}
-      <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
-        <div className="flex flex-col pl-5">
-          <div className="flex space-x-2">
-            <h3 className="text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
-            <div className="flex self-center space-x-1 justify-center items-center border rounded-full px-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-4 h-4 text-gray-600"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                />
-              </svg>
-              <span className="text-gray-500 text-sm self-center">
-                {changeValues?.participantsNum || info.roomInfo?.participantsNum}
-              </span>
+      {mypage ? null : (
+        <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
+          <div className="flex flex-col pl-5">
+            <div className="flex space-x-2">
+              <h3 className="text-lg text-gray-800 font-bold">{info.roomInfo?.roomName}</h3>
+              <div className="flex self-center space-x-1 justify-center items-center border rounded-full px-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4 text-gray-600"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                  />
+                </svg>
+                <span className="text-gray-500 text-sm self-center">
+                  {changeValues?.participantsNum || info.roomInfo?.participantsNum}
+                </span>
+              </div>
             </div>
-          </div>
-          {mypage ? null : (
             <span className="text-gray-400 text-sm">
               방 폭파까지 {changeValues?.remainingTime || info.roomInfo?.remainingTime}분 남았습니다.
             </span>
-          )}
-        </div>
-        {mypage ? null : (
+          </div>
           <div className=" font-bold flex justify-center items-center space-x-2 mr-2">
             {info.roomInfo?.login === intraId ? (
               <div className="flex justify-center items-center space-x-2">
@@ -310,8 +313,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               Leave
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {/* 채팅 내용 */}
       <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
         {msgBox}
