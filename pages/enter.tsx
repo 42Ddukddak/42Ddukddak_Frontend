@@ -23,7 +23,7 @@ const Enter: NextPage = () => {
         </div>
         <button
           onClick={onClick}
-          className=" rounded-xl shadow-xl bg-purple-500 text-white px-10 py-4 text-2xl hover:ring-2 hover:ring-offset-2 hover:ring-purple-400 hover:bg-purple-400 focus:outline-none"
+          className="mt-3 rounded-xl shadow-xl bg-purple-500 text-white px-10 py-4 text-2xl hover:ring-2 hover:ring-offset-2 hover:ring-purple-400 hover:bg-purple-400 focus:outline-none"
         >
           Sign in
         </button>
