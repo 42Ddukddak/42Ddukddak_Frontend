@@ -62,7 +62,6 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         if (response.data.message) {
           setChatMessageList(response.data);
         }
-        console.log(response.data);
         setChangeValues({
           remainingTime: response.data.remainingTime,
           participantsNum: response.data.participantsNum,
@@ -177,7 +176,6 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // '뚝딱뚝딱' button 클릭 이벤트 예약 확정
   const onReservation = () => {
-    // 1번은 1 아니면 2(채팅 쳤을 때) 2번은 1
     if (changeValues.participantsNum > 1) {
       setType('reservation');
       setText({
