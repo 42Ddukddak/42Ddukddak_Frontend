@@ -69,7 +69,12 @@ export default function WholeDdukddak() {
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     const t = event.currentTarget.getAttribute('data-custom');
     if (t !== null) {
-      setTarget(JSON.parse(t));
+      const jsonTarget = JSON.parse(t);
+      if (jsonTarget.roomId === target?.roomId) {
+        alert('당신이 있는 방이야 이놈아.');
+      } else {
+        setTarget(JSON.parse(t));
+      }
     }
   };
 
