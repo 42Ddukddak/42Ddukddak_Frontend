@@ -43,29 +43,30 @@ export default function WholeDdukddak() {
     }
   }, [isConfirm.isConfirm]);
 
+  useEffect(() => {
+    if (info.roomInfo?.roomId === target?.roomId) {
+      alert('당신이 있는 방이야 이놈아.');
+    } else {
+      if (info.roomInfo?.roomId) {
+        setText({
+          title: ModalMessage.CHANGE_ROOM.title,
+          subText: ModalMessage.CHANGE_ROOM.subText,
+        });
+      } else {
+        setText({
+          title: ModalMessage.ENTER_ROOM.title,
+          subText: ModalMessage.ENTER_ROOM.subText,
+        });
+      }
+      setIsOpen(true);
+    }
+  }, [target?.roomId]);
+
   // 방 클릭 이벤트 리스너
   const onClick = (event: MouseEvent<HTMLDivElement>) => {
     const t = event.currentTarget.getAttribute('data-custom');
     if (t !== null) {
-      setTarget(() => {
-        return JSON.parse(t);
-      });
-      if (info.roomInfo?.roomId === target?.roomId) {
-        alert('당신이 있는 방이야 이놈아.');
-      } else {
-        if (info.roomInfo?.roomId) {
-          setText({
-            title: ModalMessage.CHANGE_ROOM.title,
-            subText: ModalMessage.CHANGE_ROOM.subText,
-          });
-        } else {
-          setText({
-            title: ModalMessage.ENTER_ROOM.title,
-            subText: ModalMessage.ENTER_ROOM.subText,
-          });
-        }
-        setIsOpen(true);
-      }
+      setTarget(JSON.parse(t));
     }
   };
 
