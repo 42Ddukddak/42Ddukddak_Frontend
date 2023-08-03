@@ -31,7 +31,7 @@ export default function WholeDdukddak() {
   // 참가한 방이 있는데 방 이동시 post 요청
   const requestChangeRoom = async () => {
     try {
-      await axios.post(`/private/${target?.roomId}/entrance`).then((res) => {
+      await axios.post(`/api/chat/private/${target?.roomId}/entrance`).then((res) => {
         if (res.status === 200) {
           setInfo({
             ddukddak: true,
