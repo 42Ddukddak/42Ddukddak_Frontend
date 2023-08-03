@@ -1,3 +1,4 @@
+import getCookieValue from '@/libs/getCookieValue';
 import { AppContext } from '@/pages/index';
 import { useContext } from 'react';
 
@@ -9,6 +10,7 @@ interface HeaderProps {
 
 export default function RightBlockHeader({ text, isSearch, mypage }: HeaderProps) {
   const [info, setInfo] = useContext(AppContext);
+  const intraId = getCookieValue('intraId');
   const handleClick = () => {
     setInfo({
       ddukddak: info.ddukddak,
@@ -39,7 +41,7 @@ export default function RightBlockHeader({ text, isSearch, mypage }: HeaderProps
           </div>
         ) : null}
       </div>
-      {mypage ? null : (
+      {mypage || info.roomInfo?.login === intraId ? null : (
         <div onClick={handleClick} className="m-1">
           <div className="flex items-center justify-center rounded-full cursor-pointer w-8 h-8 hover:text-violet-800 hover:bg-violet-200 hover:shadow-md transition-colors">
             <svg
