@@ -44,21 +44,23 @@ export default function WholeDdukddak() {
   }, [isConfirm.isConfirm]);
 
   useEffect(() => {
-    if (info.roomInfo?.roomId === target?.roomId) {
-      alert('당신이 있는 방이야 이놈아.');
-    } else {
-      if (info.roomInfo?.roomId) {
-        setText({
-          title: ModalMessage.CHANGE_ROOM.title,
-          subText: ModalMessage.CHANGE_ROOM.subText,
-        });
+    if (target?.roomId) {
+      if (info.roomInfo?.roomId === target?.roomId) {
+        alert('당신이 있는 방이야 이놈아.');
       } else {
-        setText({
-          title: ModalMessage.ENTER_ROOM.title,
-          subText: ModalMessage.ENTER_ROOM.subText,
-        });
+        if (info.roomInfo?.roomId) {
+          setText({
+            title: ModalMessage.CHANGE_ROOM.title,
+            subText: ModalMessage.CHANGE_ROOM.subText,
+          });
+        } else {
+          setText({
+            title: ModalMessage.ENTER_ROOM.title,
+            subText: ModalMessage.ENTER_ROOM.subText,
+          });
+        }
+        setIsOpen(true);
       }
-      setIsOpen(true);
     }
   }, [target?.roomId]);
 
