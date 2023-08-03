@@ -28,21 +28,34 @@ export default function WholeDdukddak() {
     fetchRoomList();
   }, []);
 
+  // 참가한 방이 있는데 방 이동시 post 요청
+  const requestChangeRoom = async () => {
+    try {
+      await axios.post(`/private/${target?.roomId}/entrance`).then((res) => {
+        if (res.status === 200) {
+          setInfo({
+            ddukddak: true,
+            context: info.context,
+            roomInfo: target,
+          });
+          setIsConfirm({ isConfirm: false });
+          setIsOpen(false);
+        }
+      });
+    } catch (error) {
+      console.log('requestChangeRoom err : ', error);
+    }
+  };
   // 모달 상황에 따른 행동 (방들어가기)
   useEffect(() => {
     if (isConfirm.isConfirm) {
-      if (target?.roomName) {
-        setInfo({
-          ddukddak: true,
-          context: info.context,
-          roomInfo: target,
-        });
-        setIsConfirm({ isConfirm: false });
-        setIsOpen(false);
+      if (target?.roomId) {
+        requestChangeRoom();
       }
     }
   }, [isConfirm.isConfirm]);
 
+  // 방 이동 관련 이미 참가한 방 이거나 새로운 방이거나
   useEffect(() => {
     if (target?.roomId) {
       if (info.roomInfo?.roomId === target?.roomId) {
