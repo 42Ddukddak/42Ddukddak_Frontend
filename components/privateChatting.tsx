@@ -60,6 +60,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     try {
       await axios.get(`/api/chat/private/${info.roomInfo?.roomId}`).then((response) => {
         setChatMessageList(response.data);
+        console.log(response.data);
       });
     } catch (err) {
       console.log('private chatting get', err);
