@@ -47,7 +47,6 @@ export default function WholeDdukddak() {
     if (target?.roomId) {
       if (info.roomInfo?.roomId === target?.roomId) {
         alert('당신이 있는 방이야 이놈아.');
-        setTarget(null);
       } else {
         if (info.roomInfo?.roomId) {
           setText({
@@ -63,6 +62,7 @@ export default function WholeDdukddak() {
         setIsOpen(true);
       }
     }
+    setTarget(null);
   }, [target?.roomId]);
 
   // 방 클릭 이벤트 리스너
