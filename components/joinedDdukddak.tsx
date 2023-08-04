@@ -35,7 +35,7 @@ export default function JoinedDdukddak() {
             onClick={() => onClick(i)}
             className={cls(
               selectedIndex === i ? ' bg-violet-400' : '',
-              'flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer',
+              'flex justify-between px-8 py-3 hover:shadow-sm hover:bg-violet-400 cursor-pointer',
             )}
           >
             <h2 className="self-center text-lg font-semibold w-3/5">{items}</h2>
