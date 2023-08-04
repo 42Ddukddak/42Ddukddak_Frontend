@@ -1,6 +1,6 @@
 import axios from 'axios';
 import RightBlockHeader from './rightBlockHeader';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IResponse } from '@/interface/Context';
 import { cls } from '@/libs/utils';
 
@@ -11,7 +11,7 @@ export default function JoinedDdukddak() {
   useEffect(() => {
     const requestRoomList = async () => {
       try {
-        await axios.get('/api/chat/joined').then((res) => {
+        await axios.get('/api/reserved/list').then((res) => {
           setRoomList(res.data);
           console.log('@@@@@@@ requestRoomList', res.data);
         });
