@@ -28,14 +28,14 @@ export default function JoinedDdukddak() {
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'참가했던 뚝딱'} isSearch mypage />
-      <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
+      <div className="divide-y-[1px] mt-2 overflow-auto">
         {roomList.map((items, i) => (
           <div
             key={i}
             onClick={() => onClick(i)}
             className={cls(
               selectedIndex === i ? ' bg-violet-400' : '',
-              'flex justify-between px-8 py-3 hover:shadow-sm hover:bg-violet-400 cursor-pointer',
+              'flex justify-between px-8 py-3 shadow-sm hover:bg-violet-400 cursor-pointer rounded-lg',
             )}
           >
             <h2 className="self-center text-lg font-semibold w-3/5">{items}</h2>
