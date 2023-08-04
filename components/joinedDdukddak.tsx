@@ -1,11 +1,10 @@
 import axios from 'axios';
 import RightBlockHeader from './rightBlockHeader';
 import { useEffect, useState } from 'react';
-import { IResponse } from '@/interface/Context';
 import { cls } from '@/libs/utils';
 
 export default function JoinedDdukddak() {
-  const [roomList, setRoomList] = useState<Array<IResponse>>([]);
+  const [roomList, setRoomList] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -39,10 +38,10 @@ export default function JoinedDdukddak() {
               'flex justify-between px-8 py-3 hover:shadow-sm hover:bg-slate-50 cursor-pointer',
             )}
           >
-            <h2 className="self-center text-lg font-semibold w-3/5">{items.roomName}</h2>
-            <div className="flex flex-col justify-center items-end space-y-1">
+            <h2 className="self-center text-lg font-semibold w-3/5">{items}</h2>
+            {/* <div className="flex flex-col justify-center items-end space-y-1">
               <span className=" bg-violet-500 py-1 px-2 rounded-md text-white shadow-md">{items.participantsNum}</span>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
