@@ -1,4 +1,4 @@
-export const ModalMessage = {
+const ModalMessage = {
   HOSTLEAVE: {
     title: '❗️방 떠나기 경고❗️',
     subText: '방장이 방을 나가게 되면 방이 사라집니다.',
@@ -11,3 +11,5 @@ export const ModalMessage = {
   ENTER_ROOM: { title: '👏방 입장👋', subText: '해당 방에 들어가시겠습니까?? 💬' },
   LEAVE: { title: '방 나가기👋', subText: '해당 방을 정말로 떠나시겠습니까?🙊' },
 };
+
+export default ModalMessage;

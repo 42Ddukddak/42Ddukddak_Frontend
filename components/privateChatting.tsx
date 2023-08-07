@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { useContext, useEffect, useRef, useState } from 'react';
 import Button from './button';
 import { CompatClient, Stomp } from '@stomp/stompjs';
@@ -38,6 +39,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [text, setText] = useState<IText>();
   const [type, setType] = useState<string>('');
   const [hostLeave, setHostLeave] = useState(false);
+  const [reservedTime, setReservationTime] = useState<boolean>(false);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -110,10 +112,14 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // @@@@ 예약 확정
   const requestReservation = async () => {
+    console.log('reservedTime: ', reservedTime);
     try {
       await axios
-        .post(`/api/reserved/${info.roomInfo?.roomId}`)
+        .post(`/api/reserved/${info.roomInfo?.roomId}`, null, {
+          params: { reservedTime },
+        })
         .then((res) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
         })
         .then(() => {
@@ -129,8 +135,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const requestLeave = async () => {
     try {
       await axios
-        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId: intraId } })
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId } })
         .then((res) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           res.status === 200
             ? setInfo({
                 ddukddak: false,
@@ -178,6 +185,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onReservation = () => {
     if (changeValues.participantsNum > 1) {
       setType('reservation');
+      setReservationTime(true);
       setText({
         title: ModalMessage.RESERVATION.title,
         subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,
@@ -225,6 +233,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         // ex)
         // Authorization: token,
       },
+      // eslint-disable-next-line consistent-return
       () => {
         try {
           client.current?.subscribe(
@@ -254,6 +263,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => (
+    // eslint-disable-next-line react/no-array-index-key
     <div key={idx}>
       <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
@@ -269,7 +279,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
-      {isOpen ? <Modal title={text?.title} subText={text?.subText} setIsOpen={setIsOpen} /> : null}
+      {isOpen ? (
+        <Modal title={text?.title} subText={text?.subText} setIsOpen={setIsOpen} setTime={reservedTime} />
+      ) : null}
       {/* 상단 바 */}
       {mypage ? null : (
         <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
@@ -318,7 +330,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       {/* 채팅 내용 */}
       <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
         {msgBox}
-        <div ref={messageEndRef}></div>
+        <div ref={messageEndRef} />
       </div>
       {/* input 박스 */}
       {mypage ? null : (
@@ -332,6 +344,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               onChange={handleInputMessage}
               onKeyDown={(ev) => {
                 if (ev.nativeEvent.isComposing) {
+                  /* empty */
                 } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
                   sendHandler();
                 }
