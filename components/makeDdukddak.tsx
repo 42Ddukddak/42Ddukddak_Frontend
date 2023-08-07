@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import useHandleInputMessage from '@/libs/inputMessage';
 import Button from './button';
 import { useContext, useEffect, useState } from 'react';
@@ -5,7 +6,7 @@ import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import getCookieValue from '@/libs/getCookieValue';
 import Modal from './modal';
-import { ModalMessage } from '@/const/modalMessage';
+import * as modalMessage from '@/const/modalMessage';
 
 export default function MakeDdukddak() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
@@ -58,8 +59,8 @@ export default function MakeDdukddak() {
     <div className="flex justify-center items-center xl:col-span-2">
       {isOpen ? (
         <Modal
-          title={ModalMessage.MAKE_ROOM.title}
-          subText={`${inputMessage} ${ModalMessage.MAKE_ROOM.subText}`}
+          title={modalMessage.ModalMessage.MAKE_ROOM.title}
+          subText={`${inputMessage} ${modalMessage.ModalMessage.MAKE_ROOM.subText}`}
           setIsOpen={setIsOpen}
           setTime={false}
         />
@@ -75,6 +76,7 @@ export default function MakeDdukddak() {
             onChange={handleInputMessage}
             onKeyDown={(ev) => {
               if (ev.nativeEvent.isComposing) {
+                /* empty */
               } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
                 makeRoom();
               }

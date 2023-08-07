@@ -4,7 +4,7 @@ import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import { IResponse } from '@/interface/Context';
 import Modal from './modal';
-import { ModalMessage } from '@/const/modalMessage';
+import * as modalMessage from '@/const/modalMessage';
 import { IText } from '@/interface/Modal';
 
 export default function WholeDdukddak() {
@@ -74,13 +74,13 @@ export default function WholeDdukddak() {
       } else {
         if (info.roomInfo?.roomId) {
           setText({
-            title: ModalMessage.CHANGE_ROOM.title,
-            subText: ModalMessage.CHANGE_ROOM.subText,
+            title: modalMessage.ModalMessage.CHANGE_ROOM.title,
+            subText: modalMessage.ModalMessage.CHANGE_ROOM.subText,
           });
         } else {
           setText({
-            title: ModalMessage.ENTER_ROOM.title,
-            subText: ModalMessage.ENTER_ROOM.subText,
+            title: modalMessage.ModalMessage.ENTER_ROOM.title,
+            subText: modalMessage.ModalMessage.ENTER_ROOM.subText,
           });
         }
         setIsOpen(true);

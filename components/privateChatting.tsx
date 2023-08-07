@@ -11,7 +11,7 @@ import { formatTime } from '@/libs/formatTime';
 import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import Modal from './modal';
-import { ModalMessage } from '@/const/modalMessage';
+import * as modalMessage from '@/const/modalMessage';
 import { Message } from '@/const/message';
 import { IText } from '@/interface/Modal';
 
@@ -173,11 +173,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
       setType('hostLeave');
-      setText({ title: ModalMessage.HOSTLEAVE.title, subText: ModalMessage.HOSTLEAVE.subText });
+      setText({ title: modalMessage.ModalMessage.HOSTLEAVE.title, subText: modalMessage.ModalMessage.HOSTLEAVE.subText });
       setIsOpen(true);
     } else {
       setType('guest');
-      setText({ title: ModalMessage.LEAVE.title, subText: ModalMessage.LEAVE.subText });
+      setText({ title: modalMessage.ModalMessage.LEAVE.title, subText: modalMessage.ModalMessage.LEAVE.subText });
       setIsOpen(true);
     }
   };
@@ -188,8 +188,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       setType('reservation');
       setReservedTime(true);
       setText({
-        title: ModalMessage.RESERVATION.title,
-        subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,
+        title: modalMessage.ModalMessage.RESERVATION.title,
+        subText: `${info.roomInfo?.roomName} ${modalMessage.ModalMessage.RESERVATION.subText}`,
       });
       setIsOpen(true);
     } else {
