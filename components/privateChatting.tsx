@@ -39,7 +39,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [text, setText] = useState<IText>();
   const [type, setType] = useState<string>('');
   const [hostLeave, setHostLeave] = useState(false);
-  const [reservedTime, setReservationTime] = useState<boolean>(false);
+  const [reservedTime, setReservedTime] = useState<boolean>(false);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -185,7 +185,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onReservation = () => {
     if (changeValues.participantsNum > 1) {
       setType('reservation');
-      setReservationTime(true);
+      setReservedTime(true);
       setText({
         title: ModalMessage.RESERVATION.title,
         subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,

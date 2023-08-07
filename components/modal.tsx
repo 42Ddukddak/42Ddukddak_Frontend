@@ -10,10 +10,11 @@ type ModalProps = {
 };
 
 export default function Modal({ title, subText, setIsOpen, setTime }: ModalProps) {
-  const [reservedTime, setReservationTime] = useState<string>('');
+  const [reservedTime, setReservedTime] = useState<string>('');
+  console.log('setTime', setTime);
 
   const handleTimeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReservationTime(e.target.value);
+    setReservedTime(e.target.value);
   };
 
   const onClick = () => {
