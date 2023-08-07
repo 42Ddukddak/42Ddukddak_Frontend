@@ -125,6 +125,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         .then(() => {
           setIsConfirm({ isConfirm: false });
           setIsOpen(false);
+          setReservedTime(false);
         });
     } catch (err) {
       console.log('requestReservation err: ', err);

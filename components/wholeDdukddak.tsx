@@ -105,7 +105,12 @@ export default function WholeDdukddak() {
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
       {isOpen && target ? (
-        <Modal title={text?.title} subText={`${target.roomName} ${text?.subText}`} setIsOpen={setIsOpen} />
+        <Modal
+          title={text?.title}
+          subText={`${target.roomName} ${text?.subText}`}
+          setIsOpen={setIsOpen}
+          setTime={false}
+        />
       ) : null}
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {roomList.map((item, i) => (

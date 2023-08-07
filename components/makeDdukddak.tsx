@@ -61,6 +61,7 @@ export default function MakeDdukddak() {
           title={ModalMessage.MAKE_ROOM.title}
           subText={`${inputMessage} ${ModalMessage.MAKE_ROOM.subText}`}
           setIsOpen={setIsOpen}
+          setTime={false}
         />
       ) : null}
       <div className="flex flex-col justify-center items-center">

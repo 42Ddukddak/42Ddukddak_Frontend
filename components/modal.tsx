@@ -6,7 +6,7 @@ type ModalProps = {
   title?: string;
   subText?: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setTime?: boolean;
+  setTime: boolean;
 };
 
 export default function Modal({ title, subText, setIsOpen, setTime }: ModalProps) {
