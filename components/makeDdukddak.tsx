@@ -59,8 +59,8 @@ export default function MakeDdukddak() {
     <div className="flex justify-center items-center xl:col-span-2">
       {isOpen ? (
         <Modal
-          title={modalMessage.ModalMessage.MAKE_ROOM.title}
-          subText={`${inputMessage} ${modalMessage.ModalMessage.MAKE_ROOM.subText}`}
+          title={modalMessage.default.MAKE_ROOM.title}
+          subText={`${inputMessage} ${modalMessage.default.MAKE_ROOM.subText}`}
           setIsOpen={setIsOpen}
           setTime={false}
         />

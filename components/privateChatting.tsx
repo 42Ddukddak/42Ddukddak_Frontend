@@ -173,11 +173,14 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
       setType('hostLeave');
-      setText({ title: modalMessage.ModalMessage.HOSTLEAVE.title, subText: modalMessage.ModalMessage.HOSTLEAVE.subText });
+      setText({
+        title: modalMessage.default.HOSTLEAVE.title,
+        subText: modalMessage.default.HOSTLEAVE.subText,
+      });
       setIsOpen(true);
     } else {
       setType('guest');
-      setText({ title: modalMessage.ModalMessage.LEAVE.title, subText: modalMessage.ModalMessage.LEAVE.subText });
+      setText({ title: modalMessage.default.LEAVE.title, subText: modalMessage.default.LEAVE.subText });
       setIsOpen(true);
     }
   };
@@ -188,8 +191,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       setType('reservation');
       setReservedTime(true);
       setText({
-        title: modalMessage.ModalMessage.RESERVATION.title,
-        subText: `${info.roomInfo?.roomName} ${modalMessage.ModalMessage.RESERVATION.subText}`,
+        title: modalMessage.default.RESERVATION.title,
+        subText: `${info.roomInfo?.roomName} ${modalMessage.default.RESERVATION.subText}`,
       });
       setIsOpen(true);
     } else {

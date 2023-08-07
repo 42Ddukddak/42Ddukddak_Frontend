@@ -57,10 +57,8 @@ export default function WholeDdukddak() {
         });
         setIsConfirm({ isConfirm: false });
         setIsOpen(false);
-      } else {
-        if (target?.roomId) {
-          requestChangeRoom();
-        }
+      } else if (target?.roomId) {
+        requestChangeRoom();
       }
     }
   }, [isConfirm.isConfirm]);
@@ -74,13 +72,13 @@ export default function WholeDdukddak() {
       } else {
         if (info.roomInfo?.roomId) {
           setText({
-            title: modalMessage.ModalMessage.CHANGE_ROOM.title,
-            subText: modalMessage.ModalMessage.CHANGE_ROOM.subText,
+            title: modalMessage.default.CHANGE_ROOM.title,
+            subText: modalMessage.default.CHANGE_ROOM.subText,
           });
         } else {
           setText({
-            title: modalMessage.ModalMessage.ENTER_ROOM.title,
-            subText: modalMessage.ModalMessage.ENTER_ROOM.subText,
+            title: modalMessage.default.ENTER_ROOM.title,
+            subText: modalMessage.default.ENTER_ROOM.subText,
           });
         }
         setIsOpen(true);
