@@ -1,5 +1,5 @@
-import { cls } from '@/libs/utils';
 // eslint-disable-next-line import/no-cycle
+import { cls } from '@/libs/utils';
 import { ModalContext } from '@/pages';
 import React, { ReactElement, useContext } from 'react';
 
