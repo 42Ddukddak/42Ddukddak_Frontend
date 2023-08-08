@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Router, useRouter } from 'next/router';
 import Loading from '@/components/loading';
+import Head from 'next/head';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const route = useRouter();
@@ -50,5 +51,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       setLoading(true);
     }
   });
-  return loading ? <Loading /> : <Component pageProps={pageProps} />;
+  return (
+    <div>
+      <Head>
+        <html lang="ko-KR" />
+        <title>42 뚝딱</title>
+        <meta charSet="utf-8" />
+        <meta name="description" content="모두의 뚝딱만들기" />
+      </Head>
+      {loading ? <Loading /> : <Component pageProps={pageProps} />};
+    </div>
+  );
 }

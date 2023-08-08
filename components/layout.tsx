@@ -15,6 +15,7 @@ function deleteCookie(cookieName: string) {
 
 export default function Layout({ children }: LayoutProps) {
   const [showBtn, setShowBtn] = useState<boolean>(false);
+  const imageLoader = require('../libs/loader');
 
   return (
     <div>
@@ -26,6 +27,8 @@ export default function Layout({ children }: LayoutProps) {
           <Image
             src={logoPic}
             alt="logo"
+            loader={imageLoader}
+            unoptimized={true}
             placeholder="blur"
             className="w-12 h-12 shadow-xl rounded-full border border-gray-400 my-hover"
           />
