@@ -9,9 +9,13 @@ interface IRoomList {
   reservedTime: string;
 }
 
-export default function JoinedDdukddak() {
+interface IIndexProps {
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function JoinedDdukddak({ setIndex }: IIndexProps) {
   const [roomList, setRoomList] = useState<IRoomList[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>();
 
   useEffect(() => {
     const requestRoomList = async () => {
@@ -29,6 +33,7 @@ export default function JoinedDdukddak() {
 
   const onClick = (i: number) => {
     setSelectedIndex(i);
+    setIndex(i);
   };
 
   const roomBox = roomList.map((items) => (

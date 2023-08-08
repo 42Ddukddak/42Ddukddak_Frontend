@@ -17,6 +17,7 @@ import { IText } from '@/interface/Modal';
 
 interface IMypageProps {
   mypage?: boolean;
+  showReservation?: number;
 }
 
 interface IChangeValues {
@@ -24,7 +25,7 @@ interface IChangeValues {
   participantsNum: number;
 }
 
-export default function PrivateChatting({ mypage }: IMypageProps) {
+export default function PrivateChatting({ mypage, showReservation }: IMypageProps) {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
@@ -40,6 +41,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [type, setType] = useState<string>('');
   const [hostLeave, setHostLeave] = useState(false);
   const [reservedTime, setReservedTime] = useState<boolean>(false);
+  const [reservedChatMessageList, setReservedChatMessageList] = useState<IChatDetail[]>([]);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -56,6 +58,18 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       });
     }
   }, [chatMessage]);
+
+  useEffect(() => {
+    if (mypage) {
+      const fetchReservedChatMessages = async () => {
+        await axios.get(`api/reserved/${showReservation}/chat-message`).then((res) => {
+          console.log('reservedChatMessages');
+          setReservedChatMessageList(res.data);
+        });
+      };
+      fetchReservedChatMessages();
+    }
+  }, [showReservation]);
 
   // 새로 들어온 사람 기존 방 채팅 내역 가져오기
   const loadChattingMessage = async () => {
@@ -281,6 +295,20 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
     </div>
   ));
 
+  const reservedMsgBox = reservedChatMessageList.map((item, idx) => (
+    <div key={idx}>
+      <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
+        <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
+          <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
+          <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
+            <p>{item.message}</p>
+          </div>
+        </div>
+        {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
+      </div>
+    </div>
+  ));
+
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
       {isOpen ? (
@@ -333,7 +361,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       )}
       {/* 채팅 내용 */}
       <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
-        {msgBox}
+        {mypage && showReservation !== -1 ? reservedMsgBox : msgBox}
         <div ref={messageEndRef} />
       </div>
       {/* input 박스 */}
