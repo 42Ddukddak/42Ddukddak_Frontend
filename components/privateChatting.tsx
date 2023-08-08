@@ -64,7 +64,7 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
       const fetchReservedChatMessages = async () => {
         await axios.get(`/api/reserved/${showReservation}/chat-message`).then((res) => {
           console.log('reservedChatMessages');
-          setReservedChatMessageList(JSON.parse(res.data));
+          setReservedChatMessageList(res.data);
         });
       };
       fetchReservedChatMessages();

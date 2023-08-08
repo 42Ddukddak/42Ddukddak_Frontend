@@ -21,8 +21,10 @@ export default function JoinedDdukddak({ setIndex }: IIndexProps) {
     const requestRoomList = async () => {
       try {
         await axios.get('/api/reserved/list').then((res) => {
-          setRoomList(JSON.parse(res.data));
+          setRoomList(res.data);
           console.log('@@@@@@@ requestRoomList', res.data);
+          console.log('@@@@@@@ requestRoomList', JSON.stringify(res.data));
+          console.log('@@@@@@@ requestRoomList', JSON.parse(res.data));
         });
       } catch (error) {
         console.log('@@@@@@@ requestRoomList err', error);
