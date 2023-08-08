@@ -17,7 +17,7 @@ export default function Button({ svg, text, cancel, reservedTime }: ButtonProps)
     if (!cancel && text) {
       setIsConfirm({
         isConfirm: true,
-        reservedTime,
+        reservedTime: reservedTime,
       });
     }
   };
