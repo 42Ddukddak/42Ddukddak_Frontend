@@ -1,17 +1,17 @@
 import Layout from '@/components/layout';
+import Image from 'next/image';
+import Link from 'next/link';
 import tempPic from '../public/Ddukddak_logo.png';
 import yongmipa from '../public/yongmipa.jpeg';
 import sohyupar from '../public/sohyupar.jpeg';
 import suhwpark from '../public/suhwpark.png';
-import Image from 'next/image';
-import Link from 'next/link';
 
 export default function Developer() {
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center">
         <div className="rounded-3xl border mx-[100px] max-w-xl mt-20 overflow-hidden my-hover">
-          <Link href={'https://github.com/42Ddukddak'}>
+          <Link href='https://github.com/42Ddukddak'>
             <Image src={tempPic} alt="mainIMG" placeholder="blur" />
           </Link>
           <div className="font-semibold flex flex-col text-gray-700 justify-center items-center">
@@ -48,7 +48,7 @@ export default function Developer() {
         </div>
         <div className="flex space-x-2 m-3 max-w-xl">
           <div className="rounded-3xl  border overflow-hidden my-hover">
-            <Link href={'https://github.com/oio337a'}>
+            <Link href='https://github.com/oio337a'>
               <Image src={yongmipa} alt="mainIMG" placeholder="blur" />
             </Link>
             <div className="ml-2 flex flex-col text-gray-700">
@@ -62,7 +62,7 @@ export default function Developer() {
             </div>
           </div>
           <div className="rounded-3xl border overflow-hidden my-hover">
-            <Link href={'https://github.com/saewoo1'}>
+            <Link href='https://github.com/saewoo1'>
               <Image src={sohyupar} alt="mainIMG" placeholder="blur" />
             </Link>
             <div className="ml-2 flex flex-col text-gray-700">
@@ -76,7 +76,7 @@ export default function Developer() {
             </div>
           </div>
           <div className="rounded-3xl border overflow-hidden my-hover">
-            <Link href={'https://github.com/parksooo'}>
+            <Link href='https://github.com/parksooo'>
               <Image src={suhwpark} alt="mainIMG" placeholder="blur" />
             </Link>
             <div className="ml-2 flex flex-col text-gray-700">

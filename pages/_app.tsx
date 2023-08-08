@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import '../styles/globals.css';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Router, useRouter } from 'next/router';
 import Loading from '@/components/loading';
@@ -36,12 +36,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       try {
         await axios
           .post('/api/auth/42login', null, {
-            params: { code: code },
+            params: code,
           })
           .then(() => setLoading(false))
           .then(() => route.push('/'));
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     };
 
@@ -49,6 +49,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       postData();
       setLoading(true);
     }
-  }, []);
-  return loading ? <Loading /> : <Component {...pageProps} />;
+  });
+  return loading ? <Loading /> : <Component pageProps={pageProps} />;
 }

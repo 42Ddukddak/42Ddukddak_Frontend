@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import MakeDdukddak from '@/components/makeDdukddak';
 import PrivateChatting from '@/components/privateChatting';
 import PublicChatting from '@/components/publicChatting';
@@ -27,11 +27,14 @@ export default function Home() {
     }
   });
 
+  const appContextValue = useMemo<IDdukddakContext>(() => [info, setInfo], [info, setInfo]);
+  const modalContextValue = useMemo<IModalContext>(() => [isConfirm, setIsConfirm], [isConfirm, setIsConfirm]);
+
   return (
     <Layout>
       <div className="grid gap-4 py-20 px-8 xl:grid-cols-3 h-screen">
-        <AppContext.Provider value={[info, setInfo]}>
-          <ModalContext.Provider value={[isConfirm, setIsConfirm]}>
+        <AppContext.Provider value={appContextValue}>
+          <ModalContext.Provider value={modalContextValue}>
             {/* 뚝딱 만들기 or 채팅 방 */}
             {info.ddukddak ? <PrivateChatting /> : <MakeDdukddak />}
             {/* 전체 채팅 or 전체 뚝딱 */}
