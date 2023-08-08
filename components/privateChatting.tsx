@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { useContext, useEffect, useRef, useState } from 'react';
 import Button from './button';
 import { CompatClient, Stomp } from '@stomp/stompjs';
@@ -10,12 +11,13 @@ import { formatTime } from '@/libs/formatTime';
 import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import Modal from './modal';
-import { ModalMessage } from '@/const/modalMessage';
+import * as modalMessage from '@/const/modalMessage';
 import { Message } from '@/const/message';
 import { IText } from '@/interface/Modal';
 
 interface IMypageProps {
   mypage?: boolean;
+  showReservation?: number;
 }
 
 interface IChangeValues {
@@ -23,7 +25,7 @@ interface IChangeValues {
   participantsNum: number;
 }
 
-export default function PrivateChatting({ mypage }: IMypageProps) {
+export default function PrivateChatting({ mypage, showReservation }: IMypageProps) {
   const client = useRef<CompatClient>();
   const [chatMessage, setChatMessage] = useState<IChatDetail>();
   const [chatMessageList, setChatMessageList] = useState<IChatDetail[]>([]);
@@ -38,6 +40,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const [text, setText] = useState<IText>();
   const [type, setType] = useState<string>('');
   const [hostLeave, setHostLeave] = useState(false);
+  const [reservedTime, setReservedTime] = useState<boolean>(false);
+  const [reservedChatMessageList, setReservedChatMessageList] = useState<IChatDetail[]>([]);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -54,6 +58,18 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       });
     }
   }, [chatMessage]);
+
+  useEffect(() => {
+    if (mypage && showReservation !== -1) {
+      const fetchReservedChatMessages = async () => {
+        await axios.get(`/api/reserved/${showReservation}/chat-message`).then((res) => {
+          console.log('reservedChatMessages');
+          setReservedChatMessageList(res.data);
+        });
+      };
+      fetchReservedChatMessages();
+    }
+  }, [showReservation]);
 
   // 새로 들어온 사람 기존 방 채팅 내역 가져오기
   const loadChattingMessage = async () => {
@@ -110,15 +126,20 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // @@@@ 예약 확정
   const requestReservation = async () => {
+    console.log('reservedTime: ', isConfirm.reservedTime);
     try {
       await axios
-        .post(`/api/reserved/${info.roomInfo?.roomId}`)
+        .post(`/api/reserved/${info.roomInfo?.roomId}`, null, {
+          params: { reservedTime: isConfirm.reservedTime },
+        })
         .then((res) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           res.status === 200 ? alert(Message.SUCCESS_RESERVATION) : alert(Message.FAILED_RESERVATION);
         })
         .then(() => {
           setIsConfirm({ isConfirm: false });
           setIsOpen(false);
+          setReservedTime(false);
         });
     } catch (err) {
       console.log('requestReservation err: ', err);
@@ -129,8 +150,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const requestLeave = async () => {
     try {
       await axios
-        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId: intraId } })
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId } })
         .then((res) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           res.status === 200
             ? setInfo({
                 ddukddak: false,
@@ -165,11 +187,14 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onLeave = async () => {
     if (info.roomInfo?.login === intraId) {
       setType('hostLeave');
-      setText({ title: ModalMessage.HOSTLEAVE.title, subText: ModalMessage.HOSTLEAVE.subText });
+      setText({
+        title: modalMessage.default.HOSTLEAVE.title,
+        subText: modalMessage.default.HOSTLEAVE.subText,
+      });
       setIsOpen(true);
     } else {
       setType('guest');
-      setText({ title: ModalMessage.LEAVE.title, subText: ModalMessage.LEAVE.subText });
+      setText({ title: modalMessage.default.LEAVE.title, subText: modalMessage.default.LEAVE.subText });
       setIsOpen(true);
     }
   };
@@ -178,9 +203,10 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
   const onReservation = () => {
     if (changeValues.participantsNum > 1) {
       setType('reservation');
+      setReservedTime(true);
       setText({
-        title: ModalMessage.RESERVATION.title,
-        subText: `${info.roomInfo?.roomName} ${ModalMessage.RESERVATION.subText}`,
+        title: modalMessage.default.RESERVATION.title,
+        subText: `${info.roomInfo?.roomName} ${modalMessage.default.RESERVATION.subText}`,
       });
       setIsOpen(true);
     } else {
@@ -225,6 +251,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
         // ex)
         // Authorization: token,
       },
+      // eslint-disable-next-line consistent-return
       () => {
         try {
           client.current?.subscribe(
@@ -254,6 +281,21 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <div key={idx}>
+      <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
+        <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
+          <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
+          <div className="px-2 py-2  border border-gray-300 rounded-xl bg-violet-300 text-white">
+            <p>{item.message}</p>
+          </div>
+        </div>
+        {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
+      </div>
+    </div>
+  ));
+
+  const reservedMsgBox = reservedChatMessageList.map((item, idx) => (
     <div key={idx}>
       <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
@@ -269,7 +311,9 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   return (
     <div className="xl:col-span-2 flex flex-col justify-between border-2 rounded-3xl shadow-xl px-5 py-4 space-y-2 h-screen max-h-[50vh] xl:min-h-[85vh] bg-indigo-300">
-      {isOpen ? <Modal title={text?.title} subText={text?.subText} setIsOpen={setIsOpen} /> : null}
+      {isOpen ? (
+        <Modal title={text?.title} subText={text?.subText} setIsOpen={setIsOpen} setTime={reservedTime} />
+      ) : null}
       {/* 상단 바 */}
       {mypage ? null : (
         <div className="border rounded-full bg-white shadow-md flex justify-between items-center">
@@ -317,8 +361,8 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
       )}
       {/* 채팅 내용 */}
       <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
-        {msgBox}
-        <div ref={messageEndRef}></div>
+        {mypage && showReservation !== -1 ? reservedMsgBox : msgBox}
+        <div ref={messageEndRef} />
       </div>
       {/* input 박스 */}
       {mypage ? null : (
@@ -332,6 +376,7 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
               onChange={handleInputMessage}
               onKeyDown={(ev) => {
                 if (ev.nativeEvent.isComposing) {
+                  /* empty */
                 } else if (!ev.nativeEvent.isComposing && ev.key === 'Enter') {
                   sendHandler();
                 }

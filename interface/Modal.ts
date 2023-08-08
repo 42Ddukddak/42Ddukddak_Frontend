@@ -1,5 +1,6 @@
 export interface IModal {
   isConfirm?: boolean;
+  reservedTime?: string;
 }
 
 export type IText = {

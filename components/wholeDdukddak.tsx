@@ -4,7 +4,7 @@ import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import { IResponse } from '@/interface/Context';
 import Modal from './modal';
-import { ModalMessage } from '@/const/modalMessage';
+import * as modalMessage from '@/const/modalMessage';
 import { IText } from '@/interface/Modal';
 
 export default function WholeDdukddak() {
@@ -57,10 +57,8 @@ export default function WholeDdukddak() {
         });
         setIsConfirm({ isConfirm: false });
         setIsOpen(false);
-      } else {
-        if (target?.roomId) {
-          requestChangeRoom();
-        }
+      } else if (target?.roomId) {
+        requestChangeRoom();
       }
     }
   }, [isConfirm.isConfirm]);
@@ -74,13 +72,13 @@ export default function WholeDdukddak() {
       } else {
         if (info.roomInfo?.roomId) {
           setText({
-            title: ModalMessage.CHANGE_ROOM.title,
-            subText: ModalMessage.CHANGE_ROOM.subText,
+            title: modalMessage.default.CHANGE_ROOM.title,
+            subText: modalMessage.default.CHANGE_ROOM.subText,
           });
         } else {
           setText({
-            title: ModalMessage.ENTER_ROOM.title,
-            subText: ModalMessage.ENTER_ROOM.subText,
+            title: modalMessage.default.ENTER_ROOM.title,
+            subText: modalMessage.default.ENTER_ROOM.subText,
           });
         }
         setIsOpen(true);
@@ -105,7 +103,12 @@ export default function WholeDdukddak() {
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'전체 뚝딱'} isSearch />
       {isOpen && target ? (
-        <Modal title={text?.title} subText={`${target.roomName} ${text?.subText}`} setIsOpen={setIsOpen} />
+        <Modal
+          title={text?.title}
+          subText={`${target.roomName} ${text?.subText}`}
+          setIsOpen={setIsOpen}
+          setTime={false}
+        />
       ) : null}
       <div className="divide-y-[1px] space-y-4 mt-2 overflow-auto">
         {roomList.map((item, i) => (
