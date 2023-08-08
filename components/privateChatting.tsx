@@ -60,9 +60,9 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
   }, [chatMessage]);
 
   useEffect(() => {
-    if (mypage) {
+    if (mypage && showReservation !== -1) {
       const fetchReservedChatMessages = async () => {
-        await axios.get(`api/reserved/${showReservation}/chat-message`).then((res) => {
+        await axios.get(`/api/reserved/${showReservation}/chat-message`).then((res) => {
           console.log('reservedChatMessages');
           setReservedChatMessageList(res.data);
         });
