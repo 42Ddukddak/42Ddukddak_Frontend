@@ -4,8 +4,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    loader: "custom"
-  }
+    loader: 'akamai',
+    path: '/',
+  },
 };
 
 module.exports = nextConfig;

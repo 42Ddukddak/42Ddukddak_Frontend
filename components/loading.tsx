@@ -2,17 +2,9 @@ import Image from 'next/image';
 import tempPic from '../public/Ddukddak_logo.png';
 
 export default function Loading() {
-  const imageLoader = require('../libs/loader');
   return (
     <div className="flex flex-col justify-center items-center h-screen">
-      <Image
-        src={tempPic}
-        alt="mainIMG"
-        loader={imageLoader}
-        unoptimized={true}
-        placeholder="blur"
-        className="w-auto h-auto pb-[40px]"
-      />
+      <Image src={tempPic} alt="mainIMG" placeholder="blur" className="w-auto h-auto pb-[40px]" />
       <div></div>
       <div className="text-[100px] animate-bounce">👀</div>
       <div className="text-5xl font-bold text-gray-900">로딩중...💻</div>
