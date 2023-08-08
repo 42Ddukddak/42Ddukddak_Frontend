@@ -112,11 +112,11 @@ export default function PrivateChatting({ mypage }: IMypageProps) {
 
   // @@@@ 예약 확정
   const requestReservation = async () => {
-    console.log('reservedTime: ', reservedTime);
+    console.log('reservedTime: ', isConfirm.reservedTime);
     try {
       await axios
         .post(`/api/reserved/${info.roomInfo?.roomId}`, null, {
-          params: { reservedTime },
+          params: { reservedTime: isConfirm.reservedTime },
         })
         .then((res) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
