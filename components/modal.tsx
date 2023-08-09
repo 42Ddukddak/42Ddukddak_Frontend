@@ -13,7 +13,7 @@ export type Confirm = {
 };
 export default function Modal({ title, subText, setIsOpen, setTime }: ModalProps) {
   const [reservedTime, setReservedTime] = useState<string>('');
-  const [isOk, setIsOk] = useState<Confirm>();
+  const [isOk, setIsOk] = useState<Confirm>({ confirm: undefined });
 
   const handleTimeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReservedTime(e.target.value);
