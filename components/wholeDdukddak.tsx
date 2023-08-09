@@ -46,6 +46,7 @@ export default function WholeDdukddak() {
       console.log('requestChangeRoom err : ', error);
     }
   };
+
   // 모달 상황에 따른 행동 (방들어가기)
   useEffect(() => {
     if (isConfirm.isConfirm) {

@@ -8,6 +8,7 @@ import SockJS from 'sockjs-client';
 import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
 import { formatTime } from '@/libs/formatTime';
+import useHandleMouseIndex from '@/libs/mouseIndex';
 
 export default function PublicChatting() {
   const { inputMessage, handleInputMessage, handleDeleteInputMessage } = useHandleInputMessage();
@@ -17,6 +18,7 @@ export default function PublicChatting() {
   const [roomId, setRoomId] = useState('');
   const client = useRef<CompatClient>();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const { mouseOnIndex, handleMouseOut, handleMouseOver } = useHandleMouseIndex();
   const intraId = getCookieValue('intraId');
 
   useEffect(() => {
@@ -26,6 +28,7 @@ export default function PublicChatting() {
   const msgBox = chatMessageList.map((item, idx) => (
     <div
       key={idx}
+      onMouseOver={() => handleMouseOver(idx)}
       className={cls(
         item.sender === intraId ? 'flex-row-reverse' : '',
         'flex items-start text-gray-800 space-x-2 text-sm',
@@ -59,6 +62,9 @@ export default function PublicChatting() {
         <p>{item.message}</p>
       </div>
       <span className="self-end">{formatTime(item.time)}</span>
+      {mouseOnIndex === idx && item.sender !== intraId ? (
+        <span className="self-end px-1 hover:bg-violet-200 cursor-pointer rounded-full">신고</span>
+      ) : null}
     </div>
   ));
 
@@ -129,12 +135,56 @@ export default function PublicChatting() {
     );
     setRoomId(`${id}`);
   };
+
+  const onReport = (i: number) => {
+    console.log('신고할 메세지 : ', chatMessageList[i]);
+    // 백엔드 api 호출 해야함.
+  };
+
   return (
     <div className="flex flex-col justify-between border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh] z-[1]">
       <RightBlockHeader text={'전체 채팅'} />
       {/* 채팅내용  */}
-      <div className="space-y-4 py-4 flex-1 overflow-auto max-h-[44vh] xl:max-h-[70vh]">
+      <div
+        onMouseOut={() => handleMouseOut(-1)}
+        className="space-y-4 py-4 flex-1 overflow-auto max-h-[44vh] xl:max-h-[70vh]"
+      >
         {msgBox}
+        {/*  */}
+        {['안녕', '그래', 'ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹ', 1].map((item, idx) => (
+          <div
+            key={idx}
+            onMouseOver={() => handleMouseOver(idx)}
+            className={cls('flex items-start text-gray-800 space-x-2 text-sm')}
+          >
+            {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 mt-2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            }
+
+            <div className="p-2 border border-gray-300 rounded-md">
+              <p>{item}</p>
+            </div>
+            <span className="self-end">12:33</span>
+            {mouseOnIndex === idx ? (
+              <span
+                onClick={() => onReport(idx)}
+                className="self-end px-1 hover:bg-violet-200 cursor-pointer rounded-full"
+              >
+                신고
+              </span>
+            ) : null}
+          </div>
+        ))}
+        {/*  */}
         <div ref={messageEndRef}></div>
       </div>
       {/* 인풋 박스  */}

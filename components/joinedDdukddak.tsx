@@ -2,6 +2,7 @@ import axios from 'axios';
 import RightBlockHeader from './rightBlockHeader';
 import { useState, useEffect } from 'react';
 import { cls } from '@/libs/utils';
+import useHandleMouseIndex from '@/libs/mouseIndex';
 
 interface IRoomList {
   roomId: number;
@@ -16,7 +17,11 @@ interface IIndexProps {
 export default function JoinedDdukddak({ setIndex }: IIndexProps) {
   const [roomList, setRoomList] = useState<IRoomList[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>();
-  const [mouseOnIndex, setMouseOnIndex] = useState<number | undefined>();
+  const { mouseOnIndex, handleMouseOut, handleMouseOver } = useHandleMouseIndex();
+
+  useEffect(() => {
+    requestRoomList();
+  });
 
   const requestRoomList = async () => {
     try {
@@ -28,21 +33,9 @@ export default function JoinedDdukddak({ setIndex }: IIndexProps) {
     }
   };
 
-  useEffect(() => {
-    requestRoomList();
-  });
-
   const onClick = (i: number) => {
     setSelectedIndex(i);
     setIndex(i);
-  };
-
-  const handleMouseOver = (i: number) => {
-    setMouseOnIndex(i);
-  };
-
-  const handleMouseOut = (i: number) => {
-    setMouseOnIndex(i);
   };
 
   const onCancel = (i: number) => {
