@@ -1,5 +1,5 @@
 import Button from './button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type ModalProps = {
   title?: string;
@@ -8,12 +8,22 @@ type ModalProps = {
   setTime: boolean;
 };
 
+export type Confirm = {
+  confirm: boolean | undefined;
+};
 export default function Modal({ title, subText, setIsOpen, setTime }: ModalProps) {
   const [reservedTime, setReservedTime] = useState<string>('');
+  const [isOk, setIsOk] = useState<Confirm>();
 
   const handleTimeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReservedTime(e.target.value);
   };
+
+  useEffect(() => {
+    if (isOk?.confirm === false) {
+      setIsOpen(false);
+    }
+  }, [isOk]);
 
   return (
     <div className="flex justify-center items-center h-screen fixed z-[2]">
@@ -28,7 +38,7 @@ export default function Modal({ title, subText, setIsOpen, setTime }: ModalProps
             </div>
           ) : null}
           <div className="flex w-1/2 mb-10 justify-between items-center">
-            <Button text="취소" cancel />
+            <Button text="취소" cancel setIsOk={setIsOk} />
             <Button text="확인" reservedTime={reservedTime} />
           </div>
         </div>
