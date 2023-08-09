@@ -72,6 +72,7 @@ export default function MakeDdukddak() {
           <input
             type="text"
             required
+            maxLength={20}
             value={inputMessage}
             onChange={handleInputMessage}
             onKeyDown={(ev) => {

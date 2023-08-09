@@ -42,6 +42,18 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
   const [hostLeave, setHostLeave] = useState(false);
   const [reservedTime, setReservedTime] = useState<boolean>(false);
   const [reservedChatMessageList, setReservedChatMessageList] = useState<IChatDetail[]>([]);
+  const [hostReserved, serHostReserved] = useState('');
+
+  // 방장이 예약하면 참가자들에게 모달 띄우기
+  useEffect(() => {
+    if (!mypage) {
+      if (confirm(`${hostReserved}에 방장이 뚝딱을 신청했어요.`)) {
+        // 확인시 api 요청
+      } else {
+        // 거절시 api 요청
+      }
+    }
+  }, [hostReserved]);
 
   // 새로운 채팅 메세지 도착시 포커스 맨 밑으로
   useEffect(() => {
@@ -59,6 +71,7 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
     }
   }, [chatMessage]);
 
+  // mypage일 때 예약된 채팅 내역 불러오기
   useEffect(() => {
     if (mypage && showReservation !== -1) {
       const fetchReservedChatMessages = async () => {
@@ -264,6 +277,8 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
                 alert(Message.THREE_MINUTE_LEFT);
               } else if (message.body === '1002') {
                 setRoomIsGone(true);
+              } else if (message.body === '1003') {
+                console.log('message가 뭘로 들어오나요??', message.body);
               } else {
                 setChatMessage(JSON.parse(message.body));
               }

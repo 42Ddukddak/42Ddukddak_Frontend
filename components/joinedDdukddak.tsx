@@ -16,15 +16,13 @@ interface IIndexProps {
 export default function JoinedDdukddak({ setIndex }: IIndexProps) {
   const [roomList, setRoomList] = useState<IRoomList[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>();
+  const [mouseOnIndex, setMouseOnIndex] = useState<number | undefined>();
 
   useEffect(() => {
     const requestRoomList = async () => {
       try {
         await axios.get('/api/reserved/list').then((res) => {
           setRoomList(res.data);
-          console.log('@@@@@@@ requestRoomList', res.data);
-          console.log('@@@@@@@ requestRoomList', JSON.stringify(res.data));
-          console.log('@@@@@@@ requestRoomList', JSON.parse(res.data));
         });
       } catch (error) {
         console.log('@@@@@@@ requestRoomList err', error);
@@ -38,26 +36,63 @@ export default function JoinedDdukddak({ setIndex }: IIndexProps) {
     setIndex(i);
   };
 
+  const handleMouseOver = (i: number) => {
+    setMouseOnIndex(i);
+  };
+
+  const handleMouseOut = (i: number) => {
+    setMouseOnIndex(i);
+  };
+
   const roomBox = roomList.map((items) => (
     <div
       key={items.roomId}
       onClick={() => onClick(items.roomId)}
+      onMouseOver={() => handleMouseOver(items.roomId)}
       className={cls(
-        selectedIndex === items.roomId ? ' bg-violet-400' : '',
-        'flex justify-between px-8 py-3 shadow-sm hover:bg-violet-400 cursor-pointer rounded-lg',
+        selectedIndex === items.roomId ? 'bg-violet-400' : '',
+        'flex justify-between px-6 py-3 shadow-sm hover:bg-violet-400 cursor-pointer rounded-lg',
       )}
     >
       <h2 className="self-center text-lg font-semibold w-3/5">{items.roomName}</h2>
-      <div className="flex flex-col justify-center items-end space-y-1">
-        <span className=" bg-violet-500 py-1 px-2 rounded-md text-white shadow-md">예약 시간{items.reservedTime}</span>
+      <div className="flex justify-center items-end">
+        {mouseOnIndex === items.roomId ? (
+          <span className="bg-slate-400 py-1 px-2 rounded-md shadow-md">취소</span>
+        ) : null}
+        <span className=" bg-violet-500 py-1 px-2 rounded-md text-white shadow-md">예약 시간 {items.reservedTime}</span>
       </div>
     </div>
   ));
 
+  // ---- test ---- ///
+
   return (
     <div className="flex flex-col border-2 rounded-3xl py-4 px-5 shadow-2xl h-screen max-h-[50vh] xl:min-h-[85vh]">
       <RightBlockHeader text={'뚝딱 Log'} isSearch mypage />
-      <div className="divide-y-2 mt-2 overflow-auto">{roomBox}</div>
+      <div onMouseOut={() => handleMouseOut(-1)} className="divide-y-2 mt-2 overflow-auto">
+        {roomBox}
+      </div>
+      {[1].map((items) => (
+        <div
+          key={items.roomId}
+          onClick={() => onClick(items.roomId)}
+          onMouseOver={() => handleMouseOver(items.roomId)}
+          className={cls(
+            selectedIndex === items.roomId ? ' bg-violet-400' : '',
+            'flex justify-between px-8 py-3 shadow-sm hover:bg-violet-400 cursor-pointer rounded-lg',
+          )}
+        >
+          <h2 className="self-center text-lg font-semibold w-3/5">{items.roomName}</h2>
+          <div className="flex justify-center items-end">
+            {mouseOnIndex === items.roomId ? (
+              <div className="bg-slate-400 py-1 px-2 rounded-md shadow-md shadow-violet-500">취소</div>
+            ) : null}
+            <span className=" bg-violet-500 py-1 px-2 rounded-md text-white shadow-md">
+              예약 시간 {items.reservedTime}
+            </span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
