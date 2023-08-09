@@ -1,11 +1,13 @@
+import dynamic from 'next/dynamic';
+
 import { useContext, useEffect, MouseEvent, useState } from 'react';
-import RightBlockHeader from './rightBlockHeader';
 import { AppContext, ModalContext } from '@/pages';
 import axios from 'axios';
 import { IResponse } from '@/interface/Context';
-import Modal from './modal';
 import * as modalMessage from '@/const/modalMessage';
 import { IText } from '@/interface/Modal';
+const Modal = dynamic(import('./modal'));
+const RightBlockHeader = dynamic(import('./rightBlockHeader'));
 
 export default function WholeDdukddak() {
   const [info, setInfo] = useContext(AppContext);

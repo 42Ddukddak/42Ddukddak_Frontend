@@ -1,5 +1,7 @@
-import Button from './button';
+import dynamic from 'next/dynamic';
+
 import { useEffect, useState } from 'react';
+const Button = dynamic(import('./button'));
 
 type ModalProps = {
   title?: string;

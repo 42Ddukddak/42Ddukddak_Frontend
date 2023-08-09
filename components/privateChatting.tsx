@@ -1,19 +1,22 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
+import dynamic from 'next/dynamic';
+
 import { useContext, useEffect, useRef, useState } from 'react';
-import Button from './button';
 import { CompatClient, Stomp } from '@stomp/stompjs';
+import axios from 'axios';
 import SockJS from 'sockjs-client';
-import useHandleInputMessage from '@/libs/inputMessage';
+import { AppContext, ModalContext } from '@/pages';
 import { IChatDetail } from '@/interface/ChatDetail';
+import { IText } from '@/interface/Modal';
+import useHandleInputMessage from '@/libs/inputMessage';
 import getCookieValue from '@/libs/getCookieValue';
 import { cls } from '@/libs/utils';
 import { formatTime } from '@/libs/formatTime';
-import { AppContext, ModalContext } from '@/pages';
-import axios from 'axios';
-import Modal from './modal';
+import useHandleMouseIndex from '@/libs/mouseIndex';
 import * as modalMessage from '@/const/modalMessage';
 import { Message } from '@/const/message';
-import { IText } from '@/interface/Modal';
+const Modal = dynamic(import('./modal'));
+const Button = dynamic(import('./button'));
 
 interface IMypageProps {
   mypage?: boolean;
@@ -43,6 +46,7 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
   const [reservedTime, setReservedTime] = useState<boolean>(false);
   const [reservedChatMessageList, setReservedChatMessageList] = useState<IChatDetail[]>([]);
   const [hostReserved, serHostReserved] = useState('');
+  const { mouseOnIndex, handleMouseOut, handleMouseOver } = useHandleMouseIndex();
 
   // 방장이 예약하면 참가자들에게 모달 띄우기
   useEffect(() => {

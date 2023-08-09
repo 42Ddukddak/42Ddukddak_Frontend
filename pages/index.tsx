@@ -1,14 +1,16 @@
 /* eslint-disable import/no-cycle */
-import Layout from '@/components/layout';
+import dynamic from 'next/dynamic';
+
 import { useRouter } from 'next/router';
 import { createContext, useEffect, useMemo, useState } from 'react';
-import MakeDdukddak from '@/components/makeDdukddak';
-import PrivateChatting from '@/components/privateChatting';
-import PublicChatting from '@/components/publicChatting';
-import WholeDdukddak from '@/components/wholeDdukddak';
 import getCookieValue from '@/libs/getCookieValue';
 import { IContext } from '@/interface/Context';
 import { IModal } from '@/interface/Modal';
+const Layout = dynamic(import('@/components/layout'));
+const MakeDdukddak = dynamic(import('@/components/makeDdukddak'));
+const PrivateChatting = dynamic(import('@/components/privateChatting'));
+const PublicChatting = dynamic(import('@/components/publicChatting'));
+const WholeDdukddak = dynamic(import('@/components/wholeDdukddak'));
 
 type IDdukddakContext = [IContext, React.Dispatch<React.SetStateAction<IContext>>];
 type IModalContext = [IModal, React.Dispatch<React.SetStateAction<IModal>>];
