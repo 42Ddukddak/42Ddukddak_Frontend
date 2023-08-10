@@ -45,12 +45,12 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
   const [hostLeave, setHostLeave] = useState(false);
   const [reservedTime, setReservedTime] = useState<boolean>(false);
   const [reservedChatMessageList, setReservedChatMessageList] = useState<IChatDetail[]>([]);
-  const [hostReserved, serHostReserved] = useState('');
+  const [hostReserved, serHostReserved] = useState<string | undefined>();
   const { mouseOnIndex, handleMouseOut, handleMouseOver } = useHandleMouseIndex();
 
   // 방장이 예약하면 참가자들에게 모달 띄우기
   useEffect(() => {
-    if (!mypage) {
+    if (!mypage && hostReserved) {
       if (confirm(`${hostReserved}에 방장이 뚝딱을 신청했어요.`)) {
         // 확인시 api 요청
       } else {
@@ -314,6 +314,7 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
     </div>
   ));
 
+  // mypage 에 예약 message 박스
   const reservedMsgBox = reservedChatMessageList.map((item, idx) => (
     <div key={idx}>
       <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
@@ -379,7 +380,10 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
         </div>
       )}
       {/* 채팅 내용 */}
-      <div className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]">
+      <div
+        onMouseOut={() => handleMouseOut(-1)}
+        className="space-y-4 flex-1 py-4 overflow-auto xl:min-h-[69vh] max-h-[50vh]"
+      >
         {mypage && showReservation !== -1 ? reservedMsgBox : msgBox}
         <div ref={messageEndRef} />
       </div>
