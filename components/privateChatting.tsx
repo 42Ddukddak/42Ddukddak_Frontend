@@ -167,7 +167,7 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
   const requestLeave = async () => {
     try {
       await axios
-        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId } })
+        .post(`/api/chat/private/${info.roomInfo?.roomId}/leave`, null, { params: { intraId: intraId } })
         .then((res) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           res.status === 200

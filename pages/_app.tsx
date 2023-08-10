@@ -37,12 +37,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       try {
         await axios
           .post('/api/auth/42login', null, {
-            params: code,
+            params: { code: code },
           })
           .then(() => setLoading(false))
           .then(() => route.push('/'));
       } catch (error) {
-        // console.error(error);
+        console.error(error);
       }
     };
 

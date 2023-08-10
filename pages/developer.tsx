@@ -51,7 +51,7 @@ export default function Developer() {
         <div className="flex space-x-2 m-3 max-w-xl">
           <div className="rounded-3xl  border overflow-hidden my-hover">
             <Link href="https://github.com/oio337a">
-              <Image src={yongmipa} alt="mainIMG" placeholder="blur" />
+              <Image src={yongmipa} alt="yongmipa" placeholder="blur" />
             </Link>
             <div className="ml-2 flex flex-col text-gray-700">
               <div className="w-20 font-semibold p-1 mt-2 rounded-2xl border bg-violet-500 text-white">Frontend</div>
@@ -65,7 +65,7 @@ export default function Developer() {
           </div>
           <div className="rounded-3xl border overflow-hidden my-hover">
             <Link href="https://github.com/saewoo1">
-              <Image src={sohyupar} alt="mainIMG" placeholder="blur" />
+              <Image src={sohyupar} alt="sohyupar" placeholder="blur" />
             </Link>
             <div className="ml-2 flex flex-col text-gray-700">
               <div className="w-20 font-semibold p-1 mt-2 rounded-2xl border bg-violet-500 text-white">Backend</div>
@@ -79,7 +79,7 @@ export default function Developer() {
           </div>
           <div className="rounded-3xl border overflow-hidden my-hover">
             <Link href="https://github.com/parksooo">
-              <Image src={suhwpark} alt="mainIMG" placeholder="blur" />
+              <Image src={suhwpark} alt="suhwpark" placeholder="blur" />
             </Link>
             <div className="ml-2 flex flex-col text-gray-700">
               <div className="w-20 font-semibold p-1 mt-2 rounded-2xl border bg-violet-500 text-white">Backend</div>
