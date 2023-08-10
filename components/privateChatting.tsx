@@ -301,7 +301,7 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
   // 전달 받은 메세지 뿌려줄 박스
   const msgBox = chatMessageList.map((item, idx) => (
     // eslint-disable-next-line react/no-array-index-key
-    <div key={idx}>
+    <div onMouseOver={() => handleMouseOver(idx)} key={idx}>
       <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
           <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
@@ -309,14 +309,16 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
             <p>{item.message}</p>
           </div>
         </div>
-        {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
+        {item.sender !== intraId && mouseOnIndex === idx ? (
+          <span className="text-xs text-gray-600 mr-1">신고</span>
+        ) : null}
       </div>
     </div>
   ));
 
   // mypage 에 예약 message 박스
   const reservedMsgBox = reservedChatMessageList.map((item, idx) => (
-    <div key={idx}>
+    <div onMouseOver={() => handleMouseOver(idx)} key={idx}>
       <div className={cls(item.sender === intraId ? 'items-end' : '', 'flex flex-col justify-end pr-4')}>
         <div className={cls(item.sender === intraId ? '' : 'flex-row-reverse', 'flex justify-end items-end')}>
           <span className="text-sm text-gray-600 font-light px-2">{formatTime(item.time)} </span>
@@ -324,7 +326,9 @@ export default function PrivateChatting({ mypage, showReservation }: IMypageProp
             <p>{item.message}</p>
           </div>
         </div>
-        {item.sender === intraId ? null : <span className="text-xs text-gray-600 mr-1">신고</span>}
+        {item.sender !== intraId && mouseOnIndex === idx ? (
+          <span className="text-xs text-gray-600 mr-1">신고</span>
+        ) : null}
       </div>
     </div>
   ));
